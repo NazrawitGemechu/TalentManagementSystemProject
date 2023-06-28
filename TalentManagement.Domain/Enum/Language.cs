@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace TalentManagement.Domain.Enum
 {
-    public enum Gender
+    public enum Language
     {
-     
-        Female = 1,
-        Male
+      
+        Beginner=1,
+        Intermideate,
+        Advanced,
+        Fluent
     }
 }

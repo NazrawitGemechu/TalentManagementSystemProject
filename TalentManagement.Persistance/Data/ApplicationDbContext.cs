@@ -18,6 +18,8 @@ namespace TalentManagement.Persistance.Data
         public virtual DbSet<TalentExperience> TalentExperiences { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
         public virtual DbSet<EducationLevel> EducationLevels { get; set; }
+        public virtual DbSet<TalentSkill> TalentSkill { get; set; }
+        public virtual DbSet<TalentEducationLevel> TalentEducationLevel { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
 

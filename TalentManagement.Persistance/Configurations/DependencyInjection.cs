@@ -14,7 +14,7 @@ namespace TalentManagement.Persistance.Configurations
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+           // services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             //services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetAllJobsHandler).GetTypeInfo().Assembly));
             return services;
         }

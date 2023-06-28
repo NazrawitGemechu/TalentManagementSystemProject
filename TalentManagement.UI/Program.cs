@@ -1,10 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using TalentManagement.Persistance.Configurations;
+using TalentManagement.Persistance.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddPersistence(builder.Configuration);
-
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

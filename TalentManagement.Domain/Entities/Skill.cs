@@ -9,7 +9,7 @@ namespace TalentManagement.Domain.Entities
     public class Skill
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string SkillName { get; set; }
         public virtual List<TalentSkill> Talents { get; set; }
         public virtual List<JobSkill> Jobs { get; set; }
     }
