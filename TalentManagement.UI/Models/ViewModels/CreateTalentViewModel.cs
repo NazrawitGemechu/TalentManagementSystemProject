@@ -27,7 +27,7 @@ namespace TalentManagement.UI.Models.ViewModels
         [Required(ErrorMessage ="Please Select Your Country")]
         public Country Country { get; set; }
         [Required(ErrorMessage ="Select your Language Proficency")]
-        [Display(Name ="Language Proficency")]
+        [Display(Name ="English Language Proficency")]
         public Language Language { get; set; }
         //Skill properties
         [Required(ErrorMessage ="Please Select a Skill")]
@@ -38,13 +38,14 @@ namespace TalentManagement.UI.Models.ViewModels
         [Display(Name ="Education Levels")]
         public string EducationLevelName { get; set; }
         //additional information
-
+        public TalentSkill TalentSkill { get; set; }
         [NotMapped]
-        public List<SelectListItem> Skills { get; set; }
+        public List<SelectListItem> Skills { get; set; } = new List<SelectListItem>();
         [NotMapped]
-        public int[] SelectedSkills { get; set; }
+        public int[] SelectedSkills { get; set; }= new int[0];
         [NotMapped]
-        public List<SelectListItem> EducationLevels { get; set; }
+        public TalentEducationLevel TalentEducationLevel { get; set; }
+        public List<SelectListItem> EducationLevels { get; set; }= new List<SelectListItem>();
         [NotMapped]
         public int[] SelectedEducation { get; set; }
 
@@ -57,6 +58,8 @@ namespace TalentManagement.UI.Models.ViewModels
         public TalentExperience TalentExperience { get; set; }
         [Required(ErrorMessage ="Experience is Required")]
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
+        
+       
 
 
     }

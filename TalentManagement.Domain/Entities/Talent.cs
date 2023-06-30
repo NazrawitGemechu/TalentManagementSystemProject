@@ -11,17 +11,17 @@ namespace TalentManagement.Domain.Entities
     public class Talent
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public string Email { get; set; } = "";
         public int? PhoneNo {get; set; }
         public Gender Gender { get; set; }
         public Country Country { get; set; }
-        public string FilePath { get; set; }
+        public string FilePath { get; set; } = "";
         public Language Language { get; set; }
 
-        public virtual List<TalentExperience> TalentExperiences { get; set; }
-        public virtual List<TalentSkill> Skills { get; set; }
-        public virtual List<TalentEducationLevel> EducationLevels { get; set; }
+        public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
+        public virtual List<TalentSkill> Skills { get; set; } = new List<TalentSkill>();
+        public virtual List<TalentEducationLevel> EducationLevels { get; set; } = new List<TalentEducationLevel>();
     }
 }

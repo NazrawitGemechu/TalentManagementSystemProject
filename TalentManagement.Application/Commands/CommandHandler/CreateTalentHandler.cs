@@ -21,7 +21,9 @@ namespace TalentManagement.Application.Commands.CommandHandler
 
         public async Task<Talent> Handle(CreateTalentCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _context.Add(request.NewTalent);
+            await _context.SaveChangesAsync();
+            return request.NewTalent;
         }
     }
 }

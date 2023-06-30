@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TalentManagement.Application\TalentManagement.Application.csproj" />
+   
     <ProjectReference Include="..\TalentManagement.Domain\TalentManagement.Domain.csproj" />
   </ItemGroup>
 
