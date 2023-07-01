@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 using TalentManagement.Application.Commands.SkillCommand;
 using TalentManagement.Application.Commands.TalentCommand;
 using TalentManagement.Application.Queries.EducationLevelQuery;
@@ -18,11 +19,12 @@ namespace TalentManagement.UI.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public TalentController(IMediator mediator, IWebHostEnvironment hostingEnvironment)
+        private readonly ApplicationDbContext _context;
+        public TalentController(IMediator mediator, IWebHostEnvironment hostingEnvironment, ApplicationDbContext context)
         {
             _mediator = mediator;
             _hostingEnvironment = hostingEnvironment;
-           
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -40,7 +42,6 @@ namespace TalentManagement.UI.Controllers
 
             };
             vm.TalentExperiences.Add(new TalentExperience() { Id = 1 });
-            
            
             return View(vm);
         }
@@ -50,39 +51,47 @@ namespace TalentManagement.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                Talent talent = new Talent()
+                if (IsDuplicateTalent(model.FirstName, model.LastName, model.Email) == true)
                 {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    Gender = model.Gender,
-                    Country = model.Country,
-                    TalentExperiences = model.TalentExperiences,
-                    FilePath = CVUpload(model),
-                };
-
-                foreach (var item in model.SelectedSkills)
-                {
-                    talent.Skills.Add(new TalentSkill()
-                    {
-                        SkillId = item
-                    });
+                    return RedirectToAction("Index");
                 }
-
-                foreach (var item in model.SelectedEducation)
+                else
                 {
-                    talent.EducationLevels.Add(new TalentEducationLevel()
+                    Talent talent = new Talent()
                     {
-                        EducationLevelId = item
-                    });
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.Email,
+                        Gender = model.Gender,
+                        Country = model.Country,
+                        Language = model.Language,
+                        PhoneNo = model.PhoneNo,
+                        TalentExperiences = model.TalentExperiences,
+                        FilePath = CVUpload(model),
+                    };
 
+                    foreach (var item in model.SelectedSkills)
+                    {
+                        talent.Skills.Add(new TalentSkill()
+                        {
+                            SkillId = item
+                        });
+                    }
+
+                    foreach (var item in model.SelectedEducation)
+                    {
+                        talent.EducationLevels.Add(new TalentEducationLevel()
+                        {
+                            EducationLevelId = item
+                        });
+
+                    }
+                    var command = new CreateTalentCommand() { NewTalent = talent };
+                    var result = await _mediator.Send(command);
+                    return RedirectToAction("Index");
                 }
-
-                var command = new CreateTalentCommand() { NewTalent = talent };
-                var result = await _mediator.Send(command);
-                return RedirectToAction("Index");
             }
-            return View();
+            return View(model);
         }
             public async Task<List<SelectListItem>> BindSkills()
         {
@@ -123,6 +132,11 @@ namespace TalentManagement.UI.Controllers
             }
             return uniqueFileName;
         }
-
+        private bool IsDuplicateTalent(string fname, string lname, string email)
+        {
+            //var talents = _mediator.Send(new GetAllTalentsQuery());
+            return _context.Talents.Any(d => d.FirstName == fname && d.LastName == lname && d.Email==email);
+        }
+        
     }
 }

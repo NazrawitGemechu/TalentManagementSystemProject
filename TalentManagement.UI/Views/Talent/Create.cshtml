@@ -55,19 +55,20 @@
                             </div>
                     </div>
                      <div class="col-md-6">
+                         
                             <div class="form-group">
-                                <label asp-for="SkillName" class="control-label"></label>
+                                <label asp-for="SelectedSkills" class="control-label"></label>
                                 <select asp-for="SelectedSkills" class="form-control" asp-items="Model.Skills">
                                     <option value="" selected disabled>---Select Your Skill(s)---</option>
                                 </select>
-                                <span asp-validation-for="SkillName" class="text-danger"></span>
+                                <span asp-validation-for="SelectedSkills" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="EducationLevelName" class="control-label"></label>
+                             <div class="form-group">
+                                <label asp-for="SelectedEducation" class="control-label"></label>
                                 <select asp-for="SelectedEducation" class="form-control" asp-items="Model.EducationLevels">
                                     <option value="" selected disabled>---Select Your Education Level(s)---</option>
                                 </select>
-                                <span asp-validation-for="EducationLevelName" class="text-danger"></span>
+                                <span asp-validation-for="SelectedEducation" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <div class="custom-file">
@@ -78,7 +79,7 @@
                             </div>
 
                      </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <h3>Previous Work Experience</h3>
                             <table id='ExpTable' class="table">
                                 <thead>

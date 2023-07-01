@@ -19,7 +19,7 @@ namespace TalentManagement.Domain.Entities
         public Country Country { get; set; }
         public string FilePath { get; set; } = "";
         public Language Language { get; set; }
-
+        
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
         public virtual List<TalentSkill> Skills { get; set; } = new List<TalentSkill>();
         public virtual List<TalentEducationLevel> EducationLevels { get; set; } = new List<TalentEducationLevel>();

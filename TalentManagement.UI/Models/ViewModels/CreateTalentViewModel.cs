@@ -28,35 +28,20 @@ namespace TalentManagement.UI.Models.ViewModels
         public Country Country { get; set; }
         [Required(ErrorMessage ="Select your Language Proficency")]
         [Display(Name ="English Language Proficency")]
-        public Language Language { get; set; }
-        //Skill properties
-        [Required(ErrorMessage ="Please Select a Skill")]
-        [Display(Name ="Programming Skills")]
-        public string SkillName { get; set; }
-        //EducationLevel properties
-        [Required(ErrorMessage ="Please Select Your Education Level(S)")]
-        [Display(Name ="Education Levels")]
-        public string EducationLevelName { get; set; }
-        //additional information
-        public TalentSkill TalentSkill { get; set; }
-        [NotMapped]
+        public Language Language { get; set; }   
         public List<SelectListItem> Skills { get; set; } = new List<SelectListItem>();
-        [NotMapped]
+        [Display(Name ="Skill(s)")]
         public int[] SelectedSkills { get; set; }= new int[0];
-        [NotMapped]
-        public TalentEducationLevel TalentEducationLevel { get; set; }
+     
+     //   public TalentEducationLevel TalentEducationLevel { get; set; }
         public List<SelectListItem> EducationLevels { get; set; }= new List<SelectListItem>();
-        [NotMapped]
+        [Display(Name = "Education Level(s)")]
         public int[] SelectedEducation { get; set; }
 
         //final talent property
         [Required(ErrorMessage = "Please Upload Your CV")]
         [Display(Name = "Upload CV")]
         public IFormFile FileCV { get; set; }
-        //Talent Experience properties
-
-        public TalentExperience TalentExperience { get; set; }
-        [Required(ErrorMessage ="Experience is Required")]
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
         
        
