@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,8 @@ namespace TalentManagement.Domain.Entities
         public int? PhoneNo {get; set; }
         public Gender Gender { get; set; }
         public Country Country { get; set; }
+        [NotMapped]      
+        public IFormFile FileCV { get; set; }
         public string FilePath { get; set; } = "";
         public Language Language { get; set; }
         

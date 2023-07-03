@@ -8,6 +8,7 @@ namespace TalentManagement.UI.Models.ViewModels
 {
     public class CreateTalentViewModel
     {
+        public int Id { get; set; }   
         [Required(ErrorMessage ="Please Enter Your First Name")]
         [Display(Name = "First Name")]
         [MaxLength(30)]
@@ -21,8 +22,8 @@ namespace TalentManagement.UI.Models.ViewModels
         [Required(ErrorMessage ="Email Adress is Required")]
         [EmailAddress]
         public string Email { get; set; }
-        [Phone]
-        [Display(Name ="Phone Number")]
+    
+        [Display(Name ="Phone Number(Optional)")]
         public int? PhoneNo { get; set; }
         [Required(ErrorMessage ="Please Select Your Country")]
         public Country Country { get; set; }
@@ -42,6 +43,7 @@ namespace TalentManagement.UI.Models.ViewModels
         [Required(ErrorMessage = "Please Upload Your CV")]
         [Display(Name = "Upload CV")]
         public IFormFile FileCV { get; set; }
+       // public string FilePath { get; set; }
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
         
        

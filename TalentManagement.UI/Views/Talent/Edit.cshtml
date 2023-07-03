@@ -1,33 +1,31 @@
 ﻿@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
 @using TalentManagement.Domain.Enum;
 @{
-    ViewData["Title"] = "AddTalent";
+    ViewData["Title"] = "UpdateTalent";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
-            <h4>Enter Your Information</h4>
+            <h4>Update Your Information</h4>
         </p>
         <div class="row">
             <div class="col-md-12 ">
-                <form asp-action="Create" enctype="multipart/form-data">
-                      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <input type="hidden" asp-for ="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label asp-for="FirstName" class="control-label"></label>
                                 <input asp-for="FirstName" class="form-control" />
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
-                        </div>
+                            </div>
                             <div class="form-group">
                                 <label asp-for="LastName" class="control-label"></label>
                                 <input asp-for="LastName" class="form-control" />
                                 <span asp-validation-for="LastName" class="text-danger"></span>
-
                             </div>
-                            
                             <div class="form-group">
                                 <label asp-for="Gender" class="control-label"></label>
                                 <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
@@ -35,29 +33,16 @@
                                 </select>
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
-                           
-                            <div class="form-group">
-                                <label asp-for="PhoneNo" class="control-label"></label>
-                                <input asp-for="PhoneNo" class="form-control" />
-                                <span asp-validation-for="PhoneNo" class="text-danger"></span>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label asp-for="Language" class="control-label"></label>
-                                <select asp-for="Language" class="form-control" asp-items="Html.GetEnumSelectList<Language>()">                                    
-                                <option value="" selected disabled>---Select Language Proficency---</option>
-                                </select>
-                               
-                                <span asp-validation-for="Language" class="text-danger"></span>
-                            </div>
-                    </div>
-                     <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Email" class="control-label"></label>
                                 <input asp-for="Email" class="form-control" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
-                           
+                            <div class="form-group">
+                                <label asp-for="PhoneNo" class="control-label"></label>
+                                <input asp-for="PhoneNo" class="form-control" />
+                                <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                            </div>
                             <div class="form-group">
                                 <label asp-for="Country" class="control-label"></label>
                                 <select asp-for="Country" class="form-control" asp-items="Html.GetEnumSelectList<Country>()">
@@ -65,34 +50,39 @@
                                 </select>
                                 <span asp-validation-for="Country" class="text-danger"></span>
                             </div>
-                            <br />
+                            <div class="form-group">
+                                <label asp-for="Language" class="control-label"></label>
+                                <select asp-for="Language" class="form-control" asp-items="Html.GetEnumSelectList<Language>()">
+                                    <option value="" selected disabled>---Select Language Proficency---</option>
+                                </select>
+
+                                <span asp-validation-for="Language" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
                             <div class="form-group">
                                 <label asp-for="SelectedSkills" class="control-label"></label>
-                                <select name="SelectedSKills" asp-items="Model.Skills" multiple="multiple" class="listbox" id="Skills_dropdown"></select>
-                                <span asp-validation-for="SelectedSkills" class="text-danger"></span>                                                
-                          </div>
-                            <br />
-                             <div class="form-group">
+                                    @Html.ListBoxFor(model => model.SelectedSkills,new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control", multiple = "multiple", id = "Skills_dropdown" })                           
+                                <span asp-validation-for="SelectedSkills" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
                                 <label asp-for="SelectedEducation" class="control-label"></label>
-                               <select name="SelectedEducation" asp-items="Model.EducationLevels" multiple="multiple" class="listbox" id="Educations_dropdown"></select>
+                                @Html.ListBoxFor(model => model.SelectedEducation,new MultiSelectList(Model.EducationLevels, "Value", "Text"), new { @class = "form-control", multiple = "multiple", id = "Educations_dropdown" })
                                 <span asp-validation-for="SelectedEducation" class="text-danger"></span>
                             </div>
-                            <hr />
-                           
                             <div class="form-group">
                                 <div class="custom-file">
                                     <label class="control-label">Upload CV</label>
-                                    <br />
                                     <input asp-for="FileCV" class="form-control custom-file-input" />
                                     <span asp-validation-for="FileCV" class="text-danger"></span>
                                 </div>
                             </div>
 
-                     </div>
-                        <h3>Previous Work Experience</h3>
+                        </div>
                         <div class="col-md-12 form-group">
-                           
-                            <table id='ExpTable' class="table ">
+                            <h3>Previous Work Experience</h3>
+                            <table id='ExpTable' class="table">
                                 <thead>
                                     <tr>
                                         <th>
@@ -108,8 +98,7 @@
                                             Company Email Address
 
                                         </th>
-                                        <th>                                           
-                                        </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,12 +117,12 @@
                                                 @Html.ValidationMessageFor(x=>x.TalentExperiences[i].Role, "", new { @class = "text-danger" })
                                             </td>
                                             <td>
-                                               
+
                                                 @Html.EditorFor(x=>x.TalentExperiences[i].NumberOfYears, new {htmlAttributes=new {@class="form-control"}})
                                                 @Html.ValidationMessageFor(x=>x.TalentExperiences[i].NumberOfYears, "", new { @class = "text-danger" })
                                             </td>
                                             <td>
-                                               
+
                                                 @Html.EditorFor(x=>x.TalentExperiences[i].CompanyEmailAddress, new {htmlAttributes=new {@class="form-control"}})
                                                 @Html.ValidationMessageFor(x=>x.TalentExperiences[i].CompanyEmailAddress , "", new { @class = "text-danger" })
                                             </td>
@@ -149,7 +138,7 @@
                                                     Delete
                                                 </button>
                                             </td>
-                                      </tr>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -157,10 +146,10 @@
                         <input type="hidden" id="hdnLastIndex" value="0" />
 
                         <div class="form-group">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <input type="submit" value="Update" class="btn btn-primary" />
                         </div>
                     </div>
-                  </form>
+                </form>
             </div>
         </div>
     </div>
@@ -171,6 +160,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 
     <script type="text/javascript">
         $(".custom-file-input").on("change", function () {
@@ -220,8 +210,10 @@
         $(document).ready(function () {
             $('#Educations_dropdown').multiselect();
         });
-
+       
 
     </script>
 
+
 }
+
