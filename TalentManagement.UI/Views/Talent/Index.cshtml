@@ -2,14 +2,12 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_secondLayout.cshtml";
 }
 
-<h1>List Of Talents</h1>
 
-<p>
-    <a asp-action="Create">Create New Talent</a>
-</p>
-<table class="table">
+
+<!--<table class="table">
     <thead>
         <tr>
             <th>
@@ -58,3 +56,73 @@
 }
     </tbody>
 </table>
+-->
+<!-- //banner-bottom-wthree banner-bottom-wthree pb-lg-5 pb-md-4 pb-3-->
+<!--/process-- d-flex align-items-center justify-content-center>
+<section >
+    
+    <div class="container d-flex align-items-center justify-content-center">
+        <div class="inner-sec-w3ls py-lg-5  py-3 ">
+            <!---728x90--->
+<h3 class="tittle text-center mb-lg-4 mb-3">
+
+            List of Talents
+            <div style="position:absolute;right:25px; top:160px;">
+                  <a asp-action="Create" class="btn btn-success  float-right">Add New Talent</a>
+            </div>
+   
+            </h3>
+
+<!---728x90---"tab-content ">
+            <div class="tabs mt-5">
+
+    <div class= "row populor_category_grids mt-5" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="menu-grids mt-4">
+                            <div class="row t-in">
+                                <div class="col-lg-8 text-info-sec">
+                                    <!--/talent-->
+                                    @foreach(var item in Model){
+                                    <div class="job-post-main row">
+                                        <div class="col-md-9 job-post-info text-left">
+                                            <div class="job-post-icon">
+                                                <i class="fas fa-briefcase"></i>
+                                            </div>
+                                            <div class="job-single-sec">
+                                            <h4>
+                                                        <a asp-controller="Talent" asp-action="Detail" asp-route-id="@item.Id">
+                                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                                        @Html.DisplayFor(modelItem => item.LastName)
+                                                        
+                                                    </a>
+                                                        
+                                                    </h4>
+                                                    <p class="my-2"> @Html.DisplayFor(modelItem => item.Email)</p>
+                                                <ul class="job-list-info d-flex">
+                                                
+                                                    <li>
+                                                            <i class="fas fa-map-marker-alt"></i> @Html.DisplayFor(modelItem => item.Country)
+                                                    </li>
+                                                   
+                                                </ul>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="col-md-3 job-single-time text-right">
+                                           
+                                                <a asp-controller="Talent" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary"><i class="bi bi-pencil-square"></i>Edit</a>
+
+            <a asp-controller="Talent" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="bi bi-trash"></i>Delete</a>
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

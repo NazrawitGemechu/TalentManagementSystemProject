@@ -29,14 +29,18 @@ namespace TalentManagement.UI.Models.ViewModels
         public Country Country { get; set; }
         [Required(ErrorMessage ="Select your Language Proficency")]
         [Display(Name ="English Language Proficency")]
-        public Language Language { get; set; }   
+        public Language Language { get; set; }
+        [Required(ErrorMessage = "Skill is required. Please select a skill")]
         public List<SelectListItem> Skills { get; set; } = new List<SelectListItem>();
-        [Display(Name ="Skill(s)")]
+        [Display(Name ="Select Your Skill(s)")]
+        
         public int[] SelectedSkills { get; set; }= new int[0];
-     
-     //   public TalentEducationLevel TalentEducationLevel { get; set; }
+
+        //   public TalentEducationLevel TalentEducationLevel { get; set; }
+       
         public List<SelectListItem> EducationLevels { get; set; }= new List<SelectListItem>();
-        [Display(Name = "Education Level(s)")]
+        [Display(Name = "Select Your Education Level(s)")]
+        [Required(ErrorMessage = "Education Level is required. Please select your Eduacation Level")]
         public int[] SelectedEducation { get; set; }
 
         //final talent property

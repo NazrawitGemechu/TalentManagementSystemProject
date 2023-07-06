@@ -1,0 +1,131 @@
+﻿@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
+@using TalentManagement.Domain.Enum;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+<div class="container">
+    <div class="single">
+        <div class="form-container">
+            <h2>Fill Your Information</h2>
+            <form asp-action ="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="FirstName"></label>
+                        <div class="col-md-9">
+                            <input asp-for="FirstName" path="firstName" id="firstName" class="form-control input-sm" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="LastName"></label>
+                        <div class="col-md-9">
+                            <input asp-for="LastName" path="firstName" id="lastName" class="form-control input-sm" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="Gender"></label>
+                        <div class="col-md-9">
+                            <select asp-for="Gender" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Gender>()">
+                                <option value="" selected disabled>---Select Your Gender---</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="Language"></label>
+                       
+                        <select asp-for="Language" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Language>()">
+                            <option value="" selected disabled>---Select Language Proficency---</option>
+                        </select>
+
+                        <span asp-validation-for="Language" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="Email"></label>
+                        <div class="col-md-9">
+                            <input asp-for ="Email" path="dob" id="dob" class="form-control input-sm" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                  
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="PhoneNo"></label>
+                        <div class="col-md-9">
+                            <input asp-for="PhoneNo" path="email" id="email" class="form-control input-sm" />
+                            <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="Country"></label>
+                        <div class="col-md-9">
+                            <select asp-for="Country" path="country" id="country" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Country>()">
+                                <option value="" selected disabled>---Select Your Country---</option>
+                            </select>
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="SelectedSkills"></label>
+                        <div class="col-md-9">
+                            <select name="SelectedSKills" id="country" class="form-control input-sm" asp-items="Model.Skills" multiple="multiple" class="listbox" id="Skills_dropdown">
+                                
+                            </select>
+                            <span asp-validation-for="SelectedSkills" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" asp-for="SelectedEducation"></label>
+                        <div class="col-md-9">
+                            <select name="SelectedEducation" id="country" class="form-control input-sm" asp-items="Model.EducationLevels" multiple="multiple" class="listbox" id="Educations_dropdown">
+                            </select>
+                            <span asp-validation-for="SelectedEducation" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="search_form1">
+                        <label class="control-label">Upload CV</label>
+                        <input asp-for="FileCV" >
+                    <span asp-validation-for="FileCV" class="text-danger"></span>                                      
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-3 control-lable" for="subjects">Subjects</label>
+                        <div class="col-md-9 sm_1">
+                            <textarea cols="77" rows="6" value=" " onfocus="this.value='';" onblur="if (this.value == '') {this.value = '';}"> </textarea>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-actions floatRight">
+                        <input type="submit" value="Register" class="btn btn-primary btn-sm">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

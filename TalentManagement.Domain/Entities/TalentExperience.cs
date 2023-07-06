@@ -16,6 +16,7 @@ namespace TalentManagement.Domain.Entities
         public string CompanyName { get; set; } = "";
         [Required(ErrorMessage = "Please Fill the Company Email Address")]
         [Display(Name = "Company Email Address")]
+        [EmailAddress]
         public string CompanyEmailAddress { get; set; } = "";
         [Required(ErrorMessage = "Role is Required")]
         public string Role { get; set; } = "";
