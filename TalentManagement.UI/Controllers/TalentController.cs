@@ -221,7 +221,104 @@ namespace TalentManagement.UI.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            CreateTalentViewModel model = new CreateTalentViewModel();
 
+            List<int> skillsIds = new List<int>();
+            List<int> educationIds = new List<int>();
+
+            //Get talent 
+            var talent = _context.Talents.Include("Skills").FirstOrDefault(x => x.Id == Id);
+            //Get talent skills and add each skillId into selectedskills list
+            talent.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
+
+            //get talent wirh education levels
+            var talentE = _context.Talents.Include("EducationLevels")
+                                          .FirstOrDefault(x => x.Id == Id);
+            talent.EducationLevels.ToList().ForEach(result => educationIds.Add(result.EducationLevelId));
+
+
+            Talent tal = _context.Talents.Include(e => e.TalentExperiences)
+                                         .Where(a => a.Id == Id)
+                                         .FirstOrDefault();
+
+
+            //bind model 
+            model.Skills = _context.Skills.Select
+                (x => new SelectListItem
+                {
+                    Text = x.SkillName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            model.EducationLevels = _context.EducationLevels.Select
+                (x => new SelectListItem
+                {
+                    Text = x.EducationLevelName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            model.TalentExperiences = tal.TalentExperiences;
+            model.Id = talent.Id;
+            model.FirstName = talent.FirstName;
+            model.LastName = talent.LastName;
+            model.Country = talent.Country;
+            model.Gender = talent.Gender;
+            model.Email = talent.Email;
+            model.PhoneNo = talent.PhoneNo;
+            model.FileCV = talent.FileCV;
+            model.Language = talent.Language;
+            model.SelectedSkills = skillsIds.ToArray();
+            model.SelectedEducation = educationIds.ToArray();
+
+
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Delete(CreateTalentViewModel model)
+        {
+
+            Talent talent = new Talent();
+            List<TalentSkill> talentSkills = new List<TalentSkill>();
+            List<TalentEducationLevel> talentEducationLevels = new List<TalentEducationLevel>();
+
+           
+                
+                talent.FirstName = model.FirstName;
+                talent.LastName = model.LastName;
+                talent.Gender = model.Gender;
+                talent.Country = model.Country;
+                talent.Email = model.Email;
+                talent.Language = model.Language;
+                talent.PhoneNo = model.PhoneNo;
+                talent.TalentExperiences = model.TalentExperiences;
+                talent.FileCV = model.FileCV;
+
+            talent = _context.Talents.Include("Skills").FirstOrDefault(x => x.Id == model.Id);
+            talent.Skills.ToList().ForEach(result => talentSkills.Add(result));
+            _context.TalentSkill.RemoveRange(talentSkills);
+            _context.SaveChanges();
+
+            talent = _context.Talents.Include("EducationLevels").FirstOrDefault(x => x.Id == model.Id);
+            talent.EducationLevels.ToList().ForEach(result => talentEducationLevels.Add(result));
+            _context.TalentEducationLevel.RemoveRange(talentEducationLevels);
+            _context.SaveChanges();
+            //third find talent experience list and remove all from db
+            List<TalentExperience> talentExp = _context.TalentExperiences.Where(d => d.TalentId == model.Id).ToList();
+            _context.TalentExperiences.RemoveRange(talentExp);
+            _context.SaveChanges();
+
+            _context.Attach(talent);    
+                _context.Entry(talent).State = EntityState.Deleted;
+                _context.SaveChanges();
+               
+                
+
+
+                return RedirectToAction("Index");
+           
+           
+        }
         public async Task<List<SelectListItem>> BindSkills()
         {
            

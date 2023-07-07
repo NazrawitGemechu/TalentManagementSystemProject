@@ -37,10 +37,10 @@ namespace TalentManagement.UI.Models.ViewModels
         public int[] SelectedSkills { get; set; }= new int[0];
 
         //   public TalentEducationLevel TalentEducationLevel { get; set; }
-       
+        [Required(ErrorMessage = "Education Level is required. Please select your Eduacation Level")]
         public List<SelectListItem> EducationLevels { get; set; }= new List<SelectListItem>();
         [Display(Name = "Select Your Education Level(s)")]
-        [Required(ErrorMessage = "Education Level is required. Please select your Eduacation Level")]
+       
         public int[] SelectedEducation { get; set; }
 
         //final talent property
