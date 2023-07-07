@@ -32,10 +32,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     
     
 </head>
-<body>
+<body >
            
     <!-- banner-inner -->
-    <div id="demo-1" data-zs-src='["images/1.jpg", "images/2.jpg","images/3.jpg", "images/4.jpg"]' data-zs-overlay="dots">
+    <div  id="demo-1" data-zs-src='["~/assets/images/1.ipg", "~/assets/images/2.jpg","~/assets/images/3.jpg", "~/assets/images/4.jpg"]' data-zs-overlay="dots">
         <div class="demo-inner-content">
             <li class="header-top">
           <header>                         
@@ -79,16 +79,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </ul>
                         </div>
 
-                      </nav>
+                 </nav>
           </header>
 
         </div>
-                        
-           
+  
+
+   
        
 
          <div>
-      
+
+          
        
         @RenderBody()
          </div>
@@ -102,7 +104,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <h3>About Us</h3>
                             </div>
                             <div class="footer-text">
-                                <p>Curabitur non nulla sit amet nislinit tempus convallis quis ac lectus. lac inia eget consectetur sed, convallis at tellus. Nulla porttitor accumsana tincidunt.</p>
+                            <p>Welcome to Africom, Our platform is designed to revolutionize the way talent is discovered and hired, making the recruitment process more efficient and effective for both job seekers and employers </p>
                                
                             </div>
                         </div>
@@ -112,13 +114,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </div>
                             <div class="contact-info">
                                 <h4>Location :</h4>
-                                <p>0926k 4th block building, king Avenue, New York City.</p>
+                                <p> ICT Park Twins Building.</p>
                                 <div class="phone">
                                     <h4>Contact :</h4>
-                                    <p>Phone : +121 098 8907 9987</p>
+                                <p>Phone : +251-116 679207/14</p>
                                     <p>
                                         Email :
-                                        <a href="mailto:info@example.com">info@example.com</a>
+                                    <a href="mailto:info@africom.com.et">info@africom.com.et</a>
                                     </p>
                                 </div>
                             </div>
@@ -129,20 +131,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </div>
                             <ul class="links">
                                 <li>
-                                    <a href="index.html">Home</a>
+                                    <a asp-controller="Main" asp-action="Index">Home</a>
                                 </li>
                                 <li>
-                                    <a href="about.html">About</a>
+                                <a asp-controller="Main" asp-action="About">About</a>
                                 </li>
                                
                                 
                                 <li>
-                                    <a href="contact.html">Contact Us</a>
+                                <a asp-controller="Main" asp-action="Contact" >Contact Us</a>
                                 </li>
                             </ul>
                             <ul class="links">
                                 <li>
-                                    <a href="how.html">How it works</a>
+                                    <a asp-controller="Main" asp-action="How">How it works</a>
                                 </li>
                                
                               
