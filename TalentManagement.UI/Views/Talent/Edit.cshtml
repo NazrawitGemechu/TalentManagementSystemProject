@@ -2,9 +2,9 @@
 @using TalentManagement.Domain.Enum;
 @{
     ViewData["Title"] = "UpdateTalent";
-    Layout = "~/Views/Shared/_secondLayout.cshtml";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-<div class="container">
+<div class="container  d-flex align-items-center justify-content-center">
     <div class="single">
         <h2>Update Your Information</h2>
         <br/>
@@ -186,7 +186,7 @@
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-primary" />
-                    <input type="submit" asp-controller="Talent" asp-action="Index" value="Back To List" class="btn btn-primary float-right" />
+                    <a type="submit" asp-action="Index" class="btn btn-dark float-right">Back To List</a>
                 </div>
 
 

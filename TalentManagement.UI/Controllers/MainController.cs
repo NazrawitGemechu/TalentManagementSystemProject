@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TalentManagement.UI.Controllers
 {
@@ -8,8 +9,18 @@ namespace TalentManagement.UI.Controllers
         {
             return View();
         }
+        public IActionResult Home()
+        {
+            return View();
+        }
         public IActionResult List()
         {
+            return View();
+        }
+        [Authorize]
+        public  IActionResult How()
+        {
+
             return View();
         }
     }

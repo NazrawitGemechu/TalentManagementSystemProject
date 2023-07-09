@@ -3,20 +3,16 @@
 @inject UserManager<IdentityUser> UserManager
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Pages
-            <i class="fas fa-angle-down"></i>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" asp-controller="Talent" asp-action="Index" title="">Talents</a>
-            <a class="dropdown-item" asp-controller="Job" asp-action="Index" title="">Jobs</a>
-            <a class="dropdown-item" asp-controller="Company" asp-action="Index" title="">Companies</a>
+    <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+        <div class="dropdown-menu rounded-0 m-0">
+            <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
+            <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
         </div>
-    </li>
+    </div>
     <li class="nav-item">
         <a class="nav-link" href="#">
-            <i class="far fa-user"></i> Hello @UserManager.GetUserName(User)
+            <i class="far fa-user"></i>@UserManager.GetUserName(User)
         </a>
     </li>
     <li class="nav-item">
@@ -28,13 +24,13 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link" asp-controller="Account" asp-action="Register" data-toggle="modal" data-target="#exampleModalCenter2">
+        <a class="nav-link" asp-controller="Account" asp-action="Register">
            
             <i class="far fa-user"></i> Register
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" asp-controller="Account" asp-action="Login" data-toggle="modal" data-target="#exampleModalCenter">
+        <a class="nav-link" asp-controller="Account" asp-action="Login">
             <i class="fas fa-lock"></i>Sign in
         </a>
     </li>

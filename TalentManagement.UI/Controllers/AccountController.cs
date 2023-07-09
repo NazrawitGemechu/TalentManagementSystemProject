@@ -20,17 +20,19 @@ namespace TalentManagement.UI.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register(string returnurl=null)
         {
-           
+            ViewData["ReturnUrl"] = returnurl;
             RegisterViewModel registerViewModel = new RegisterViewModel();
             
             return View(registerViewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model, string  returnurl=null)
         {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
@@ -39,36 +41,35 @@ namespace TalentManagement.UI.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Create", "Talent");
+                    return LocalRedirect(returnurl);
                 }
 
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid Registration attempt.");
-                    return View(model);
-                }
+                AddErrors(result);
             }
            
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnurl=null)
         {
-            
-          
+            ViewData["ReturnUrl"] = returnurl;
+
+
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model,string returnurl=null)
         {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Main");
+                    return LocalRedirect(returnurl);
                 }
                 else
                 {
@@ -87,8 +88,23 @@ namespace TalentManagement.UI.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction(nameof(MainController.Index),"Main");
+            return RedirectToAction(nameof(MainController.Home),"Main");
         }
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            
+           
+
+            return View(model);
+        }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
