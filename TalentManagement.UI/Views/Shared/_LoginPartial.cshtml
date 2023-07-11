@@ -3,13 +3,7 @@
 @inject UserManager<IdentityUser> UserManager
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-        <div class="dropdown-menu rounded-0 m-0">
-            <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
-            <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
-        </div>
-    </div>
+    
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="far fa-user"></i>@UserManager.GetUserName(User)

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TalentManagement.UI.Models.Identity;
 
 
@@ -9,10 +11,12 @@ namespace TalentManagement.UI.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -22,14 +26,49 @@ namespace TalentManagement.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Register(string returnurl=null)
         {
+            if(!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                //create role
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));              
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Company))
+            {
+                //create role
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Company));
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Talent))
+            {
+                //create role
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Talent));
+            }
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Admin",
+                Text = "Admin"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Company",
+                Text = "Company"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Talent",
+                Text = "Talent"
+            });
             ViewData["ReturnUrl"] = returnurl;
-            RegisterViewModel registerViewModel = new RegisterViewModel();
+            RegisterViewModel registerViewModel = new RegisterViewModel()
+            {
+                RoleList = listItems
+            };
             
             return View(registerViewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string  returnurl=null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~/");
@@ -37,18 +76,51 @@ namespace TalentManagement.UI.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
 
-                var result= await _userManager.CreateAsync(user,model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnurl);
+                    if (model.RoleSelected != null && model.RoleSelected.Length > 0 && model.RoleSelected == "Admin")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else if (model.RoleSelected != null && model.RoleSelected.Length > 0 && model.RoleSelected == "Company")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Company");
+
+                    }
+                    else 
+
+                    {
+                        await _userManager.AddToRoleAsync(user, "Talent");
+
+                    }
+                   // await _signInManager.SignInAsync(user, isPersistent: false);
+                    return View("RegisterCompleted");
                 }
 
                 AddErrors(result);
             }
-           
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Admin",
+                Text = "Admin"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Company",
+                Text = "Company"
+               
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Talent",
+                Text = "Talent"
+            });
+            model.RoleList = listItems;
             return View(model);
         }
+
 
         [HttpGet]
         public IActionResult Login(string returnurl=null)
@@ -113,5 +185,7 @@ namespace TalentManagement.UI.Controllers
 
             }
         }
+       
+
     }
 }

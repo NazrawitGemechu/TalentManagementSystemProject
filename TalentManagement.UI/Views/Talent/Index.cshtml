@@ -142,11 +142,11 @@
             @*<img class="flex-shrink-0 img-fluid border rounded" src="~/jobassets/img/com-logo-1.jpg" alt="" style="width: 80px; height: 80px;">*@
             <div class="text-start ps-4">
                         <h5 class="mb-3">
-                            <a asp-controller="Talent" asp-action="Detail" asp-route-id="@item.Id">
+                                   @* <a asp-controller="Talent" asp-action="Detail" asp-route-id="@item.Id">                            </a>*@
                                 @Html.DisplayFor(modelItem => item.FirstName)
                                 @Html.DisplayFor(modelItem => item.LastName)
 
-                            </a>
+
                         </h5>
                         <p class="my-2"> @Html.DisplayFor(modelItem => item.Email)</p>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Country)</span>

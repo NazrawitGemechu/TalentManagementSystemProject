@@ -33,6 +33,62 @@ namespace TalentManagement.UI.Controllers
             var talents = await _mediator.Send(new GetAllTalentsQuery());
             return View(talents);
         }
+        //Details
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int Id)
+        {
+            CreateTalentViewModel model = new CreateTalentViewModel();
+
+            List<int> skillsIds = new List<int>();
+            List<int> educationIds = new List<int>();
+
+            //Get talent 
+            var talent = _context.Talents.Include("Skills").FirstOrDefault(x => x.Id == Id);
+            //Get talent skills and add each skillId into selectedskills list
+            talent.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
+
+            //get talent wirh education levels
+            var talentE = _context.Talents.Include("EducationLevels")
+                                          .FirstOrDefault(x => x.Id == Id);
+            talent.EducationLevels.ToList().ForEach(result => educationIds.Add(result.EducationLevelId));
+
+
+            Talent tal = _context.Talents.Include(e => e.TalentExperiences)
+                                         .Where(a => a.Id == Id)
+                                         .FirstOrDefault();
+
+
+            //bind model 
+            model.Skills = _context.Skills.Select
+                (x => new SelectListItem
+                {
+                    Text = x.SkillName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            model.EducationLevels = _context.EducationLevels.Select
+                (x => new SelectListItem
+                {
+                    Text = x.EducationLevelName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            model.TalentExperiences = tal.TalentExperiences;
+            model.Id = talent.Id;
+            model.FirstName = talent.FirstName;
+            model.LastName = talent.LastName;
+            model.Country = talent.Country;
+            model.Gender = talent.Gender;
+            model.Email = talent.Email;
+            model.PhoneNo = talent.PhoneNo;
+            model.FileCV = talent.FileCV;
+            model.Language = talent.Language;
+            model.SelectedSkills = skillsIds.ToArray();
+            model.SelectedEducation = educationIds.ToArray();
+
+
+            return View(model);
+        }
+
         public async Task<IActionResult> Create()
         {         
             var vm = new CreateTalentViewModel()
@@ -48,13 +104,19 @@ namespace TalentManagement.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateTalentViewModel model)
         {
+            
+            model.Skills = await BindSkills();
+            model.EducationLevels = await BindEducationLeves();
 
+            
             if (ModelState.IsValid)
             {
+                
                 if (IsDuplicateTalent(model.FirstName, model.LastName, model.Email) == true)
                 {
                     return RedirectToAction("Index");
                 }
+                
                 else
                 {
                     Talent talent = new Talent()
@@ -88,7 +150,7 @@ namespace TalentManagement.UI.Controllers
                     }
                     var command = new CreateTalentCommand() { NewTalent = talent };
                     var result = await _mediator.Send(command);
-                    return RedirectToAction("Index");
+                    return View("RegisterComplete");
                 }
             }
             return View(model);

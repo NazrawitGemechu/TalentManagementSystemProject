@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace TalentManagement.UI.Models.Identity
 {
@@ -22,6 +23,8 @@ namespace TalentManagement.UI.Models.Identity
         [Required]
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
-        
+
+        public IEnumerable<SelectListItem> RoleList { get; set; }=new List<SelectListItem>();
+        public string RoleSelected { get; set; }
     }
 }

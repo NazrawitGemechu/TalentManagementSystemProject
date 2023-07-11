@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using TalentManagement.Domain.Entities;
 using TalentManagement.Domain.Enum;
 
+
 namespace TalentManagement.UI.Models.ViewModels
 {
     public class CreateTalentViewModel
@@ -46,8 +47,11 @@ namespace TalentManagement.UI.Models.ViewModels
         //final talent property
         [Required(ErrorMessage = "Please Upload Your CV")]
         [Display(Name = "Upload CV")]
+        [ValidateFile]
         public IFormFile FileCV { get; set; }
-       // public string FilePath { get; set; }
+
+        
+
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
         
        
