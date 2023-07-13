@@ -33,6 +33,18 @@ namespace TalentManagement.UI.Controllers
             var talents = await _mediator.Send(new GetAllTalentsQuery());
             return View(talents);
         }
+        //search
+        public async Task<IActionResult> Filter(string searchString)
+        {
+
+            var talents = await _mediator.Send(new GetAllTalentsQuery());
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filterResult=talents.Where(n=>n.FirstName.Contains(searchString)|| n.Email.Contains(searchString)).ToList();
+                return View("Index", filterResult);
+            }
+            return View("Index",talents);
+        }
         //Details
 
         [HttpGet]

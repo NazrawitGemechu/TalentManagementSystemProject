@@ -1,25 +1,51 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+
 @if (SignInManager.IsSignedIn(User))
 {
+@*
+    <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown"
+                aria-expanded="false">
+
+            <a class="nav-link" href="#">
+                <i class="bi bi-person-badge"></i>@UserManager.GetUserName(User)
+            </a>
+        </button>
+        <ul class="dropdown-menu" ari-labelledby="profile-btn">
+            <a class="nav-link" asp-controller="Talent" asp-action="Index">
+                <i class="fas fa-lock"></i>Sign in
+            </a>
+            <li class="nav-item">
+                <form id="logoutForm" method="post" class="form-inline" asp-controller="Account" asp-action="LogOff">
+                    <button type="submit" class="btn nav-link">Logout</button>
+                </form>
+            </li>
+
+        </ul>
+    </div>*@
+   
     
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="far fa-user"></i>@UserManager.GetUserName(User)
-        </a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" method="post" class="form-inline" asp-controller="Account" asp-action="LogOff">
-                                        <button type="submit" class="btn nav-link">Logout</button>
-        </form>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="far fa-user"></i>@UserManager.GetUserName(User)
+            </a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" method="post" class="form-inline" asp-controller="Account" asp-action="LogOff">
+                <button type="submit" class="btn nav-link">Logout</button>
+            </form>
+        </li>
+    
 }
 else
 {
+
+
     <li class="nav-item">
         <a class="nav-link" asp-controller="Account" asp-action="Register">
-           
+
             <i class="far fa-user"></i> Register
         </a>
     </li>
@@ -28,5 +54,7 @@ else
             <i class="fas fa-lock"></i>Sign in
         </a>
     </li>
+
+
 
 }

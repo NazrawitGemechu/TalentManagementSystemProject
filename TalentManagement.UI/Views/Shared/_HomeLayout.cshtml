@@ -9,15 +9,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
-
-   @* <link href="~/assets/css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <link href="~/assets/css/zoomslider.css" rel='stylesheet' type='text/css' />
-    <link href="~/assets/css/style6.css" rel='stylesheet' type='text/css' />
-    <link href="~/assets/css/style.css" rel='stylesheet' type='text/css' />
-    <link href="~/assets/css/fontawesome-all.css" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">*@
     <!--multiselect-->
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css" />
     <!-- Favicon -->
@@ -54,9 +45,25 @@
         <!-- Spinner End -->
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-            <a href="index.html" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-                <h1 class="m-0 text-primary">JobEntry</h1>
+            <a asp-controller="Main" asp-action="Home" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
+                <h1 class="m-0 text-primary">Broker</h1>
             </a>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+            {
+                <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5" asp-controller="Job" asp-action="Filter">
+                    <input name="searchString" type="text" class="form-control" placeholder="Search for a job..."/>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
+
+                </form>
+            }
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+            {
+                <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5" asp-controller="Talent" asp-action="Filter">
+                    <input name="searchString" type="text" class="form-control" placeholder="Search for a talent...">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
+
+                </form>
+            }
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -67,18 +74,26 @@
                     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin")){
                         
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-gear"></i>Management</a>
                                 <div class="dropdown-menu rounded-0 m-0">
                                     <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
                                     <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
+                                    <a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
+                                <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
                                 </div>
                             </div>
                     }
-                        <partial name="_LoginPartial" />                                                        
+                    <partial name="_LoginPartial" />
                 </div>
-                @*<a asp-controller="Account" asp-action="Login" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>*@
+                
+               
+               
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Job" asp-action="PostJob" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
+                }
             </div>
-
+           
         </nav>
         <!-- Navbar End -->
         <!--end-->
@@ -122,7 +137,7 @@
                 <div class="copyright">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                            &copy; <a class="border-bottom" href="#">Broker</a>, All Right Reserved.
 
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                            
@@ -150,13 +165,7 @@
         <!-- Template Javascript -->
         <script src="~/jobassets/js/main.js"></script>
 
-       @* <script src="~/assets/js/jquery-1.11.1.min.js"></script>
-        <script src="~/assets/js/modernizr-2.6.2.min.js"></script>
-        <script src="~/assets/js/jquery.zoomslider.min.js"></script*@>
-        <!--//slider-->
-        <!--search jQuery-->
-       @* <script src="~/assets/js/classie-search.js"></script>
-        <script src="~/assets/js/demo1-search.js"></script>*@
+       
         <!--//search jQuery-->
 
        

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalentManagement.Persistance.Data;
 
@@ -11,9 +12,11 @@ using TalentManagement.Persistance.Data;
 namespace TalentManagement.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230711123825_updatingJobModel")]
+    partial class updatingJobModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,10 +77,15 @@ namespace TalentManagement.Persistance.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("JobDeadline")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("JobDeadline")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("JobDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -89,11 +97,12 @@ namespace TalentManagement.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PostedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Vacancy")
+                    b.Property<int>("OpeningNo")
                         .HasColumnType("int");
+
+                    b.Property<string>("PostedDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
