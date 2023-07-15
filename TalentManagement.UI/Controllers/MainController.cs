@@ -3,25 +3,34 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize]
     public class MainController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
+        [AllowAnonymous]
         public IActionResult Home()
         {
             return View();
         }
+        [Authorize(Roles="Admin")]
         public IActionResult List()
         {
             return View();
         }
-        [Authorize]
+    
         public  IActionResult How()
         {
 
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+
+            return View();
+        }
+
     }
 }

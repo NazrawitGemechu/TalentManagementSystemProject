@@ -7,6 +7,7 @@ namespace TalentManagement.UI.Models.ViewModels
 {
     public class PostAJobViewModel
     {
+        public int Id { get; set; } 
         [Required(ErrorMessage ="Company Name is Required")]
         [Display(Name ="Comapny Name")]
         public string CompanyName { get; set; }

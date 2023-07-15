@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +8,7 @@ using TalentManagement.UI.Models.Identity;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -24,6 +26,7 @@ namespace TalentManagement.UI.Controllers
             return View();
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(string returnurl=null)
         {
             if(!await _roleManager.RoleExistsAsync(UserRoles.Admin))
@@ -68,6 +71,7 @@ namespace TalentManagement.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
@@ -123,6 +127,7 @@ namespace TalentManagement.UI.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnurl=null)
         {
             ViewData["ReturnUrl"] = returnurl;
@@ -131,6 +136,7 @@ namespace TalentManagement.UI.Controllers
             return View();
         }
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model,string returnurl=null)
         {
@@ -153,6 +159,87 @@ namespace TalentManagement.UI.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> CompanyRegister(string returnurl = null)
+        {
+           
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Company))
+            {
+                //create role
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Company));
+            }
+          
+           
+            ViewData["ReturnUrl"] = returnurl;
+            CompanyRegisterViewModel companyRegisterViewModel = new CompanyRegisterViewModel();
+
+            return View(companyRegisterViewModel);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CompanyRegister(CompanyRegisterViewModel model, string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName ,LastName=model.LastName,CompanyName=model.CompanyName};
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {                   
+                        await _userManager.AddToRoleAsync(user, "Company");                                   
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
+                    return View("RegisterCompleted");
+                }
+
+                AddErrors(result);
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> TalentRegister(string returnurl = null)
+        {
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Company))
+            {
+                //create role
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Company));
+            }
+
+
+            ViewData["ReturnUrl"] = returnurl;
+            TalentRegisterViewModel talentRegisterViewModel = new TalentRegisterViewModel();
+
+            return View(talentRegisterViewModel);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TalentRegister(TalentRegisterViewModel model, string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "Talent");
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
+                    return View("RegisterCompleted");
+                }
+
+                AddErrors(result);
+            }
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -163,11 +250,13 @@ namespace TalentManagement.UI.Controllers
             return RedirectToAction(nameof(MainController.Home),"Main");
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
             return View();
         }
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {

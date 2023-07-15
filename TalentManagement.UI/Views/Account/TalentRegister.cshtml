@@ -1,0 +1,56 @@
+﻿@model TalentManagement.UI.Models.Identity.TalentRegisterViewModel
+<div class="row">
+    <div class="col-md-6 offset-3">
+        <p>
+            <h4>Sign up for a new account</h4>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-controller="Account" asp-action="TalentRegister">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control">
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class=" control-label"></label>
+                        <input asp-for="Password" class="form-control">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmPassword" class=" control-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    
+                    <div class="form-group">
+                        <br />
+                      
+                        <a class="btn btn-outline-secondary" asp-controller="Main" asp-action="Index">Cancel</a>
+                        <input class="btn btn-outline-success  float-right" type="submit" value="Sign Up" />
+
+                    </div>
+                    <br />
+                    <p>
+                        <a asp-action="Login">Already have an account?</a>
+                    </p>
+                    <p>
+                        <a asp-action="CompanyRegister">Register as a client?</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

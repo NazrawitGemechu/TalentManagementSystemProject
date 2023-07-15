@@ -11,6 +11,7 @@
     <meta content="" name="description">
     <!--multiselect-->
     <link rel="stylesheet" href="~/css/bootstrap-multiselect.css" />
+  
     <!-- Favicon -->
     <link href="~/jobassets/img/favicon.ico" rel="icon">
 
@@ -32,6 +33,8 @@
 
     <!-- Template Stylesheet -->
     <link href="~/jobassets/css/style.css" rel="stylesheet">
+    <!--Toastr-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
     
 </head>
 <body>
@@ -70,8 +73,9 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
                     <a class="nav-link" asp-controller="Main" asp-action="Home" class="nav-item nav-link active">Home</a>
-                    <a asp-controller="Main" asp-action="Contact" class="nav-item nav-link">Contact</a>
-                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin")){
+                   @* <a asp-controller="Main" asp-action="Contact" class="nav-item nav-link">Contact</a>
+                   *@
+                   @* @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin")){
                         
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-gear"></i>Management</a>
@@ -79,26 +83,30 @@
                                     <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
                                     <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
                                     <a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
-                                <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
-                                </div>
+                                    <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
+                                    <a asp-controller="User" asp-action="Index" class="dropdown-item">Users</a>
+                                    <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>
                             </div>
-                    }
-                    <partial name="_LoginPartial" />
+                            </div>
+                    }*@
+                    <partial name="_LoginPartialCustom" />
+                   
                 </div>
-                
                
                
-                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+               
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company") || User.IsInRole("Admin"))
                 {
                     <a asp-controller="Job" asp-action="PostJob" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
                 }
             </div>
-           
+          
         </nav>
         <!-- Navbar End -->
         <!--end-->
     <div class="container">
         <main role="main" class="pb-3">
+                <partial name="_Notification" />
             @RenderBody()
         </main>
     </div>

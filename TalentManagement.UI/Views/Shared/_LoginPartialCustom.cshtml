@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User)&&User.IsInRole("Talent"))
+{
+
+
+    
+       
+    <div class="nav-item dropdown">
+       
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"><i class="far fa-user"></i>@UserManager.GetUserName(User)</a>
+           
+        <div class="dropdown-menu rounded-0 m-0 "aria-labelledby="profile-btn">
+
+            <form id="logoutForm" method="post"  asp-controller="Account" asp-action="LogOff">
+                <button type="submit" class="dropdown-item">Logout</button>
+            </form>
+            @*<a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
+            <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
+            <a asp-controller="User" asp-action="Index" class="dropdown-item">Users</a>
+            <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>*@
+        </div>
+    
+    </div>
+    
+       @* <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="far fa-user"></i>@UserManager.GetUserName(User)
+            </a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" method="post" class="form-inline" asp-controller="Account" asp-action="LogOff">
+                <button type="submit" class="btn nav-link">Logout</button>
+            </form>
+        </li>*@
+    
+}
+else if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin")){
+
+    <div class="nav-item dropdown">
+
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"><i class="far fa-user"></i>@UserManager.GetUserName(User)</a>
+
+        <div class="dropdown-menu rounded-0 m-0 " aria-labelledby="profile-btn">
+            <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
+            <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
+            <a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
+            <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
+            <a asp-controller="User" asp-action="Index" class="dropdown-item">Users</a>
+            <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>
+            <form id="logoutForm" method="post"  asp-controller="Account" asp-action="LogOff">
+                <button type="submit" class="dropdown-item">Logout</button>
+            </form>
+   
+        </div>
+
+    </div>
+
+}
+else
+{
+    
+    <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-user"></i>Register</a>
+        <div class="dropdown-menu rounded-0 m-0">
+
+            <a asp-controller="Account" asp-action="CompanyRegister" class="dropdown-item">
+
+                 As a Client
+            </a>
+            <a asp-controller="Account" asp-action="TalentRegister" class="dropdown-item">
+
+                As a Talent
+            </a>
+            
+         
+        </div>
+    </div>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Account" asp-action="Login">
+            <i class="fas fa-lock"></i>Sign in
+        </a>
+    </li>
+   
+
+
+
+}

@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
@@ -12,9 +15,26 @@
                     <div class="row justify-content-start">
                         <div class="col-10 col-lg-8">
                             <h1 class="display-3 text-white animated slideInDown mb-4">Find The Perfect Job That You Deserved</h1>
-                            <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
-                            <a asp-controller="Account" asp-action="Register" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
-                            <a asp-controller="Account" asp-action="Register" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            <p class="fs-5 fw-medium text-white mb-4 pb-2"></p>
+                            @if (!SignInManager.IsSignedIn(User))
+                            {
+                                <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                                <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+                            {
+                                <a asp-controller="Talent" asp-action="Create" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+                            {
+
+                                <a asp-controller="Job" asp-action="PostJob" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Talent" asp-action="Create" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                                <a asp-controller="Job" asp-action="PostJob" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -27,9 +47,26 @@
                     <div class="row justify-content-start">
                         <div class="col-10 col-lg-8">
                             <h1 class="display-3 text-white animated slideInDown mb-4">Find The Best Startup Job That Fit You</h1>
-                            <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
-                            <a asp-controller="Account" asp-action="Register" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
-                            <a asp-controller="Account" asp-action="Register" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            <p class="fs-5 fw-medium text-white mb-4 pb-2"></p>
+                              @if (!SignInManager.IsSignedIn(User))
+                            {
+                            <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                                <a asp-controller="Account" asp-action="TalentRegister" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+                            {
+                                <a asp-controller="Talent" asp-action="Create" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+                            {
+                                
+                                <a asp-controller="Job" asp-action="PostJob" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            }
+                            else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Talent" asp-action="Create" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Apply For A Job</a>
+                                <a asp-controller="Job" asp-action="PostJob" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -39,9 +76,7 @@
 </div>
 <!-- Carousel End -->
 <!-- Search Start -->
-
 <!-- Search End -->
-
 <!-- Category Start -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -49,58 +84,58 @@
         <div class="row g-4">
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>*@
                     <h6 class="mb-3">Software Engineering</h6>
-                   @* <p class="mb-0">123 Vacancy</p>*@
+                    @* <p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-headset text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-headset text-primary mb-4"></i>*@
                     <h6 class="mb-3">Web Developer</h6>
                     @*<p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-user-tie text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-user-tie text-primary mb-4"></i>*@
                     <h6 class="mb-3">Data Science</h6>
                     @*<p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-tasks text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-tasks text-primary mb-4"></i>*@
                     <h6 class="mb-3">Artificial Intellegence</h6>
                     @*<p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-chart-line text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-chart-line text-primary mb-4"></i>*@
                     <h6 class="mb-3">Network Security</h6>
-                   @* <p class="mb-0">123 Vacancy</p>*@
+                    @* <p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
                 <a class="cat-item rounded p-4" href="">
                     @*<i class="fa fa-3x fa-hands-helping text-primary mb-4"></i>*@
                     <h6 class="mb-3">Data Analyst</h6>
-                   @* <p class="mb-0">123 Vacancy</p>*@
+                    @* <p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-book-reader text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-book-reader text-primary mb-4"></i>*@
                     <h6 class="mb-3">Computer Science</h6>
-                   @* <p class="mb-0">123 Vacancy</p>*@
+                    @* <p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
                 <a class="cat-item rounded p-4" href="">
-                   @* <i class="fa fa-3x fa-drafting-compass text-primary mb-4"></i>*@
+                    @* <i class="fa fa-3x fa-drafting-compass text-primary mb-4"></i>*@
                     <h6 class="mb-3">Computer Programming</h6>
-                   @* <p class="mb-0">123 Vacancy</p>*@
+                    @* <p class="mb-0">123 Vacancy</p>*@
                 </a>
             </div>
         </div>
@@ -113,8 +148,8 @@
         <h1 class="text-center mb-5">Skills</h1>
         <div class="owl-carousel testimonial-carousel">
             <div class="testimonial-item bg-light rounded p-4">
-               @* <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>*@
-               @* <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>*@
+                @* <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>*@
+                @* <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>*@
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/cs.png" style="width: 50px; height: 50px;">
                     <div class="ps-3">
@@ -146,7 +181,7 @@
                 </div>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
-               @* <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                @* <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
                 <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>*@
                 <div class="d-flex align-items-center">
                     <img class="img-fluid flex-shrink-0 rounded" src="~/assets/images/js.png" style="width: 50px; height: 50px;">
@@ -183,8 +218,5 @@
 </div>
 <!-- Testimonial End -->
 <!-- Jobs Start -->
-      
-        <!-- Jobs End -->
-
-
+<!-- Jobs End -->
 <!--Section end-->

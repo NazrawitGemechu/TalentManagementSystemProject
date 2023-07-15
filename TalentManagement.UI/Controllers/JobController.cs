@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DotNet.Scaffolding.Shared.Project;
+using Microsoft.EntityFrameworkCore;
 using TalentManagement.Application.Queries.SkillQuery;
 using TalentManagement.Application.Queries.TalentQuery;
 using TalentManagement.Domain.Entities;
@@ -41,6 +42,26 @@ namespace TalentManagement.UI.Controllers
             }
             return View("Index", job);
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Detail(int Id)
+        {
+            var job = _context.Jobs.FirstOrDefault(u => u.Id == Id);
+            var company = _context.Companies.FirstOrDefault(u=>u.Id==Id);
+            var jobDetail= _context.Jobs.Include(u=>u.Company)
+                .Include(s=>s.Skills).ThenInclude(a=>a.Skill)
+                .FirstOrDefault(n=>n.Id==Id);
+
+
+
+           
+
+
+            return View(jobDetail);
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> PostJob()
         {

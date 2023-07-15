@@ -1,0 +1,28 @@
+﻿@model TalentManagement.Domain.Entities.Job
+@Model.JobTitle
+@Model.JobDeadline
+@Model.JobType
+status: @if(DateTime.Now>=Model.PostedDate && DateTime.Now <= Model.JobDeadline)
+{
+    <p>Open</p>
+}
+else if(DateTime.Now>Model.JobDeadline)
+{
+    <p>Closed</p>
+}
+@Model.JobDescription
+@Model.Company.CompanyName
+@Model.Company.CompanyEmail
+@Model.Company.Country
+@Model.Vacancy
+@foreach(var skill in Model.Skills)
+{
+    @skill.Skill.SkillName
+}
+
+
+
+
+
+
+

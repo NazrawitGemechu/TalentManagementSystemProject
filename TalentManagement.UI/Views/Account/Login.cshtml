@@ -51,13 +51,13 @@
             <h4>Log in to your account</h4>
         </p>
         <div class="row">
-            <div class="col-md-8 offset-2" >
+            <div class="col-md-8 offset-2">
                 <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="Email"class="control-label"></label>
-                        <input asp-for="Email" class="form-control">                  
-                       <span asp-validation-for="Email" class="text-danger"></span>
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control">
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Password" class=" control-label"></label>
@@ -66,33 +66,39 @@
                     </div>
                     <div class="form-group">
                         <div class="offset-md-2 col-md-10">
-                        <div class="custom-checkbox">
-                            <label asp-for="RememberMe">
-                            <input asp-for="RememberMe"/>
-                            @Html.DisplayNameFor(m=>m.RememberMe)
-                            </label>
-                        </div>
+                            <div class="custom-checkbox">
+                                <label asp-for="RememberMe">
+                                    <input asp-for="RememberMe" />
+                                    @Html.DisplayNameFor(m=>m.RememberMe)
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">       
-                        <br/>
-                    
-                        
-                        <input class="btn btn-outline-success" type="submit" value="Log in" />
-                        <a class="btn btn-outline-secondary float-right" asp-controller="Main" asp-action="Index">Cancel</a>
-                        
+                    <div class="form-group row  py-2">
+                        <br />
+
+
+                        <div class="col">
+                            <input class="btn btn-outline-success " type="submit" value="Log in" />
+                            
+                                <a class="btn btn btn-outline-dark float-md-right" asp-controller="Main" asp-action="Index">Cancel</a>
+
+                            
+                                
+                           
+                        </div>
                     </div>
-                    
+
                     <p>
-                    <a asp-action="Register">Register as a new user?</a>
+                        <a asp-action="Register">Register as a new user?</a>
                     </p>
                     <p>
-                    <a asp-action="ForgotPassword">Forgot your password?</a>
+                        <a asp-action="ForgotPassword">Forgot your password?</a>
                     </p>
                 </form>
             </div>
-       </div>
+        </div>
     </div>
 </div>
 
