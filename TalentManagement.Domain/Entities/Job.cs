@@ -15,10 +15,14 @@ namespace TalentManagement.Domain.Entities
         public string JobDescription { get; set; }
         public string JobType { get; set; }
         public int Vacancy { get; set; }
+        public int YearsOfExp { get; set; }
+        public string Education { get; set; }
+        public decimal Salary { get; set; }
         //public bool JobStatus { get; set; }
         public DateTime PostedDate { get; set; }
         public DateTime JobDeadline { get; set; }
 
         public virtual List<JobSkill> Skills { get; set; }= new List<JobSkill>();
+      
     }
 }

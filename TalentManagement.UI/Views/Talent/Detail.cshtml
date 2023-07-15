@@ -1,24 +1,23 @@
-﻿@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
+﻿@*@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
 @using TalentManagement.Domain.Enum;
 @{
     ViewData["Title"] = "Talent-Detail";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-@*<div class="container">*@
+@*<div class="container">
     <div class="col-11 mx-auto pt-0 p-0">
         <div class="card">
             <div class="card-header text-center text-uppercase text-white" style="height:45px">
                 <h4>Talent Detail</h4>
             </div>
     <div class="single">
-        
-       @* <div class="form-container">*@
-         
-               
-          
+
+
+
+
             <form asp-action="Delete" enctype="multipart/form-data">
             <div class="container-fluid btn-group">
-               
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
@@ -65,15 +64,15 @@
                                 <div class="form-group col-md-12" style="margin-top:5px;display:inline;">
                                     <label class="col-md-3 control-lable">Skills</label>
                                     <div class="col-md-9 col-xs-9" style="margin-left:5px; ">
-                                        @* <select name="SelectedSKills" class="form-control input-sm" asp-items="Model.Skills" multiple="multiple"></select>*@
-                                        @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm" ,multiple = "multiple", id = "Skills_dropdown"})
+                                         <select name="SelectedSKills" class="form-control input-sm" asp-items="Model.Skills" multiple="multiple"></select>
+                                        Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm" ,multiple = "multiple", id = "Skills_dropdown"})
 
 
 
                                     </div>
                                 </div>
                             </div>
-                            
+
                 </div>
                 <div class="col-md-6">
                         <div class="row">
@@ -112,7 +111,7 @@
                             </div>
                         </div>
 
-                      
+
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label class="col-md-3 control-lable">Education Levels</label>
@@ -129,7 +128,7 @@
 
                         <div class="card-header text-center text-uppercase text-white" style="height:45px">
                 <h3>Work Experience</h3>
-             
+
                 </div>
 
 
@@ -197,22 +196,22 @@
                     </tbody>
                 </table>
                 <input type="hidden" id="hdnLastIndex" value="0" />
-                
+
 
                 <br />
-                
+
 
                 </div>
             </div>
             </form>
-        
-                  
+
+
         </div>
         <input type="button" asp-controller="Talent" asp-action="Index" value="Back To List" class="btn btn-primary float-right"/>
         </div>
         </div>
-   
-@*</div>*@
+
+@*</div>*
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -281,3 +280,99 @@
     </script>
 }
 
+*@
+@model TalentManagement.Domain.Entities.Talent
+
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row gy-5 gx-4">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-5">
+
+                    <div class="text-start ps-4">
+                        <h3 class="mb-3">@Model.FirstName @Model.LastName</h3>
+                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Country</span>
+                        <span class="text-truncate me-3">@Model.Email</span>
+
+                    </div>
+                </div>
+
+                <div class="mb-5">
+
+                    <h4 class="mb-3">Skills</h4>
+
+                    <ul class="list-unstyled">
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <li><i class="fa fa-angle-right text-primary me-2"></i>@skill.Skill.SkillName</li>
+
+                        }
+                    </ul>
+                    <h4 class="mb-3">Highest Education Levels</h4>
+
+                    <ul class="list-unstyled">
+                        @foreach (var education in Model.EducationLevels)
+                        {
+                            <li><i class="fa fa-angle-right text-primary me-2"></i>@education.EducationLevel.EducationLevelName</li>
+
+                        }
+
+                    </ul>
+                    <h4 class="mb-3">Previous Experience</h4>
+                    <table class="table table-striped bordered">
+                        <thead>
+                            <tr>
+                                <th>Company Name</th>
+                                <th>Role</th>
+                                <th>Number of years</th>
+                                <th>Company Email Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var exp in Model.TalentExperiences)
+                            {
+
+                                <tr>
+
+                                    <td>@exp.CompanyName</td>
+                                    <td>@exp.Role</td>
+                                    <td>@exp.NumberOfYears</td>
+                                    <td>@exp.CompanyEmailAddress</td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+                    <h4 class="mb-4">Talent Summery</h4>
+
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Name: @Model.FirstName @Model.LastName</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Gender:@Model.Gender</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Email: @Model.Email</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Phone No: @Model.PhoneNo</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Country</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Language:@Model.Language</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>CV:@Model.FilePath</p>
+                   
+                   
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-12 text-right d-flex justify-content-end mb-2">
+        <a asp-action="Index" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+    </div>
+</div>

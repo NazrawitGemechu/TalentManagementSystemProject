@@ -31,6 +31,16 @@ namespace TalentManagement.UI.Models.ViewModels
         [Required(ErrorMessage = "Please fill the No of talents you require")]
         [Display(Name = "Vacancy")]
         public int Vacancy { get; set; }
+        [Required(ErrorMessage = "Please fill years of experience")]
+        [Display(Name = "Years of Experience")]
+        public int YearsOfExp { get; set; }
+        [Required(ErrorMessage = "Please fill amount of salary")]
+        [Display(Name = "Salary")]
+        public decimal Salary { get; set; }
+        [Required(ErrorMessage = "Please fill required higher education level")]
+        [Display(Name = "Primary Degree or Masters in :")]
+        public string Education { get; set; }
+        public IEnumerable<SelectListItem> EducationTypes { get; set; } = new List<SelectListItem>();
         // public string JobStatus { get; set; }
         [Required(ErrorMessage = "Posted date is Required")]
         [Display(Name = "Job Application Start Date")]

@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<TalentManagement.UI.Models.ViewModels.DisplayJobViewModel>*@
-@model IEnumerable<TalentManagement.Domain.Entities.Job>
+﻿@model IEnumerable<TalentManagement.Domain.Entities.Job>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
@@ -15,18 +14,26 @@
                     <div class="row g-4">
 
                         <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                            @*<img class="flex-shrink-0 img-fluid border rounded" src="~/jobassets/img/com-logo-1.jpg" alt="" style="width: 80px; height: 80px;">*@
+
                             <div class="text-start ps-4">
                                 <h5 class="mb-3">
-                                    @* <a asp-controller="Talent" asp-action="Detail" asp-route-id="@item.Id">                            </a>*@
+
                                     @Html.DisplayFor(modelItem => item.JobTitle)
 
                                 </h5>
-                                <p class="my-2"> @Html.DisplayFor(modelItem => item.JobType)
-                                    
+                                <p class="my-2">
+                                    @Html.DisplayFor(modelItem => item.JobType)
+                                    @if (DateTime.Now >= item.PostedDate && DateTime.Now <= item.JobDeadline)
+                                    {
+                                    <p class="text-success">OPEN</p>
+                                    }
+                                    else if (DateTime.Now > item.JobDeadline)
+                                    {
+                                    <p class="text-danger">CLOSED</p>
+                                    }
                                 </p>
                                 <p>
-                                   Email: @Html.DisplayFor(modelItem => item.Company.CompanyEmail)
+                                    Email: @Html.DisplayFor(modelItem => item.Company.CompanyEmail)
                                 </p>
                                 <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
 
@@ -36,6 +43,7 @@
                             <div class="d-flex mb-3">
 
                                 <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
+
                             </div>
 
                         </div>

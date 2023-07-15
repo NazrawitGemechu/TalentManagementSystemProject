@@ -3,48 +3,6 @@
     ViewData["Title"] = "Log in into your account";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-
-@*<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="login px-4 mx-auto mw-100">
-                    <h5 class="text-center mb-4">Login Now</h5>
-                    <form asp-controller="Account"asp-action="Login">
-                        <div class="form-group">
-                            <label class="mb-2">Email address</label>
-                            <input asp-for="Email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" required="">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group">
-                            <label class="mb-2">Password</label>
-                            <input asp-for="Password" class="form-control" id="exampleInputPassword1" placeholder="" required="">
-                        </div>
-                        <div class="form-check mb-2">
-                            <input asp-for="RememberMe" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Remember me </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary submit mb-4">Sign In</button>
-                        <p class="text-center pb-4">
-                            <a asp-action="Register" data-toggle="modal2" data-target="#exampleModalCenter"> Don't have an account?</a>
-                        </p>
-                        <p class="text-center pb-4">
-                            <a asp-action="ForgotPassword" data-toggle="modal2" data-target="#exampleModalCenter"> Forgot your password?</a>
-                        </p>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>*@
-
 <div class="row">
     <div class="col-md-6 offset-3">
         <p>
@@ -82,7 +40,7 @@
                         <div class="col">
                             <input class="btn btn-outline-success " type="submit" value="Log in" />
                             
-                                <a class="btn btn btn-outline-dark float-md-right" asp-controller="Main" asp-action="Index">Cancel</a>
+                                <a class="btn btn btn-outline-dark " asp-controller="Main" asp-action="Index">Cancel</a>
 
                             
                                 
@@ -91,7 +49,7 @@
                     </div>
 
                     <p>
-                        <a asp-action="Register">Register as a new user?</a>
+                        <a asp-action="TalentRegister">Register as a new user?</a>
                     </p>
                     <p>
                         <a asp-action="ForgotPassword">Forgot your password?</a>

@@ -4,133 +4,6 @@
     ViewData["Title"] = "AddTalent";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-@*<div class="container  d-flex align-items-center justify-content-center">
-    <div class="single">
-        <h2>Post a Job</h2>
-        <br />
-        <div class="form-container ">
-
-            <form asp-action="PostJob" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="CompanyName"></label>
-                        <div class="col-md-9">
-                            <input asp-for="CompanyName" path="firstName" id="firstName" class="form-control input-sm" />
-                            <span asp-validation-for="CompanyName" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="CompanyEmail"></label>
-                        <div class="col-md-9">
-                            <input asp-for="CompanyEmail" path="firstName" id="lastName" class="form-control input-sm" />
-                            <span asp-validation-for="CompanyEmail" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="Country"></label>
-                        <div class="col-md-9">
-                            <select asp-for="Country" path="country" id="country" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Country>()">
-                                <option value="" selected disabled>------------------------------------------------  Select Your Country----------------------------------------------</option>
-                            </select>
-                            <span asp-validation-for="Country" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="JobTitle"></label>
-                        <div class="col-md-9">
-                            <input asp-for="JobTitle" path="dob" id="dob" class="form-control input-sm" />
-                            <span asp-validation-for="JobTitle" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="JobType"></label>
-                        <div class="col-md-9">
-                            <select asp-for="JobType" asp-items="@Model.JobTypes" class="form-select">
-                                <option disabled selected>Select Role</option>
-                            </select>
-                            <span asp-validation-for="JobType" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12" style="margin-top:5px;display:inline;">
-                        <label class="col-md-3 control-lable" asp-for="SelectedSkills"></label>
-                        <div class="col-md-9 col-xs-9" style="margin-left:5px; ">
-
-                            @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown"})
-
-                            <span asp-validation-for="SelectedSkills" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="PostedDate"></label>
-                        <div class="col-md-9">
-                            <input asp-for="PostedDate" path="email" id="email" class="form-control input-sm" />
-                            <span asp-validation-for="PostedDate" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="JobDeadline"></label>
-                        <div class="col-md-9">
-                            <input asp-for="JobDeadline" path="email" id="email" class="form-control input-sm" />
-                            <span asp-validation-for="JobDeadline" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="Vacancy"></label>
-                        <div class="col-md-9">
-                            <input asp-for="Vacancy" path="email" id="email" class="form-control input-sm" />
-                            <span asp-validation-for="Vacancy" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-3 control-lable" asp-for="JobDescription"></label>
-                        <div class="col-md-9">
-                            <input asp-for="JobDescription" path="email" id="email" class="form-control input-sm" />
-                            <span asp-validation-for="JobDescription" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                </div>
-                <br />
-                <div class="form-group">
-                    <input type="submit" value="PostJob" class="btn btn-primary" />
-
-                    <a asp-action="Index" class="btn btn-dark  float-right">Back to List</a>
-                </div>
-
-
-            </form>
-        </div>
-    </div>
-</div>*@
-
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
@@ -173,6 +46,16 @@
 
                             </div>
 
+                            <div class="form-group ">
+                                <label asp-for="Education"></label>
+
+                                <select asp-for="Education" asp-items="@Model.EducationTypes" class="form-select">
+                                    <option disabled selected>Select primary High level Education Required</option>
+                                </select>
+
+                                <span asp-validation-for="Education" class="text-danger"></span>
+
+                            </div>
 
                             <div class="form-group">
                                 <label asp-for="PostedDate"></label>
@@ -183,8 +66,14 @@
                             </div>
 
 
+                            <div class="form-group ">
+                                <label asp-for="JobDeadline"></label>
 
-                            
+                                <input asp-for="JobDeadline" type="date" class="form-control " />
+                                <span asp-validation-for="JobDeadline" class="text-danger"></span>
+
+                            </div>
+
 
                         </div>
                         <div class="col-md-6">
@@ -210,8 +99,14 @@
                             </div>
 
 
+                            <div class="form-group">
+                                <label asp-for="YearsOfExp"></label>
 
-                            
+                                <input asp-for="YearsOfExp" type="number" class="form-control " />
+                                <span asp-validation-for="YearsOfExp" class="text-danger"></span>
+
+                            </div>
+
 
                             <div class="form-group">
                                 <label asp-for="Vacancy"></label>
@@ -220,46 +115,47 @@
                                 <span asp-validation-for="Vacancy" class="text-danger"></span>
 
                             </div>
-                            <div class="form-group ">
-                                <label asp-for="JobDeadline"></label>
+                            <div class="form-group">
+                                <label asp-for="Salary"></label>
 
-                                <input asp-for="JobDeadline" type="date" class="form-control " />
-                                <span asp-validation-for="JobDeadline" class="text-danger"></span>
+                                <input asp-for="Salary" type="number" class="form-control " />
+                                <span asp-validation-for="Salary" class="text-danger"></span>
 
                             </div>
 
-                            
+
+
 
                         </div>
 
                     </div>
-                    <hr/>
+                    <hr />
                     <div class="col-md-12">
-                    <div class="form-group ">
-                        <label class="col-md-3 control-lable" asp-for="SelectedSkills"></label>
-                        <br />
+                        <div class="form-group ">
+                            <label class="col-md-3 control-lable" asp-for="SelectedSkills"></label>
+                            <br />
 
 
-                        @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown"})
+                            @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown"})
 
-                        <span asp-validation-for="SelectedSkills" class="text-danger"></span>
+                            <span asp-validation-for="SelectedSkills" class="text-danger"></span>
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="JobDescription"></label>
+                            <textarea asp-for="JobDescription" class="form-control"></textarea>
+                            <span asp-validation-for="JobDescription" class="text-danger"></span>
+                        </div>
 
                     </div>
+
+                    <br />
+
                     <div class="form-group">
-                        <label asp-for="JobDescription"></label>
-                        <textarea asp-for="JobDescription" class="form-control"></textarea>
-                        <span asp-validation-for="JobDescription" class="text-danger"></span>
-                    </div>
 
-                    </div>
-
-                    <br/>
-
-                    <div class="form-group">
-                      
-                        <a asp-action="Index" class="btn btn-outline-secondary ">Show all</a>
+                        <a asp-controller="Main" asp-action="Home" class="btn btn-outline-dark ">Back</a>
                         <input type="submit" value="PostJob" class="btn btn-outline-success float-right" />
-                       
+
                     </div>
 
                 </form>
@@ -268,30 +164,6 @@
     </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @section Scripts {
     @{

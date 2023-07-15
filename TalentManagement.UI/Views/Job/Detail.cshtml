@@ -1,28 +1,88 @@
 ﻿@model TalentManagement.Domain.Entities.Job
-@Model.JobTitle
-@Model.JobDeadline
-@Model.JobType
-status: @if(DateTime.Now>=Model.PostedDate && DateTime.Now <= Model.JobDeadline)
-{
-    <p>Open</p>
-}
-else if(DateTime.Now>Model.JobDeadline)
-{
-    <p>Closed</p>
-}
-@Model.JobDescription
-@Model.Company.CompanyName
-@Model.Company.CompanyEmail
-@Model.Company.Country
-@Model.Vacancy
-@foreach(var skill in Model.Skills)
-{
-    @skill.Skill.SkillName
-}
+<!-- Header Start -->
+<div class="container-xxl py-5 bg-dark page-header mb-5">
+    <div class="container my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Job Detail</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+               
+                <li class="breadcrumb-item text-white active" aria-current="page">Job Detail</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Header End -->
+<!-- Job Detail Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row gy-5 gx-4">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-5">
+
+                    <div class="text-start ps-4">
+                        <h3 class="mb-3">@Model.JobTitle</h3>
+                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Company.Country</span>
+                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@Model.JobType</span>
+                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>@Model.Salary</span>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h4 class="mb-3">Job description</h4>
+                    <p>@Model.JobDescription</p>
+                    <h4 class="mb-3">Required Skills</h4>
+
+                    <ul class="list-unstyled">
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <li><i class="fa fa-angle-right text-primary me-2"></i>@skill.Skill.SkillName</li>
+
+                        }
+                    </ul>
+                    <h4 class="mb-3">Qualifications</h4>
+
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-angle-right text-primary me-2"></i> Atleast @Model.YearsOfExp years of experience</li>
+                        <li><i class="fa fa-angle-right text-primary me-2"></i>Graduated in : @Model.Education</li>
+
+                    </ul>
+                </div>
 
 
+            </div>
 
+            <div class="col-lg-4">
+                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+                    <h4 class="mb-4">Job Summery</h4>
+                    @if (DateTime.Now >= Model.PostedDate && DateTime.Now <= Model.JobDeadline)
+                    {
+                        <p class="text-success"><i class="fa fa-angle-right text-primary me-2"></i>Status:OPEN</p>
+                    }
+                    else if (DateTime.Now > Model.JobDeadline)
+                    {
+                        <p class="text-danger"><i class="fa fa-angle-right text-primary me-2"></i>Status:CLOSED</p>
+                    }
 
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>@Model.PostedDate</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: @Model.Vacancy Position</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: @Model.JobType</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary:@Model.Salary</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Company.Country</p>
+                    <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>@Model.JobDeadline</p>
+                </div>
+                <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
+                    <h4 class="mb-4">Company Detail</h4>
 
-
-
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Name: @Model.Company.CompanyName</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Email: @Model.Company.CompanyEmail</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-12 text-right d-flex justify-content-end mb-2">
+        <a asp-action="Index" asp-controller="job" class="btn btn-outline-dark">Back</a>
+    </div>
+</div>
+<!-- Job Detail End -->

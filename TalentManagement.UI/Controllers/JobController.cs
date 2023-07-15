@@ -67,6 +67,7 @@ namespace TalentManagement.UI.Controllers
         {
             PostAJobViewModel vm = new PostAJobViewModel();
             vm.Skills = await BindSkills();
+            vm.EducationTypes = await Educations();
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()
             {
@@ -95,6 +96,9 @@ namespace TalentManagement.UI.Controllers
                  JobType = model.JobType,
                  PostedDate = model.PostedDate,
                  Vacancy=model.Vacancy,
+                 Salary=model.Salary,
+                 YearsOfExp=model.YearsOfExp,
+                 Education=model.Education,
                 };
                 Company company = new Company()
                 {
@@ -131,6 +135,7 @@ namespace TalentManagement.UI.Controllers
             });
             model.JobTypes = listItems;
             model.Skills= await BindSkills();
+            model.EducationTypes = await Educations();
             return View(model);
         }
         public async Task<List<SelectListItem>> BindSkills()
@@ -147,6 +152,47 @@ namespace TalentManagement.UI.Controllers
             }
 
             return selectList;
+        }
+        public async Task<List<SelectListItem>> Educations()
+        {
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Software Engineering",
+                Text = "Software Engineering"
+            });
+
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Data Science",
+                Text = "Data Science"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Computer Science",
+                Text = "Computer Science"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Database Adminstrator",
+                Text = "Database Adminstrator"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Web Developer",
+                Text = "Web Developer"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Network Security",
+                Text = "Network Security"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Information System",
+                Text = "Information System"
+            });
+            return listItems;
         }
     }
 }
