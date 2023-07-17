@@ -1,11 +1,23 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+﻿@using TalentManagement.UI.Models.Identity;
+
+
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills flex-column">
+    @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Talent"))
+{
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
+}
+@if (SignInManager.IsSignedIn(User)&&User.IsInRole("Company"))
+    {
+        <li class="nav-item"><a class="nav-link @ManageNavPages.CIndexNavClass(ViewContext)"  asp-page="./CIndex">Profile</a></li>
+    }
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+   
+    
     @if (hasExternalLogins)
     {
         <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>

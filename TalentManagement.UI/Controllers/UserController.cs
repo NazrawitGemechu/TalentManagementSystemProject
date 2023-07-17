@@ -8,8 +8,8 @@ namespace TalentManagement.UI.Controllers
     public class UserController : Controller
     {
         private readonly AppDbContext _db;
-        private readonly UserManager<IdentityUser> _userManager;
-        public UserController(AppDbContext db, UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UserController(AppDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _userManager = userManager;

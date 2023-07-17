@@ -13,6 +13,7 @@ namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
         public static string Email => "Email";
 
         public static string ChangePassword => "ChangePassword";
+        public static string CIndex => "CIndex";
 
         public static string DownloadPersonalData => "DownloadPersonalData";
 
@@ -29,6 +30,7 @@ namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
+        public static string CIndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, CIndex);
 
         public static string DownloadPersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, DownloadPersonalData);
 

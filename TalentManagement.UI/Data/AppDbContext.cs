@@ -5,10 +5,10 @@ using TalentManagement.UI.Models.Identity;
 
 namespace TalentManagement.UI.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext(DbContextOptions  options) : base(options) { }
-    public DbSet<ApplicationUser> ApplicationUser { get; set; }
-    
+        public AppDbContext(DbContextOptions options) : base(options) { }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
     }
 }

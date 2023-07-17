@@ -8,8 +8,8 @@
 //    public class EmailController : Controller
 //    {
 //       // private UserManager<ApplicationUser> userManager;
-//        private readonly UserManager<IdentityUser> _userManager;
-//        public EmailController(UserManager<IdentityUser> userManager)
+//        private readonly UserManager<ApplicationUser> _userManager;
+//        public EmailController(UserManager<ApplicationUser> userManager)
 //        {
 //            _userManager = userManager;
 //        }

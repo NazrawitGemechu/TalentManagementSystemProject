@@ -1,0 +1,175 @@
+﻿@model TalentManagement.UI.Models.ViewModels.PostAJobViewModel
+@using TalentManagement.Domain.Enum;
+@{
+    ViewData["Title"] = "AddTalent";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>Post A Job</h4>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="DeleteJob">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group ">
+                                <label asp-for="CompanyName"></label>
+
+                                <input asp-for="CompanyName" class="form-control " disabled/>
+                               
+
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label asp-for="CompanyEmail"></label>
+
+                                <input asp-for="CompanyEmail" class="form-control " disabled />
+                                
+
+                            </div>
+
+
+
+                            <div class="form-group ">
+                                <label asp-for="Country"></label>
+
+                                <select asp-for="Country" class="form-control " asp-items="Html.GetEnumSelectList<Country>()" disabled>
+                                    <option value="" selected disabled>-----------------------Select Your Country-------------------------</option>
+                                </select>
+                                
+                            </div>
+
+                            <div class="form-group ">
+                                <label asp-for="Education"></label>
+
+                                <select asp-for="Education" asp-items="@Model.EducationTypes" class="form-select" disabled>
+                                    <option disabled selected>Select primary High level Education Required</option>
+                                </select>
+
+                               
+
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="PostedDate"></label>
+
+                                <input asp-for="PostedDate" type="date" class="form-control " disabled />
+                               
+
+                            </div>
+
+
+                            <div class="form-group ">
+                                <label asp-for="JobDeadline"></label>
+
+                                <input asp-for="JobDeadline" type="date" class="form-control " disabled />
+                               
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group ">
+                                <label asp-for="JobTitle"></label>
+
+                                <input asp-for="JobTitle" class="form-control" disabled />
+                               
+
+                            </div>
+
+
+
+                            <div class="form-group ">
+                                <label asp-for="JobType"></label>
+
+                                <select asp-for="JobType" asp-items="@Model.JobTypes" class="form-select" disabled>
+                                    <option disabled selected>Select Job Type</option>
+                                </select>
+                               
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label asp-for="YearsOfExp"></label>
+
+                                <input asp-for="YearsOfExp" type="number" class="form-control " disabled />
+                               
+                            </div>
+
+
+                            <div class="form-group">
+                                <label asp-for="Vacancy"></label>
+
+                                <input asp-for="Vacancy" type="number"  disabled />
+                              
+
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Salary"></label>
+
+                                <input asp-for="Salary" type="number" class="form-control " disabled />
+                               
+
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="form-group ">
+                            <label class="col-md-3 control-lable" asp-for="SelectedSkills"></label>
+                            <br />
+
+
+                            @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm disabled", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown" })
+
+                            
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="JobDescription"></label>
+                            <textarea asp-for="JobDescription" class="form-control" disabled></textarea>
+                           
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                    <div class="form-group">
+
+                        <a asp-controller="Main" asp-action="Home" class="btn btn-outline-dark ">Back</a>
+                        <input type="submit" value="Delete" class="btn btn-outline-danger float-right" />
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+   
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#Skills_dropdown').multiselect();
+        });
+    </script>
+}

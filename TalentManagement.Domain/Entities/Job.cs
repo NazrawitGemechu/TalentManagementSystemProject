@@ -17,7 +17,7 @@ namespace TalentManagement.Domain.Entities
         public int Vacancy { get; set; }
         public int YearsOfExp { get; set; }
         public string Education { get; set; }
-        public decimal Salary { get; set; }
+        public int Salary { get; set; }
         //public bool JobStatus { get; set; }
         public DateTime PostedDate { get; set; }
         public DateTime JobDeadline { get; set; }

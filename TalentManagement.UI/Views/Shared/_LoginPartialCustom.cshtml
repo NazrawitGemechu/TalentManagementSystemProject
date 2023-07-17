@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @if (SignInManager.IsSignedIn(User)&&User.IsInRole("Talent"))
 {
@@ -9,13 +9,14 @@
     
        
     <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"><i class="far fa-user"></i>@UserManager.GetUserName(User)</a>
        
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"><i class="far fa-user"></i>@UserManager.GetUserName(User)</a>
+               
            
         <div class="dropdown-menu rounded-0 m-0 "aria-labelledby="profile-btn">
-
+            <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Your Account</a>
             <form id="logoutForm" method="post"  asp-controller="Account" asp-action="LogOff">
-                <button type="submit" class="dropdown-item">Logout</button>
+                <button type="submit" class="dropdown-item text-danger">Logout</button>
             </form>
             @*<a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
             <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
@@ -44,6 +45,7 @@ else if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin")){
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"><i class="far fa-user"></i>@UserManager.GetUserName(User)</a>
 
         <div class="dropdown-menu rounded-0 m-0 " aria-labelledby="profile-btn">
+            <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Your Account</a>
             <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
             <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
             <a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
@@ -51,7 +53,7 @@ else if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin")){
             <a asp-controller="User" asp-action="Index" class="dropdown-item">Users</a>
             <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>
             <form id="logoutForm" method="post"  asp-controller="Account" asp-action="LogOff">
-                <button type="submit" class="dropdown-item">Logout</button>
+                <button type="submit" class="dropdown-item text-danger">Logout</button>
             </form>
    
         </div>
@@ -59,7 +61,31 @@ else if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin")){
     </div>
 
 }
+else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+{
+    <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"><i class="far fa-user"></i>@UserManager.GetUserName(User)</a>
+
+
+
+        <div class="dropdown-menu rounded-0 m-0 " aria-labelledby="profile-btn">
+            <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/CIndex" title="Manage">Your Account</a>
+            <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
+            <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
+            <form id="logoutForm" method="post" asp-controller="Account" asp-action="LogOff">
+                <button type="submit" class="dropdown-item text-danger">Logout</button>
+            </form>
+            @*<a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
+        <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
+        <a asp-controller="User" asp-action="Index" class="dropdown-item">Users</a>
+        <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>*@
+        </div>
+
+    </div>
+   
+}
 else
+
 {
     
     <div class="nav-item dropdown">

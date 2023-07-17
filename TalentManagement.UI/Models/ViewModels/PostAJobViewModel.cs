@@ -36,7 +36,7 @@ namespace TalentManagement.UI.Models.ViewModels
         public int YearsOfExp { get; set; }
         [Required(ErrorMessage = "Please fill amount of salary")]
         [Display(Name = "Salary")]
-        public decimal Salary { get; set; }
+        public int Salary { get; set; }
         [Required(ErrorMessage = "Please fill required higher education level")]
         [Display(Name = "Primary Degree or Masters in :")]
         public string Education { get; set; }
@@ -52,5 +52,6 @@ namespace TalentManagement.UI.Models.ViewModels
         public List<SelectListItem> Skills { get; set; } = new List<SelectListItem>();
         [Display(Name ="Required Skills:")]
         public int[] SelectedSkills { get; set; }
+        public virtual List<Job> Jobs { get; set; } = new List<Job>();
     }
 }
