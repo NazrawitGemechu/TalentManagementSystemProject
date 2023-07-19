@@ -86,7 +86,7 @@ namespace TalentManagement.UI.Controllers
             return View(vm);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTalentViewModel model, int JobId)
+        public async Task<IActionResult> Create(CreateTalentViewModel model)
         {
             //, List<IFormFile> CV
             model.Skills = await BindSkills();
@@ -127,7 +127,7 @@ namespace TalentManagement.UI.Controllers
                         PhoneNo = model.PhoneNo,
                         TalentExperiences = model.TalentExperiences,
                         FilePath = CVUpload(model),
-                        JobId=model.JobId,
+                        
                       //  CV= tal.CV,
                         
                     };
