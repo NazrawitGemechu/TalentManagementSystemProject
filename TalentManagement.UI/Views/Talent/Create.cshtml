@@ -6,11 +6,11 @@
 }
 <div class="container  d-flex align-items-center justify-content-center">
     <div class="single">
-        <h2 >Fill in Your Information</h2>
-        <br/>
+        <h2>Fill in Your Information</h2>
+        <br />
         <div class="form-container ">
-            
-            <form asp-action ="Create" enctype="multipart/form-data">
+
+            <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -20,7 +20,7 @@
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -48,11 +48,11 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-3 control-lable" asp-for="Language"></label>
                         <div class="col-md-9">
-                        <select asp-for="Language" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Language>()">
+                            <select asp-for="Language" class="form-control input-sm" asp-items="Html.GetEnumSelectList<Language>()">
                                 <option value="" selected disabled>-------------------------------------------------Select Language Proficency-------------------------------------</option>
-                        </select>
+                            </select>
 
-                        <span asp-validation-for="Language" class="text-danger"></span>
+                            <span asp-validation-for="Language" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -60,11 +60,11 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-3 control-lable" asp-for="Email"></label>
                         <div class="col-md-9">
-                            <input asp-for ="Email" path="dob" id="dob" class="form-control input-sm" />
+                            <input asp-for="Email" path="dob" id="dob" class="form-control input-sm" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
-                  
+
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -74,7 +74,7 @@
                             <span asp-validation-for="PhoneNo" class="text-danger"></span>
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -87,14 +87,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="form-group col-md-12" style="margin-top:5px;display:inline;">
                         <label class="col-md-3 control-lable" asp-for="SelectedSkills"></label>
                         <div class="col-md-9 col-xs-9" style="margin-left:5px; ">
-                          @*  <select name="SelectedSKills" class="form-control input-sm" asp-items="Model.Skills" multiple="multiple"></select>*@
+                            @*  <select name="SelectedSKills" class="form-control input-sm" asp-items="Model.Skills" multiple="multiple"></select>*@
                             @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown"})
-                            
+
                             <span asp-validation-for="SelectedSkills" class="text-danger"></span>
                         </div>
                     </div>
@@ -108,98 +108,104 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <h3>Previous Work Experience</h3>
-                <br/>
-               
+                <br />
 
-                    <table id='ExpTable' class="table ">
-                        <thead>
+
+                <table id='ExpTable' class="table ">
+                    <thead>
+                        <tr>
+                            <th>
+                                Company Name
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                            <th>
+                                Number Of Years
+                            </th>
+                            <th>
+                                Company Email Address
+
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 0; i < Model.TalentExperiences.Count; i++)
+                        {
                             <tr>
-                                <th>
-                                    Company Name
-                                </th>
-                                <th>
-                                    Role
-                                </th>
-                                <th>
-                                    Number Of Years
-                                </th>
-                                <th>
-                                    Company Email Address
+                                <td>
 
-                                </th>
-                                <th>
-                                </th>
+                                    @Html.EditorFor(x=>x.TalentExperiences[i].CompanyName, new {htmlAttributes=new {@class="form-control"}})
+                                    @Html.ValidationMessageFor(x=>x.TalentExperiences[i].CompanyName, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+
+                                    @Html.EditorFor(x=>x.TalentExperiences[i].Role, new {htmlAttributes=new {@class="form-control"}})
+                                    @Html.ValidationMessageFor(x=>x.TalentExperiences[i].Role, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+
+                                    @Html.EditorFor(x=>x.TalentExperiences[i].NumberOfYears, new {htmlAttributes=new {@class="form-control"}})
+                                    @Html.ValidationMessageFor(x=>x.TalentExperiences[i].NumberOfYears, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+
+                                    @Html.EditorFor(x=>x.TalentExperiences[i].CompanyEmailAddress, new {htmlAttributes=new {@class="form-control"}})
+                                    @Html.ValidationMessageFor(x=>x.TalentExperiences[i].CompanyEmailAddress , "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <button id='btndummy-@i' type="button" class="btn btn-sm invisible">Dummy</button>
+
+                                    <button id='btnadd-@i' type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem(this)"
+                                            style="left:90%;position:absolute;">
+                                        Add
+                                    </button>
+                                    <button id='btnremove-@i' type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)"
+                                            style="left:90%;position:absolute;">
+                                        Delete
+                                    </button>
+                                </td>
+
                             </tr>
-                        </thead>
-                        <tbody>
+                        }
+                    </tbody>
+                </table>
 
-                            @for (int i = 0; i < Model.TalentExperiences.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-
-                                        @Html.EditorFor(x=>x.TalentExperiences[i].CompanyName, new {htmlAttributes=new {@class="form-control"}})
-                                        @Html.ValidationMessageFor(x=>x.TalentExperiences[i].CompanyName, "", new { @class = "text-danger" })
-                                    </td>
-                                    <td>
-
-                                        @Html.EditorFor(x=>x.TalentExperiences[i].Role, new {htmlAttributes=new {@class="form-control"}})
-                                        @Html.ValidationMessageFor(x=>x.TalentExperiences[i].Role, "", new { @class = "text-danger" })
-                                    </td>
-                                    <td>
-
-                                        @Html.EditorFor(x=>x.TalentExperiences[i].NumberOfYears, new {htmlAttributes=new {@class="form-control"}})
-                                        @Html.ValidationMessageFor(x=>x.TalentExperiences[i].NumberOfYears, "", new { @class = "text-danger" })
-                                    </td>
-                                    <td>
-
-                                        @Html.EditorFor(x=>x.TalentExperiences[i].CompanyEmailAddress, new {htmlAttributes=new {@class="form-control"}})
-                                        @Html.ValidationMessageFor(x=>x.TalentExperiences[i].CompanyEmailAddress , "", new { @class = "text-danger" })
-                                    </td>
-                                    <td>
-                                        <button id='btndummy-@i' type="button" class="btn btn-sm invisible">Dummy</button>
-
-                                        <button id='btnadd-@i' type="button" class="btn btn-sm btn-secondary visible" onclick="AddItem(this)"
-                                                style="left:90%;position:absolute;">
-                                            Add
-                                        </button>
-                                        <button id='btnremove-@i' type="button" class="btn btn-sm btn-danger invisible" onclick="DeleteItem(this)"
-                                                style="left:90%;position:absolute;">
-                                            Delete
-                                        </button>
-                                    </td>
-                                   
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-               
                 <div class="search_form1">
                     <label asp-for="FileCV" class="control-label"></label>
                     <hr />
-                    <input asp-for="FileCV" />                   
+                    <input asp-for="FileCV" />
                     <span asp-validation-for="FileCV" class="text-danger"></span>
                 </div>
-              
-                <br/>
+                @*<div class="search_form1">
+                    <label asp-for="CV" class="control-label"></label>
+                    <hr />
+                    <input type="file" asp-for="CV" />
+                    <span asp-validation-for="CV" class="text-danger"></span>
+                </div>*@
+
+                <br />
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
-                    
+
                     <a asp-controller="Main" asp-action="Home" class="btn btn-outline-dark  float-right">Back</a>
                 </div>
-                
-      
-      </form>
-                </div>
-                </div>
-                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-  
+
     <script type="text/javascript">
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
@@ -250,12 +256,12 @@
             addbtn.classList.add("invisible");
 
         }
-             $(document).ready(function () {
-                $('#Skills_dropdown').multiselect();
-            });
-            $(document).ready(function () {
-                $('#Educations_dropdown').multiselect();
-            });
+        $(document).ready(function () {
+            $('#Skills_dropdown').multiselect();
+        });
+        $(document).ready(function () {
+            $('#Educations_dropdown').multiselect();
+        });
 
         $(document).ready(function () {
             $('.js-example-basic-multiple').select2();

@@ -1,4 +1,12 @@
-﻿@*@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+@*
+
+@model TalentManagement.UI.Models.ViewModels.CreateTalentViewModel
 @using TalentManagement.Domain.Enum;
 @{
     ViewData["Title"] = "Talent-Detail";
@@ -363,16 +371,33 @@
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Phone No: @Model.PhoneNo</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Country</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Language:@Model.Language</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>CV:@Model.FilePath</p>
-                   
-                   
+                    @* <p><i class="fa fa-angle-right text-primary me-2"></i><a asp-action="Download" asp-route-filename="@Model.CV">CV:@Model.CV</a></p>*@
+
+
 
                 </div>
-                
+
             </div>
         </div>
     </div>
     <div class="col-12 text-right d-flex justify-content-end mb-2">
-        <a asp-action="Index" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+        {
+
+            <a asp-action="Resume" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+        }
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+        {
+
+            <a asp-action="Index" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+        }
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+
+            <a asp-action="Index" asp-controller="Talent" class="btn btn-outline-dark">Back</a>
+        }
+       @* else{
+            <a asp-action="Home" asp-controller="Main" class="btn btn-outline-dark">Back</a>
+        }*@
     </div>
 </div>

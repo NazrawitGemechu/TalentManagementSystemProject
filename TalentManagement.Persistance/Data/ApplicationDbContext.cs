@@ -10,7 +10,7 @@ using TalentManagement.Domain.Entities;
 
 namespace TalentManagement.Persistance.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         //Creating the Main Tables
@@ -24,7 +24,10 @@ namespace TalentManagement.Persistance.Data
         public virtual DbSet<TalentEducationLevel> TalentEducationLevel { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
-
+        //application user related tables
+        public DbSet<UserCompany> JobPosts { get; set; }
+        public DbSet<UserTalent> ResumePosts { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
         //Configuring the Many to Many relationships
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +55,19 @@ namespace TalentManagement.Persistance.Data
                 HasOne(ts => ts.Talent).WithMany(ts => ts.EducationLevels).HasForeignKey(t => t.TalentId);
             modelBuilder.Entity<TalentEducationLevel>().
                 HasOne(ts => ts.EducationLevel).WithMany(ts => ts.Talents).HasForeignKey(t => t.EducationLevelId);
+
+            //userCompany
+            modelBuilder.Entity<UserCompany>().HasKey(x => new { x.JobId, x.UserId });
+            modelBuilder.Entity<UserCompany>().
+                HasOne(x => x.Job).WithMany().HasForeignKey(x => x.JobId);
+            modelBuilder.Entity<UserCompany>().
+                HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
+            //userTalent
+            modelBuilder.Entity<UserTalent>().HasKey(x => new { x.TalentId, x.UserId });
+            modelBuilder.Entity<UserTalent>().
+                HasOne(x => x.Talent).WithMany().HasForeignKey(x => x.TalentId);
+            modelBuilder.Entity<UserTalent>().
+                HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
 
             base.OnModelCreating(modelBuilder);
         }

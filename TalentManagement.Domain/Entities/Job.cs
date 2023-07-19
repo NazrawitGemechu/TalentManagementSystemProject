@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace TalentManagement.Domain.Entities
 {
     public class Job
@@ -22,7 +23,9 @@ namespace TalentManagement.Domain.Entities
         public DateTime PostedDate { get; set; }
         public DateTime JobDeadline { get; set; }
 
-        public virtual List<JobSkill> Skills { get; set; }= new List<JobSkill>();
+        public virtual List<JobSkill> Skills { get; set; } = new List<JobSkill>();
+        public string? JobPosterId { get; set; }
+        public virtual ApplicationUser JobPoster { get; set; }
       
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using TalentManagement.UI.Models.Identity;
+using TalentManagement.Domain.Entities;
 
 namespace TalentManagement.UI.Areas.Identity.Pages.Account
 {

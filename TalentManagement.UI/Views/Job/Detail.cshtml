@@ -1,17 +1,22 @@
 ﻿@model TalentManagement.Domain.Entities.Job
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
 <!-- Header Start -->
-<div class="container-xxl py-5 bg-dark page-header mb-5">
+@*<div class="container-xxl py-5 bg-dark page-header mb-5">
     <div class="container my-5 pt-5 pb-4">
         <h1 class="display-3 text-white mb-3 animated slideInDown">Job Detail</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb text-uppercase">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-               
+
                 <li class="breadcrumb-item text-white active" aria-current="page">Job Detail</li>
             </ol>
         </nav>
     </div>
-</div>
+</div>*@
 <!-- Header End -->
 <!-- Job Detail Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -82,7 +87,18 @@
     </div>
     <br />
     <div class="col-12 text-right d-flex justify-content-end mb-2">
-        <a asp-action="Index" asp-controller="job" class="btn btn-outline-dark">Back</a>
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+        {
+            <a asp-action="Index" asp-controller="Job" class="btn btn-outline-dark">Back</a>
+        }
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
+        {
+            <a asp-action="YourPosts" asp-controller="Job" class="btn btn-outline-dark">Back</a>
+        }
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+        {
+            <a asp-action="Index" asp-controller="Job" class="btn btn-outline-dark">Back</a>
+        }
     </div>
 </div>
 <!-- Job Detail End -->

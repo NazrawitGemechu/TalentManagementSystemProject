@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DotNet.Scaffolding.Shared.Project;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TalentManagement.Application.Queries.SkillQuery;
 using TalentManagement.Application.Queries.TalentQuery;
 using TalentManagement.Domain.Entities;
@@ -15,10 +17,12 @@ namespace TalentManagement.UI.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMediator _mediator;
-        public JobController(ApplicationDbContext context, IMediator mediator)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public JobController(ApplicationDbContext context, IMediator mediator, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
             _context = context;
+            _userManager = userManager; 
         }
 
         public IActionResult Index()
@@ -52,15 +56,16 @@ namespace TalentManagement.UI.Controllers
             var jobDetail = _context.Jobs.Include(u => u.Company)
                 .Include(s => s.Skills).ThenInclude(a => a.Skill)
                 .FirstOrDefault(n => n.Id == Id);
-
-
-
-
-
-
             return View(jobDetail);
         }
-
+        public async Task<IActionResult> YourPosts()
+        {
+            var company = _context.Companies.ToList();
+            var model = await _context.Jobs
+                                .Where(a => a.JobPosterId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                                .ToListAsync();
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> PostJob()
@@ -100,6 +105,7 @@ namespace TalentManagement.UI.Controllers
                     YearsOfExp = model.YearsOfExp,
                     Education = model.Education,
                 };
+                job.JobPosterId = _userManager.GetUserId(User);
                 Company company = new Company()
                 {
                     CompanyName = model.CompanyName,
@@ -119,7 +125,7 @@ namespace TalentManagement.UI.Controllers
                 company.Jobs.Add(job);
                 _context.Add(company);
                 _context.SaveChanges();
-                return View("RegisterComplete");
+                return View("YourPosts");
             }
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()

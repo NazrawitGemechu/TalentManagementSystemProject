@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TalentManagement.Domain.Entities;
 
 namespace TalentManagement.UI.Models.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser 
     {
         [Display(Name = "Full Name")]
         public string? FullName { get; set; }
@@ -19,5 +20,8 @@ namespace TalentManagement.UI.Models.Identity
 
         [NotMapped]
         public IEnumerable<SelectListItem> RoleList { get; set; } = new List<SelectListItem>();
+
+        public virtual ICollection<Job> MyJobs { get; set; }
+
     }
 }

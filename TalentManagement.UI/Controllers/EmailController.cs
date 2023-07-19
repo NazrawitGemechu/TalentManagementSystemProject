@@ -1,7 +1,7 @@
 ﻿//using Microsoft.AspNetCore.Identity;
 //using Microsoft.AspNetCore.Mvc;
 //using TalentManagement.UI.Migrations;
-//using TalentManagement.UI.Models.Identity;
+//using TalentManagement.Domain.Entities;
 
 //namespace TalentManagement.UI.Controllers
 //{

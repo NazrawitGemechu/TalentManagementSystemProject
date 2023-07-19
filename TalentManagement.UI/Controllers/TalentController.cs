@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Numerics;
+using System.Security.Claims;
 using TalentManagement.Application.Commands.SkillCommand;
 using TalentManagement.Application.Commands.TalentCommand;
 using TalentManagement.Application.Queries.EducationLevelQuery;
@@ -20,11 +22,13 @@ namespace TalentManagement.UI.Controllers
         private readonly IMediator _mediator;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
-        public TalentController(IMediator mediator, IWebHostEnvironment hostingEnvironment, ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TalentController(IMediator mediator, IWebHostEnvironment hostingEnvironment, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
             _hostingEnvironment = hostingEnvironment;
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -59,6 +63,15 @@ namespace TalentManagement.UI.Controllers
 
             return View(talentDetail);
         }
+        public async Task<IActionResult> Resume()
+        {
+            var model = await _context.Talents
+                                .Where(a => a.ApplicantId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                                .ToListAsync();
+            return View(model);
+        }
+
+
 
         public async Task<IActionResult> Create()
         {         
@@ -73,13 +86,24 @@ namespace TalentManagement.UI.Controllers
             return View(vm);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTalentViewModel model)
+        public async Task<IActionResult> Create(CreateTalentViewModel model, int JobId)
         {
-            
+            //, List<IFormFile> CV
             model.Skills = await BindSkills();
             model.EducationLevels = await BindEducationLeves();
-
-            
+            //Talent tal = new Talent();
+            //foreach (var item in CV)
+            //{
+            //    if (item.Length > 0)
+            //    {
+            //        using (var stream = new MemoryStream())
+            //        {
+            //            await item.CopyToAsync(stream);
+            //            tal.CV = stream.ToArray();
+            //        }
+            //    }
+            //}
+          
             if (ModelState.IsValid)
             {
                 
@@ -90,6 +114,8 @@ namespace TalentManagement.UI.Controllers
                 
                 else
                 {
+                   
+
                     Talent talent = new Talent()
                     {
                         FirstName = model.FirstName,
@@ -101,8 +127,12 @@ namespace TalentManagement.UI.Controllers
                         PhoneNo = model.PhoneNo,
                         TalentExperiences = model.TalentExperiences,
                         FilePath = CVUpload(model),
+                        JobId=model.JobId,
+                      //  CV= tal.CV,
+                        
                     };
-
+                   
+                    talent.ApplicantId = _userManager.GetUserId(User);
                     foreach (var item in model.SelectedSkills)
                     {
                         talent.Skills.Add(new TalentSkill()
@@ -121,7 +151,7 @@ namespace TalentManagement.UI.Controllers
                     }
                     var command = new CreateTalentCommand() { NewTalent = talent };
                     var result = await _mediator.Send(command);
-                    return View("RegisterComplete");
+                    return View("Resume");
                 }
             }
             return View(model);
@@ -212,6 +242,10 @@ namespace TalentManagement.UI.Controllers
                 talent.Language = model.Language;
                 talent.PhoneNo= model.PhoneNo;
                 talent.TalentExperiences = model.TalentExperiences;
+                talent.ApplicantId = _userManager.GetUserId(User);
+
+
+
                 if (model.FileCV != null)
                 {
                     string uinqueFileName = CVUpload(model) ;
@@ -235,7 +269,7 @@ namespace TalentManagement.UI.Controllers
                 {
                     talentEducationLevels = new List<TalentEducationLevel>();
 
-                    foreach (var educationid in model.SelectedSkills)
+                    foreach (var educationid in model.SelectedEducation)
                     {
                         talentEducationLevels.Add(new TalentEducationLevel { EducationLevelId = educationid, TalentId = model.Id });
                     }
@@ -249,7 +283,7 @@ namespace TalentManagement.UI.Controllers
                 _context.SaveChanges();
 
 
-                return RedirectToAction("Index");              
+                return RedirectToAction("Resume");              
             }
             return View(model);
         }
@@ -397,6 +431,9 @@ namespace TalentManagement.UI.Controllers
             //var talents = _mediator.Send(new GetAllTalentsQuery());
             return _context.Talents.Any(d => d.FirstName == fname && d.LastName == lname && d.Email==email);
         }
+
+
+
         
     }
 }

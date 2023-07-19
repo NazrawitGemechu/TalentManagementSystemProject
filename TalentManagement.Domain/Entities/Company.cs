@@ -15,5 +15,7 @@ namespace TalentManagement.Domain.Entities
         public string CompanyEmail { get; set; }
         public Country Country { get; set; }
         public virtual List<Job> Jobs { get; set; } = new List<Job>();
+
+       
     }
 }

@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TalentManagement.UI.Data;
-using TalentManagement.UI.Models.Identity;
+using TalentManagement.Persistance.Data;
+using TalentManagement.Domain.Entities;
+using TalentManagement.UI.Models;
 
 namespace TalentManagement.UI.Controllers
 {
     public class RolesController : Controller
     {
 
-        private readonly AppDbContext _db;
+         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public RolesController(AppDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public RolesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _db = db;
             _userManager = userManager;
@@ -44,33 +45,37 @@ namespace TalentManagement.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(IdentityRole roleObj)
         {
-            if (await _roleManager.RoleExistsAsync(roleObj.Name))
+            if (roleObj.Name!=null)
             {
-                //error
-                TempData[SD.Error] = "Role already exists";
-            }
-            if (string.IsNullOrEmpty(roleObj.Id))
-            {
-                //create
-                await _roleManager.CreateAsync(new IdentityRole() { Name = roleObj.Name });
-                TempData[SD.Success] = "Role created successfully";
-            }
-            else
-            {
-                //update
-                var objRoleFromDb = _db.Roles.FirstOrDefault(u => u.Id == roleObj.Id);
-                if (objRoleFromDb == null)
+                if (await _roleManager.RoleExistsAsync(roleObj.Name))
                 {
-                    TempData[SD.Error] = "Role not found";
-                    return RedirectToAction(nameof(Index));
+                    //error
+                    TempData[SD.Error] = "Role already exists";
                 }
-                objRoleFromDb.Name = roleObj.Name;
-                objRoleFromDb.NormalizedName = roleObj.Name.ToUpper();
-                var resutl = await _roleManager.UpdateAsync(objRoleFromDb);
-                TempData[SD.Success] = "Role updated successfully";
+                if (string.IsNullOrEmpty(roleObj.Id))
+                {
+                    //create
+                    await _roleManager.CreateAsync(new IdentityRole() { Name = roleObj.Name });
+                    TempData[SD.Success] = "Role created successfully";
+                }
+                else
+                {
+                    //update
+                    var objRoleFromDb = _db.Roles.FirstOrDefault(u => u.Id == roleObj.Id);
+                    if (objRoleFromDb == null)
+                    {
+                        TempData[SD.Error] = "Role not found";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    objRoleFromDb.Name = roleObj.Name;
+                    objRoleFromDb.NormalizedName = roleObj.Name.ToUpper();
+                    var resutl = await _roleManager.UpdateAsync(objRoleFromDb);
+                    TempData[SD.Success] = "Role updated successfully";
 
+                }
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            return View(roleObj);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TalentManagement.UI.Models.Identity;
+using TalentManagement.Domain.Entities;
+using TalentManagement.UI.Models;
 
 
 namespace TalentManagement.UI.Controllers
@@ -147,7 +148,7 @@ namespace TalentManagement.UI.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return LocalRedirect(returnurl);
+                    return RedirectToAction("Index","Job");
                 }
                 else
                 {
@@ -258,13 +259,13 @@ namespace TalentManagement.UI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
+        //public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        //{
             
            
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         private void AddErrors(IdentityResult result)
         {

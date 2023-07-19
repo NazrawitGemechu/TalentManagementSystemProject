@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TalentManagement.UI.Data;
+using TalentManagement.Persistance.Data;
 
 #nullable disable
 
 namespace TalentManagement.UI.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20230705183745_addIdentityTable")]
     partial class addIdentityTable
     {

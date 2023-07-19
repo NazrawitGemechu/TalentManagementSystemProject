@@ -1,5 +1,5 @@
-﻿@model TalentManagement.UI.Models.Identity.TalentRegisterViewModel
-<div class="row">
+﻿@model TalentManagement.UI.Models.TalentRegisterViewModel
+@*<div class="row">
     <div class="col-md-6 offset-3">
         <p>
             <h4>Sign up for a new account</h4>
@@ -45,6 +45,67 @@
                         <a asp-action="CompanyRegister">Register as a client?</a>
                     </p>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row">
+                <div classs="card shadow border-0 mt-4">
+                    <div class="card-header bg-primary bg-gradient ml-0 py-4">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 class="py-2 text-white"> Sign up for a new account</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row pt-3">
+                            <div class="col-md-12 ">
+                                <form asp-controller="Account" asp-action="TalentRegister" class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="FullName" class="form-control">
+                                        <label asp-for="FullName" class="ms-2 text-muted"></label>
+                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="Email" class="form-control">
+                                        <label asp-for="Email" class="ms-2 text-muted"></label>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="Password" class="form-control">
+                                        <label asp-for="Password" class="ms-2 text-muted"></label>
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="ConfirmPassword" class="form-control">
+                                        <label asp-for="ConfirmPassword" class="ms-2 text-muted"></label>
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <br />
+                                        <input class="w-100 btn btn-lg btn-primary" type="submit" value="Sign Up" />
+                                        @* <a class="btn btn-outline-secondary float-right" asp-controller="Main" asp-action="Index">Cancel</a>*@
+                                        <br />
+                                        <br />
+                                    </div>
+
+                                    <p>
+                                        <a asp-action="Login">Already have an account?</a>
+                                    </p>
+                                    <p>
+                                        <a asp-action="TalentRegister">Register as a Client?</a>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

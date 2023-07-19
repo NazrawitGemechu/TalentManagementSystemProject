@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TalentManagement.UI.Data;
-using TalentManagement.UI.Models.Identity;
+using TalentManagement.Persistance.Data;
+using TalentManagement.Domain.Entities;
+
 
 namespace TalentManagement.UI.Controllers
 {
     public class UserController : Controller
     {
-        private readonly AppDbContext _db;
+         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        public UserController(AppDbContext db, UserManager<ApplicationUser> userManager)
+        public UserController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _userManager = userManager;
@@ -55,11 +56,11 @@ namespace TalentManagement.UI.Controllers
             });
             return View(objFromDb);
         }
-        [HttpPost]
+          [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApplicationUser user)
         {
-            if (ModelState.IsValid)
+            if (user.RoleId!= null)
             {
                 var objFromDb = _db.ApplicationUser.FirstOrDefault(u => u.Id == user.Id);
                 if (objFromDb == null)

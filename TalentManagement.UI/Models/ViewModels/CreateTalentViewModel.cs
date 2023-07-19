@@ -50,7 +50,8 @@ namespace TalentManagement.UI.Models.ViewModels
         [ValidateFile]
         public IFormFile FileCV { get; set; }
 
-        
+       // [Display(Name ="CV")]
+       // public IFormFile CV { get; set; }
 
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
         

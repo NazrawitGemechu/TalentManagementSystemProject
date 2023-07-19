@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TalentManagement.UI.Models.Identity;
+using TalentManagement.Domain.Entities;
 
 namespace TalentManagement.UI.Areas.Identity.Pages.Account.Manage
 {

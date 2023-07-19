@@ -1,64 +1,84 @@
-﻿@model TalentManagement.UI.Models.Identity.CompanyRegisterViewModel
+﻿@model TalentManagement.UI.Models.CompanyRegisterViewModel
 
-<div class="row">
+@*<div class="row">
     <div class="col-md-6 offset-3">
         <p>
             <h4>Sign up for a new account</h4>
         </p>
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-controller="Account" asp-action="CompanyRegister">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control">
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control">
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CompanyName" class="control-label"></label>
-                        <input asp-for="CompanyName" class="form-control">
-                        <span asp-validation-for="CompanyName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control">
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class=" control-label"></label>
-                        <input asp-for="Password" class="form-control">
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class=" control-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control">
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
 
-                    
-                    <div class="form-group">
-                        <br />
-                        <input class="btn btn-outline-success " type="submit" value="Sign Up" />
-                        <a class="btn btn-outline-secondary float-right" asp-controller="Main" asp-action="Index">Cancel</a>
-
+    </div>
+</div>*@
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row">
+                <div classs="card shadow border-0 mt-4">
+                    <div class="card-header bg-primary bg-gradient ml-0 py-4">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 class="py-2 text-white"> Sign up for a new account</h2>
+                            </div>
+                        </div>
                     </div>
-                    <br />
-                    <p>
-                        <a asp-action="Login">Already have an account?</a>
-                    </p>
-                    <p>
-                        <a asp-action="TalentRegister">Register as a Talent?</a>
-                    </p>
-                </form>
+                    <div class="card-body p-4">
+                        <div class="row pt-3">
+                            <div class="col-md-12 ">
+                                <form asp-controller="Account" asp-action="CompanyRegister" class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="FirstName" class="form-control">
+                                        <label asp-for="FirstName" class="ms-2 text-muted"></label>     
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="LastName" class="form-control">
+                                        <label asp-for="LastName" class="ms-2 text-muted"></label>      
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="CompanyName" class="form-control">
+                                        <label asp-for="CompanyName" class="ms-2 text-muted"></label>     
+                                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="Email" class="form-control">
+                                        <label asp-for="Email" class="ms-2 text-muted"></label>         
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="Password" class="form-control">
+                                        <label asp-for="Password" class="ms-2 text-muted"></label>               
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="ConfirmPassword" class="form-control">
+                                        <label asp-for="ConfirmPassword" class="ms-2 text-muted"></label>
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <br />
+                                        <input class="w-100 btn btn-lg btn-primary" type="submit" value="Sign Up" />
+                                        @* <a class="btn btn-outline-secondary float-right" asp-controller="Main" asp-action="Index">Cancel</a>*@
+                                        <br />
+                                        <br />
+                                    </div>
+                                   
+                                    <p>
+                                        <a asp-action="Login">Already have an account?</a>
+                                    </p>
+                                    <p>
+                                        <a asp-action="TalentRegister">Register as a Talent?</a>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
