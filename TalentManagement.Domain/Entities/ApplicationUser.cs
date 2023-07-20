@@ -27,6 +27,9 @@ namespace TalentManagement.Domain.Entities
         public IEnumerable<SelectListItem> RoleList { get; set; } = new List<SelectListItem>();
         [NotMapped]
         public virtual ICollection<Job> MyJobs { get; set; }
-        public virtual ICollection<Talent> MyTalents { get; set; }
+      
+       public virtual Talent Talent { get; set; }   
+
+      
     }
 }

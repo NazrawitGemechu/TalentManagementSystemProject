@@ -24,7 +24,7 @@ namespace TalentManagement.UI.Controllers
             _context = context;
             _userManager = userManager; 
         }
-
+       
         public IActionResult Index()
         {
             var job = _context.Jobs.ToList();
@@ -55,14 +55,18 @@ namespace TalentManagement.UI.Controllers
             var company = _context.Companies.FirstOrDefault(u => u.Id == Id);
             var jobDetail = _context.Jobs.Include(u => u.Company)
                 .Include(s => s.Skills).ThenInclude(a => a.Skill)
+                .Include(t=>t.Recruter)
                 .FirstOrDefault(n => n.Id == Id);
+            string UserId = _userManager.GetUserId(User);
+            ViewBag.IsApplied = _context.Candidates.Where(z=>z.JobId==Id &&z.UserId==UserId).FirstOrDefault();
+
             return View(jobDetail);
         }
         public async Task<IActionResult> YourPosts()
         {
             var company = _context.Companies.ToList();
             var model = await _context.Jobs
-                                .Where(a => a.JobPosterId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                                .Where(a => a.RecruterId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
                                 .ToListAsync();
             return View(model);
         }
@@ -105,7 +109,7 @@ namespace TalentManagement.UI.Controllers
                     YearsOfExp = model.YearsOfExp,
                     Education = model.Education,
                 };
-                job.JobPosterId = _userManager.GetUserId(User);
+                job.RecruterId = _userManager.GetUserId(User);
                 Company company = new Company()
                 {
                     CompanyName = model.CompanyName,
@@ -322,6 +326,117 @@ namespace TalentManagement.UI.Controllers
             model.JobTypes = listItems;
             return View(model);
         }
+
+
+        [HttpPost]
+        public ActionResult Apply(int _id)
+        {
+
+            string UserId = _userManager.GetUserId(User);
+            
+            Job job = _context.Jobs.Where(x => x.Id == _id).FirstOrDefault();
+         
+            var talent = _context.Talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
+            if (talent == null)
+            {
+                return View("UploadResume");
+            }
+
+            if (job == null)
+                return RedirectToAction("Home", "Main");
+
+            UserJob applied = _context.Candidates.Where(x => x.JobId == job.Id && x.UserId == UserId).FirstOrDefault();
+
+            if (applied == null)
+            {
+                UserJob user = new UserJob { UserId = UserId, JobId = job.Id };
+                _context.Candidates.Add(user);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Detail", new { job.Id });
+        }
+
+        public ActionResult AppliedJobs(int id)
+        {
+           
+
+            string UserId = _userManager.GetUserId(User);
+            var pageOfResults = _context.Candidates.Where(x => x.UserId == UserId)
+                                    .Include(x=>x.Job.Company)
+                                    .Include(x => x.Job)
+                                    .Include(x => x.Job.Skills)
+                                    .Include(x => x.Job.Recruter)
+                                    .ToList();
+
+            var count = _context.Candidates.Where(x => x.UserId == UserId).Count();
+
+           
+
+            return View(pageOfResults);
+        }
+
+        public ActionResult Candidates(int id)
+        {
+           
+
+            
+
+            string UserId = _userManager.GetUserId(User);
+            ViewBag.Job = _context.Jobs.Where(x => x.Id == id && x.RecruterId == UserId).FirstOrDefault();
+            if (ViewBag.Job == null)
+                return RedirectToAction("Home", "Main");
+
+            var Candidates = _context.Candidates.Where(x => x.JobId == id)
+                                    
+                                    .Include(x => x.User)
+                                    .Include(x=>x.User.Talent)
+                                    .ToList();
+
+            var count = _context.Candidates.Where(x => x.JobId == id).Count();
+
+            ViewBag.TotalCandidates = count;
+
+            
+
+            return View(Candidates);
+        }
+
+
+
+        //public ActionResult MyJobs(int id)
+        //{
+           
+
+        //    string UserId = _userManager.GetUserId(User);
+
+        //    var pageOfResults = _context.Talents.Where(x => x.ApplicantId == UserId)
+        //                        .Select(s => new CreateTalentViewModel
+        //                        {
+        //                            Id = s.Id,
+        //                            FirstName = s.FirstName,
+        //                            LastName = s.LastName,
+        //                            Email = s.Email,
+        //                            Gender = s.Gender,
+        //                            Country = s.Country,
+        //                            Language = s.Language,
+        //                            PhoneNo = s.PhoneNo,
+        //                            TalentExperiences = s.TalentExperiences,
+        //                            FileCV = s.FileCV,
+        //                           // Count = _context.Candidates.Where(x => x.JobId == s.Id).Count(),
+        //                           // IsAccepted = s.IsAccepted
+        //                        })
+                                
+        //                        .ToList();
+
+        //    var count = _context.Talents.Where(x => x.ApplicantId == UserId).Count();
+
+           
+
+        //    return View(pageOfResults);
+        //}
+
+
 
         public async Task<List<SelectListItem>> BindSkills()
         {

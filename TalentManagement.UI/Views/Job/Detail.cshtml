@@ -3,21 +3,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-
-<!-- Header Start -->
-@*<div class="container-xxl py-5 bg-dark page-header mb-5">
-    <div class="container my-5 pt-5 pb-4">
-        <h1 class="display-3 text-white mb-3 animated slideInDown">Job Detail</h1>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb text-uppercase">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-
-                <li class="breadcrumb-item text-white active" aria-current="page">Job Detail</li>
-            </ol>
-        </nav>
-    </div>
-</div>*@
-<!-- Header End -->
 <!-- Job Detail Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
@@ -35,7 +20,12 @@
 
                 <div class="mb-5">
                     <h4 class="mb-3">Job description</h4>
-                    <p>@Model.JobDescription</p>
+
+                    <p> @Model.JobDescription</p>
+
+
+
+
                     <h4 class="mb-3">Required Skills</h4>
 
                     <ul class="list-unstyled">
@@ -53,13 +43,42 @@
 
                     </ul>
                 </div>
+                <div class=""></div>
 
 
             </div>
-
             <div class="col-lg-4">
                 <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Job Summery</h4>
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+                    {
+                        @if (ViewBag.IsApplied != null)
+                        {
+                            <p style="color:#2c9266;"> <i class="fa fa-check" aria-hidden="true"></i> Already applied</p>
+                        }
+                        else if (DateTime.Now > Model.JobDeadline)
+                        {
+                            <p style="color:red;"> <i class="fa fa-check" aria-hidden="true"></i> Application Closed</p>
+                        }
+
+                        else
+                        {
+                            
+                              <form  asp-action ="Apply" class="js-apply-job" asp-route-_id="@Model.Id">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="submit_btn">
+                                                <button type="submit" class="btn btn-success" type="submit">Apply Now</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                            </form>
+                        }
+                    }
+
+                                   
+                    <br />
                     @if (DateTime.Now >= Model.PostedDate && DateTime.Now <= Model.JobDeadline)
                     {
                         <p class="text-success"><i class="fa fa-angle-right text-primary me-2"></i>Status:OPEN</p>
@@ -86,7 +105,9 @@
         </div>
     </div>
     <br />
+
     <div class="col-12 text-right d-flex justify-content-end mb-2">
+
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
         {
             <a asp-action="Index" asp-controller="Job" class="btn btn-outline-dark">Back</a>
@@ -95,7 +116,7 @@
         {
             <a asp-action="YourPosts" asp-controller="Job" class="btn btn-outline-dark">Back</a>
         }
-        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
+        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {
             <a asp-action="Index" asp-controller="Job" class="btn btn-outline-dark">Back</a>
         }

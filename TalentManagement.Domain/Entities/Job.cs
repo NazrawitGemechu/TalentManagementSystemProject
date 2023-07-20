@@ -24,8 +24,9 @@ namespace TalentManagement.Domain.Entities
         public DateTime JobDeadline { get; set; }
 
         public virtual List<JobSkill> Skills { get; set; } = new List<JobSkill>();
-        public string? JobPosterId { get; set; }
-        public virtual ApplicationUser JobPoster { get; set; }
+      //  public virtual List<Talent> AppliedTalents { get; set; } = new List<Talent>();
+        public string? RecruterId { get; set; }
+        public virtual ApplicationUser Recruter { get; set; }
       
     }
 }

@@ -103,7 +103,7 @@ namespace TalentManagement.UI.Controllers
             //        }
             //    }
             //}
-          
+           // id = model.JobId;
             if (ModelState.IsValid)
             {
                 
@@ -127,6 +127,7 @@ namespace TalentManagement.UI.Controllers
                         PhoneNo = model.PhoneNo,
                         TalentExperiences = model.TalentExperiences,
                         FilePath = CVUpload(model),
+                       // JobId=model.JobId
                         
                       //  CV= tal.CV,
                         
@@ -151,7 +152,7 @@ namespace TalentManagement.UI.Controllers
                     }
                     var command = new CreateTalentCommand() { NewTalent = talent };
                     var result = await _mediator.Send(command);
-                    return View("Resume");
+                    return RedirectToAction("RegisterComplete");
                 }
             }
             return View(model);
@@ -242,7 +243,7 @@ namespace TalentManagement.UI.Controllers
                 talent.Language = model.Language;
                 talent.PhoneNo= model.PhoneNo;
                 talent.TalentExperiences = model.TalentExperiences;
-                talent.ApplicantId = _userManager.GetUserId(User);
+                //talent.ApplicantId = _userManager.GetUserId(User);
 
 
 

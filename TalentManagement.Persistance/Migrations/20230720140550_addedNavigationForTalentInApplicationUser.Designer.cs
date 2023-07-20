@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalentManagement.Persistance.Data;
 
@@ -11,9 +12,11 @@ using TalentManagement.Persistance.Data;
 namespace TalentManagement.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230720140550_addedNavigationForTalentInApplicationUser")]
+    partial class addedNavigationForTalentInApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,6 +215,9 @@ namespace TalentManagement.Persistance.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TalentId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -228,6 +234,8 @@ namespace TalentManagement.Persistance.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("TalentId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -367,9 +375,6 @@ namespace TalentManagement.Persistance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApplicantId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Country")
                         .HasColumnType("int");
 
@@ -399,10 +404,6 @@ namespace TalentManagement.Persistance.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId")
-                        .IsUnique()
-                        .HasFilter("[ApplicantId] IS NOT NULL");
 
                     b.ToTable("Talents");
                 });
@@ -551,6 +552,15 @@ namespace TalentManagement.Persistance.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TalentManagement.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.HasOne("TalentManagement.Domain.Entities.Talent", "Talent")
+                        .WithMany("MyUsers")
+                        .HasForeignKey("TalentId");
+
+                    b.Navigation("Talent");
+                });
+
             modelBuilder.Entity("TalentManagement.Domain.Entities.Job", b =>
                 {
                     b.HasOne("TalentManagement.Domain.Entities.Company", "Company")
@@ -585,15 +595,6 @@ namespace TalentManagement.Persistance.Migrations
                     b.Navigation("Job");
 
                     b.Navigation("Skill");
-                });
-
-            modelBuilder.Entity("TalentManagement.Domain.Entities.Talent", b =>
-                {
-                    b.HasOne("TalentManagement.Domain.Entities.ApplicationUser", "Applicant")
-                        .WithOne("Talent")
-                        .HasForeignKey("TalentManagement.Domain.Entities.Talent", "ApplicantId");
-
-                    b.Navigation("Applicant");
                 });
 
             modelBuilder.Entity("TalentManagement.Domain.Entities.TalentEducationLevel", b =>
@@ -681,12 +682,6 @@ namespace TalentManagement.Persistance.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TalentManagement.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("Talent")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TalentManagement.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Jobs");
@@ -712,6 +707,8 @@ namespace TalentManagement.Persistance.Migrations
             modelBuilder.Entity("TalentManagement.Domain.Entities.Talent", b =>
                 {
                     b.Navigation("EducationLevels");
+
+                    b.Navigation("MyUsers");
 
                     b.Navigation("Skills");
 

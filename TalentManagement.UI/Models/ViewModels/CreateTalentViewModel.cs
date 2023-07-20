@@ -49,7 +49,7 @@ namespace TalentManagement.UI.Models.ViewModels
         [Display(Name = "Upload CV")]
         [ValidateFile]
         public IFormFile FileCV { get; set; }
-
+       // public int JobId { get; set; }
        // [Display(Name ="CV")]
        // public IFormFile CV { get; set; }
 

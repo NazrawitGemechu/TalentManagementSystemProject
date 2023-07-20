@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalentManagement.Persistance.Data;
 
@@ -11,9 +12,11 @@ using TalentManagement.Persistance.Data;
 namespace TalentManagement.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230720084618_MadeSomeModelChanges")]
+    partial class MadeSomeModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -400,9 +403,7 @@ namespace TalentManagement.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId")
-                        .IsUnique()
-                        .HasFilter("[ApplicantId] IS NOT NULL");
+                    b.HasIndex("ApplicantId");
 
                     b.ToTable("Talents");
                 });
@@ -590,8 +591,8 @@ namespace TalentManagement.Persistance.Migrations
             modelBuilder.Entity("TalentManagement.Domain.Entities.Talent", b =>
                 {
                     b.HasOne("TalentManagement.Domain.Entities.ApplicationUser", "Applicant")
-                        .WithOne("Talent")
-                        .HasForeignKey("TalentManagement.Domain.Entities.Talent", "ApplicantId");
+                        .WithMany("MyTalents")
+                        .HasForeignKey("ApplicantId");
 
                     b.Navigation("Applicant");
                 });
@@ -683,8 +684,7 @@ namespace TalentManagement.Persistance.Migrations
 
             modelBuilder.Entity("TalentManagement.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Talent")
-                        .IsRequired();
+                    b.Navigation("MyTalents");
                 });
 
             modelBuilder.Entity("TalentManagement.Domain.Entities.Company", b =>

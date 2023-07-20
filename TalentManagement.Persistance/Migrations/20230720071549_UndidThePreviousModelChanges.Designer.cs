@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalentManagement.Persistance.Data;
 
@@ -11,9 +12,11 @@ using TalentManagement.Persistance.Data;
 namespace TalentManagement.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230720071549_UndidThePreviousModelChanges")]
+    partial class UndidThePreviousModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,6 +298,9 @@ namespace TalentManagement.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("JobPosterId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -305,9 +311,6 @@ namespace TalentManagement.Persistance.Migrations
 
                     b.Property<DateTime>("PostedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("RecruterId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Salary")
                         .HasColumnType("int");
@@ -322,7 +325,7 @@ namespace TalentManagement.Persistance.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("RecruterId");
+                    b.HasIndex("JobPosterId");
 
                     b.ToTable("Jobs");
                 });
@@ -400,9 +403,7 @@ namespace TalentManagement.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId")
-                        .IsUnique()
-                        .HasFilter("[ApplicantId] IS NOT NULL");
+                    b.HasIndex("ApplicantId");
 
                     b.ToTable("Talents");
                 });
@@ -485,15 +486,15 @@ namespace TalentManagement.Persistance.Migrations
                     b.ToTable("JobPosts");
                 });
 
-            modelBuilder.Entity("TalentManagement.Domain.Entities.UserJob", b =>
+            modelBuilder.Entity("TalentManagement.Domain.Entities.UserTalent", b =>
                 {
-                    b.Property<int>("JobId")
+                    b.Property<int?>("TalentId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("JobId", "UserId");
+                    b.HasKey("TalentId", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -559,13 +560,13 @@ namespace TalentManagement.Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TalentManagement.Domain.Entities.ApplicationUser", "Recruter")
+                    b.HasOne("TalentManagement.Domain.Entities.ApplicationUser", "JobPoster")
                         .WithMany()
-                        .HasForeignKey("RecruterId");
+                        .HasForeignKey("JobPosterId");
 
                     b.Navigation("Company");
 
-                    b.Navigation("Recruter");
+                    b.Navigation("JobPoster");
                 });
 
             modelBuilder.Entity("TalentManagement.Domain.Entities.JobSkill", b =>
@@ -590,8 +591,8 @@ namespace TalentManagement.Persistance.Migrations
             modelBuilder.Entity("TalentManagement.Domain.Entities.Talent", b =>
                 {
                     b.HasOne("TalentManagement.Domain.Entities.ApplicationUser", "Applicant")
-                        .WithOne("Talent")
-                        .HasForeignKey("TalentManagement.Domain.Entities.Talent", "ApplicantId");
+                        .WithMany("MyTalents")
+                        .HasForeignKey("ApplicantId");
 
                     b.Navigation("Applicant");
                 });
@@ -662,11 +663,11 @@ namespace TalentManagement.Persistance.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TalentManagement.Domain.Entities.UserJob", b =>
+            modelBuilder.Entity("TalentManagement.Domain.Entities.UserTalent", b =>
                 {
-                    b.HasOne("TalentManagement.Domain.Entities.Job", "Job")
+                    b.HasOne("TalentManagement.Domain.Entities.Talent", "Talent")
                         .WithMany()
-                        .HasForeignKey("JobId")
+                        .HasForeignKey("TalentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -676,15 +677,14 @@ namespace TalentManagement.Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Job");
+                    b.Navigation("Talent");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("TalentManagement.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Talent")
-                        .IsRequired();
+                    b.Navigation("MyTalents");
                 });
 
             modelBuilder.Entity("TalentManagement.Domain.Entities.Company", b =>

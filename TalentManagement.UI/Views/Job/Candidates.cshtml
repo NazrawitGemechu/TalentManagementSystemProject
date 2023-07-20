@@ -1,0 +1,61 @@
+﻿@model IEnumerable<UserJob>;
+@{
+    ViewData["Title"] = "Candidates";
+}
+<div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Candidates</h1>
+        <div id="tab-1" class="tab-pane fade show p-0 active">
+            <h3>@ViewBag.Job.JobTitle</h3>
+            <p class="wow fadeInRight text-end" data-wow-duration="1s" data-wow-delay=".4s">@ViewBag.TotalCandidates Candidates</p>
+            @foreach (var user in Model)
+            {
+                <div class="job-item p-4 mb-4">
+                    <div class="row g-4">
+
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">
+
+                                    @user.User.Talent.FirstName &nbsp;@user.User.Talent.LastName
+
+                                </h5>
+                                <p class="my-2">
+                                    @user.User.Email
+                                </p>
+                                <p>
+
+                                </p>
+                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@user.User.Talent.Country</span>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+
+                                <a class="btn btn-primary" asp-controller="Talent" asp-action="Detail" asp-route-id="@user.User.Talent.Id">Details</a>
+
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+@*
+     <h3>@ViewBag.Job.Title</h3>
+                    <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">@ViewBag.TotalCandidates Candidates</p>
+                    <a asp-controller="Talent" asp-action="Detail" asp-route-id="@user.User.Talent.Id">Details</a>
+                        <p>@user.User.Email</p>
+                         <p>@user.User.Talent.Country</p>
+*@

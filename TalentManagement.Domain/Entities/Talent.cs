@@ -33,6 +33,7 @@ namespace TalentManagement.Domain.Entities
 
         public string? ApplicantId { get; set; }
         public virtual ApplicationUser Applicant { get; set; }
+       
 
        
 

@@ -16,6 +16,7 @@
         <div class="dropdown-menu rounded-0 m-0 "aria-labelledby="profile-btn">
             <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Your Account</a>
             <a class="dropdown-item" asp-controller="Talent" asp-action="Resume">Your Resume</a>
+            <a class="dropdown-item" asp-controller="Job" asp-action="AppliedJobs">Applied to</a>
             <form id="logoutForm" method="post"  asp-controller="Account" asp-action="LogOff">
                 <button type="submit" class="dropdown-item text-danger">Logout</button>
             </form>
@@ -72,8 +73,9 @@ else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
         <div class="dropdown-menu rounded-0 m-0 " aria-labelledby="profile-btn">
             <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/CIndex" title="Manage">Your Account</a>
             <a class="dropdown-item" asp-controller="Job" asp-action="YourPosts">Your Posts</a>
+           @* <a class="dropdown-item" asp-controller="Job" asp-action="Candidates">Candidates</a>
             <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
-            <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
+            <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>*@
             <form id="logoutForm" method="post" asp-controller="Account" asp-action="LogOff">
                 <button type="submit" class="dropdown-item text-danger">Logout</button>
             </form>

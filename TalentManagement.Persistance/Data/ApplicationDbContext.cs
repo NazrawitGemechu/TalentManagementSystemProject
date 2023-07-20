@@ -26,7 +26,9 @@ namespace TalentManagement.Persistance.Data
         public virtual DbSet<Job> Jobs { get; set; }
         //application user related tables
         public DbSet<UserCompany> JobPosts { get; set; }
-        public DbSet<UserTalent> ResumePosts { get; set; }
+        public DbSet<UserJob> Candidates { get; set; }
+
+       // public DbSet<JobApplicant> JobApplicants { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         //Configuring the Many to Many relationships
 
@@ -63,12 +65,21 @@ namespace TalentManagement.Persistance.Data
             modelBuilder.Entity<UserCompany>().
                 HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
             //userTalent
-            modelBuilder.Entity<UserTalent>().HasKey(x => new { x.TalentId, x.UserId });
-            modelBuilder.Entity<UserTalent>().
-                HasOne(x => x.Talent).WithMany().HasForeignKey(x => x.TalentId);
-            modelBuilder.Entity<UserTalent>().
+            modelBuilder.Entity<UserJob>().HasKey(x => new { x.JobId, x.UserId });
+            modelBuilder.Entity<UserJob>().
+                HasOne(x => x.Job).WithMany().HasForeignKey(x => x.JobId);
+            modelBuilder.Entity<UserJob>().
                 HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
-
+            //userTalent
+            //modelBuilder.Entity<JobApplicant>().HasKey(x => new { x.ApplicantId, x.JobId });
+            //modelBuilder.Entity<JobApplicant>().
+            //    HasOne(x => x.Job).WithMany().HasForeignKey(x => x.JobId);
+            //modelBuilder.Entity<JobApplicant>().
+            //    HasOne(x => x.Applicant).WithMany().HasForeignKey(x => x.ApplicantId);
+        //    modelBuilder.Entity<ApplicationUser>()
+        //.HasOne(a => a.Talent)
+        //.WithOne(b => b.Applicant)
+        //.HasForeignKey<Talent>(b => b.ApplicantId);
             base.OnModelCreating(modelBuilder);
         }
 
