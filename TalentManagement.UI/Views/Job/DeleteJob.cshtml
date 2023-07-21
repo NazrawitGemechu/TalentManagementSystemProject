@@ -4,7 +4,7 @@
     ViewData["Title"] = "AddTalent";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-<div class="row">
+@*<div class="row">
     <div class="col-md-8 offset-2">
         <p>
             <h4>Post A Job</h4>
@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-12">
                 <form asp-action="DeleteJob">
-                    
+
                     <div class="row">
                         <div class="col-md-6">
 
@@ -20,7 +20,7 @@
                                 <label asp-for="CompanyName"></label>
 
                                 <input asp-for="CompanyName" class="form-control " disabled/>
-                               
+
 
                             </div>
 
@@ -30,7 +30,7 @@
                                 <label asp-for="CompanyEmail"></label>
 
                                 <input asp-for="CompanyEmail" class="form-control " disabled />
-                                
+
 
                             </div>
 
@@ -42,7 +42,7 @@
                                 <select asp-for="Country" class="form-control " asp-items="Html.GetEnumSelectList<Country>()" disabled>
                                     <option value="" selected disabled>-----------------------Select Your Country-------------------------</option>
                                 </select>
-                                
+
                             </div>
 
                             <div class="form-group ">
@@ -52,7 +52,7 @@
                                     <option disabled selected>Select primary High level Education Required</option>
                                 </select>
 
-                               
+
 
                             </div>
 
@@ -60,7 +60,7 @@
                                 <label asp-for="PostedDate"></label>
 
                                 <input asp-for="PostedDate" type="date" class="form-control " disabled />
-                               
+
 
                             </div>
 
@@ -69,7 +69,7 @@
                                 <label asp-for="JobDeadline"></label>
 
                                 <input asp-for="JobDeadline" type="date" class="form-control " disabled />
-                               
+
 
                             </div>
 
@@ -81,7 +81,7 @@
                                 <label asp-for="JobTitle"></label>
 
                                 <input asp-for="JobTitle" class="form-control" disabled />
-                               
+
 
                             </div>
 
@@ -93,7 +93,7 @@
                                 <select asp-for="JobType" asp-items="@Model.JobTypes" class="form-select" disabled>
                                     <option disabled selected>Select Job Type</option>
                                 </select>
-                               
+
 
                             </div>
 
@@ -102,7 +102,7 @@
                                 <label asp-for="YearsOfExp"></label>
 
                                 <input asp-for="YearsOfExp" type="number" class="form-control " disabled />
-                               
+
                             </div>
 
 
@@ -110,14 +110,14 @@
                                 <label asp-for="Vacancy"></label>
 
                                 <input asp-for="Vacancy" type="number"  disabled />
-                              
+
 
                             </div>
                             <div class="form-group">
                                 <label asp-for="Salary"></label>
 
                                 <input asp-for="Salary" type="number" class="form-control " disabled />
-                               
+
 
                             </div>
 
@@ -136,13 +136,13 @@
 
                             @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm disabled", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown" })
 
-                            
+
 
                         </div>
                         <div class="form-group">
                             <label asp-for="JobDescription"></label>
                             <textarea asp-for="JobDescription" class="form-control" disabled></textarea>
-                           
+
                         </div>
 
                     </div>
@@ -161,10 +161,126 @@
         </div>
     </div>
 
+</div>*@
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row">
+                <div classs="card shadow border-0 mt-4">
+                    <div class="card-header bg-dark bg-gradient ml-0 py-4">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 class="py-2 text-white">Fill the required inforamtion </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row pt-3">
+                            <div class="col-md-12 ">
+                                <form asp-controller="Job" asp-action="DeleteJob" class="row" enctype="multipart/form-data">
+
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="CompanyName" class="form-control " disabled />
+                                        <label asp-for="CompanyName" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="CompanyEmail" class="form-control " disabled />
+                                        <label asp-for="CompanyEmail"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-12">
+                                        <input asp-for="JobTitle" class="form-control" disabled />
+                                        <label asp-for="JobTitle" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <select asp-for="Country" class="form-select " asp-items="Html.GetEnumSelectList<Country>()" disabled>
+                                            <option value="" selected disabled>Select Country</option>
+                                        </select>
+                                        <label asp-for="Country" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <select asp-for="Education" asp-items="@Model.EducationTypes" class="form-select" disabled>
+                                            <option disabled selected>Select primary High level Education Required</option>
+                                        </select>
+                                        <label asp-for="Education" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="PostedDate" type="date" class="form-control " disabled />
+                                        <label asp-for="PostedDate" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="JobDeadline" type="date" class="form-control " disabled />
+                                        <label asp-for="JobDeadline" class="ms-2 text-muted"></label>
+
+                                    </div>
+
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <select asp-for="JobType" asp-items="@Model.JobTypes" class="form-select" disabled>
+                                            <option disabled selected>Select Job Type</option>
+                                        </select>
+                                        <label asp-for="JobType" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="YearsOfExp" type="number" class="form-control " disabled />
+                                        <label asp-for="YearsOfExp" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="Vacancy" type="number" path="email" id="email" class="form-control input-sm" disabled />
+                                        <label asp-for="Vacancy" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-6">
+                                        <input asp-for="Salary" type="number" class="form-control " disabled />
+                                        <label asp-for="Salary" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-12">
+                                        @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown"})
+                                        <label class="ms-2 text-muted" asp-for="SelectedSkills"></label>
+                                        <br />
+
+                                    </div>
+                                    <div class="form-floating mb-3 col-md-12">
+                                        <textarea asp-for="JobDescription" class="form-control" disabled></textarea>
+                                        <label asp-for="JobDescription" class="ms-2 text-muted"></label>
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <br />
+                                        <a class="w-100 btn btn-lg btn-outline-secondary" asp-controller="Job" asp-action="YourPosts">Back</a>
+                                        <br />
+                                        <br />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <br />
+                                        <input class="w-100 btn btn-lg btn-dark" type="submit" value="Delete" />
+                                        <br />
+                                        <br />
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+
 @section Scripts {
-   
+
 
     <script type="text/javascript">
 

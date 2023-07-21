@@ -129,7 +129,7 @@ namespace TalentManagement.UI.Controllers
                 company.Jobs.Add(job);
                 _context.Add(company);
                 _context.SaveChanges();
-                return View("YourPosts");
+                return View("RegisterComplete");
             }
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()

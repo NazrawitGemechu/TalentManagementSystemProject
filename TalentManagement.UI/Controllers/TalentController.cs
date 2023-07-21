@@ -211,13 +211,15 @@ namespace TalentManagement.UI.Controllers
                 return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(CreateTalentViewModel model)
+        public async Task<IActionResult> Edit(CreateTalentViewModel model)
         {
 
             Talent talent = new Talent();
             List<TalentSkill> talentSkills = new List<TalentSkill>();
             List<TalentEducationLevel> talentEducationLevels = new List<TalentEducationLevel>();
-
+            model.Skills = await BindSkills();
+            model.EducationLevels = await BindEducationLeves();
+           
             if (ModelState.IsValid)
             {
                 //first find talent skill list and then remove all from db 
@@ -243,7 +245,7 @@ namespace TalentManagement.UI.Controllers
                 talent.Language = model.Language;
                 talent.PhoneNo= model.PhoneNo;
                 talent.TalentExperiences = model.TalentExperiences;
-                //talent.ApplicantId = _userManager.GetUserId(User);
+                talent.ApplicantId = _userManager.GetUserId(User);
 
 
 
