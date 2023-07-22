@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,6 +18,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize]
     public class TalentController : Controller
     {
         private readonly IMediator _mediator;
@@ -30,7 +32,7 @@ namespace TalentManagement.UI.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        [Authorize(Roles = "Talent,Admin")]
         public async Task<IActionResult> Index()
         {
            
@@ -63,6 +65,7 @@ namespace TalentManagement.UI.Controllers
 
             return View(talentDetail);
         }
+        [Authorize(Roles = "Talent")]
         public async Task<IActionResult> Resume()
         {
             var model = await _context.Talents
@@ -72,7 +75,7 @@ namespace TalentManagement.UI.Controllers
         }
 
 
-
+        [Authorize(Roles = "Talent")]
         public async Task<IActionResult> Create()
         {         
             var vm = new CreateTalentViewModel()
@@ -85,6 +88,7 @@ namespace TalentManagement.UI.Controllers
            
             return View(vm);
         }
+        [Authorize(Roles = "Talent")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateTalentViewModel model)
         {
@@ -152,7 +156,7 @@ namespace TalentManagement.UI.Controllers
                     }
                     var command = new CreateTalentCommand() { NewTalent = talent };
                     var result = await _mediator.Send(command);
-                    return RedirectToAction("RegisterComplete");
+                    return View("RegisterComplete");
                 }
             }
             return View(model);
@@ -160,6 +164,7 @@ namespace TalentManagement.UI.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Talent")]
         public async Task<IActionResult> Edit(int Id)
         {          
             CreateTalentViewModel model = new CreateTalentViewModel(); 
@@ -211,6 +216,7 @@ namespace TalentManagement.UI.Controllers
                 return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Talent")]
         public async Task<IActionResult> Edit(CreateTalentViewModel model)
         {
 
@@ -292,6 +298,7 @@ namespace TalentManagement.UI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Talent")]
         public async Task<IActionResult> Delete(int Id)
         {
             CreateTalentViewModel model = new CreateTalentViewModel();
@@ -345,6 +352,7 @@ namespace TalentManagement.UI.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Talent")]
         public IActionResult Delete(CreateTalentViewModel model)
         {
 
@@ -435,8 +443,13 @@ namespace TalentManagement.UI.Controllers
             return _context.Talents.Any(d => d.FirstName == fname && d.LastName == lname && d.Email==email);
         }
 
+        public IActionResult DownloadCV(string fileName)
+        {
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "file", fileName);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/octet-stream", fileName);
+        }
 
 
-        
     }
 }

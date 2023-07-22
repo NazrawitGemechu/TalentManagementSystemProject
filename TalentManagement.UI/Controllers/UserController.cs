@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using TalentManagement.Persistance.Data;
 using TalentManagement.Domain.Entities;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
          private readonly ApplicationDbContext _db;

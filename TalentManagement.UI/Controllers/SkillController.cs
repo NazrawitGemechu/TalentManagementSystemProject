@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TalentManagement.Application.Commands.SkillCommand;
 using TalentManagement.Application.Queries.SkillQuery;
@@ -6,6 +7,7 @@ using TalentManagement.Domain.Entities;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SkillController : Controller
     {
         private readonly IMediator _mediator;

@@ -148,7 +148,7 @@ namespace TalentManagement.UI.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index","Job");
+                    return LocalRedirect(returnurl);
                 }
                 else
                 {

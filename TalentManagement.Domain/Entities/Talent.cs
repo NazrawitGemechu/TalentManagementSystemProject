@@ -22,8 +22,6 @@ namespace TalentManagement.Domain.Entities
         public Country Country { get; set; }
         [NotMapped]      
         public IFormFile FileCV { get; set; }
-       // [Display(Name="CV")]
-       // public byte[] CV { get; set; }
         public string FilePath { get; set; } = "";
         public Language Language { get; set; }
         

@@ -1,11 +1,14 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TalentManagement.Application.Commands.EducationLevelCommand;
 using TalentManagement.Application.Queries.EducationLevelQuery;
 using TalentManagement.Domain.Entities;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EducationLevelController : Controller
     {
         private readonly IMediator _mediator;

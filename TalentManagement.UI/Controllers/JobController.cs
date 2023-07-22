@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DotNet.Scaffolding.Shared.Project;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Claims;
 using TalentManagement.Application.Queries.SkillQuery;
 using TalentManagement.Application.Queries.TalentQuery;
@@ -22,15 +24,13 @@ namespace TalentManagement.UI.Controllers
         {
             _mediator = mediator;
             _context = context;
-            _userManager = userManager; 
+            _userManager = userManager;
         }
-       
+        [Authorize(Roles = "Admin,Talent")]
         public IActionResult Index()
         {
             var job = _context.Jobs.ToList();
             var company = _context.Companies.ToList();
-            //DisplayJobViewModel vm = new DisplayJobViewModel();
-
             return View(job);
         }
         //search
@@ -55,13 +55,14 @@ namespace TalentManagement.UI.Controllers
             var company = _context.Companies.FirstOrDefault(u => u.Id == Id);
             var jobDetail = _context.Jobs.Include(u => u.Company)
                 .Include(s => s.Skills).ThenInclude(a => a.Skill)
-                .Include(t=>t.Recruter)
+                .Include(t => t.Recruter)
                 .FirstOrDefault(n => n.Id == Id);
             string UserId = _userManager.GetUserId(User);
-            ViewBag.IsApplied = _context.Candidates.Where(z=>z.JobId==Id &&z.UserId==UserId).FirstOrDefault();
+            ViewBag.IsApplied = _context.Candidates.Where(z => z.JobId == Id && z.UserId == UserId).FirstOrDefault();
 
             return View(jobDetail);
         }
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> YourPosts()
         {
             var company = _context.Companies.ToList();
@@ -72,6 +73,7 @@ namespace TalentManagement.UI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> PostJob()
         {
             PostAJobViewModel vm = new PostAJobViewModel();
@@ -93,6 +95,7 @@ namespace TalentManagement.UI.Controllers
             return View(vm);
         }
         [HttpPost]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> PostJob(PostAJobViewModel model)
         {
             if (ModelState.IsValid)
@@ -150,14 +153,30 @@ namespace TalentManagement.UI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteJob(int Id)
         {
-            PostAJobViewModel model = new PostAJobViewModel();
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "FullTime",
+                Text = "FullTime"
+            });
 
+            listItems.Add(new SelectListItem()
+            {
+                Value = "PartTime",
+                Text = "PartTime"
+            });
+
+            PostAJobViewModel model = new PostAJobViewModel();
+            model.JobTypes = listItems;
+            model.EducationTypes = await Educations();
             List<int> skillsIds = new List<int>();
+
             //Get job 
             var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
-            var company = _context.Companies.FirstOrDefault(x => x.Id == Id);
+            var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
             //Get job skills and add each skillId into selectedskills list
             job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
             //bind model 
@@ -167,7 +186,7 @@ namespace TalentManagement.UI.Controllers
                     Text = x.SkillName,
                     Value = x.Id.ToString()
                 }).ToList();
-
+            model.Id = company.Id;
             model.JobTitle = job.JobTitle;
             model.JobDescription = job.JobDescription;
             model.JobDeadline = job.JobDeadline;
@@ -182,73 +201,56 @@ namespace TalentManagement.UI.Controllers
             model.CompanyEmail = job.Company.CompanyEmail;
             model.Country = job.Company.Country;
 
-
-            company.CompanyName = model.CompanyName;
-            company.CompanyEmail = model.CompanyEmail;
-            company.Country = model.Country;
-          
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Company")]
         public IActionResult DeleteJob(PostAJobViewModel model)
         {
+            var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
+            if (company == null)
+            {
+                return NotFound();
+            }
 
-            Job job = new Job();
-            List<JobSkill> jobSkills = new List<JobSkill>();
-
-
-            job.JobTitle = model.JobTitle;
-            job.JobDescription = model.JobDescription;
-            job.JobDeadline = model.JobDeadline;
-            job.JobType = model.JobType;
-            job.PostedDate = model.PostedDate;
-            job.Vacancy = model.Vacancy;
-            job.Salary = model.Salary;
-            job.YearsOfExp = model.YearsOfExp;
-            job.Education = model.Education;
-
-            job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == model.Id);
-            job.Skills.ToList().ForEach(result => jobSkills.Add(result));
-            _context.JobSkill.RemoveRange(jobSkills);
+            _context.Companies.Remove(company);
             _context.SaveChanges();
-            _context.Attach(job);
-            _context.Entry(job).State = EntityState.Deleted;
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("YourPosts");
         }
 
         [HttpGet]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> EditJob(int Id)
         {
+
             PostAJobViewModel model = new PostAJobViewModel();
-
             List<int> skillsIds = new List<int>();
-            //Get job 
-            var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
-            var company = _context.Companies.FirstOrDefault(x => x.Id == Id);
-            //Get job skills and add each skillId into selectedskills list
-            job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
-            //bind model 
-            model.Skills = _context.Skills.Select
-                (x => new SelectListItem
-                {
-                    Text = x.SkillName,
-                    Value = x.Id.ToString()
-                }).ToList();
-
-            model.JobTitle = job.JobTitle;
-            model.JobDescription = job.JobDescription;
-            model.JobDeadline = job.JobDeadline;
-            model.JobType = job.JobType;
-            model.PostedDate = job.PostedDate;
-            model.Vacancy = job.Vacancy;
-            model.Salary = job.Salary;
-            model.YearsOfExp = job.YearsOfExp;
-            model.Education = job.Education;
-            model.SelectedSkills = skillsIds.ToArray();
-            model.CompanyName = company.CompanyName;
-            model.CompanyEmail = company.CompanyEmail;
-            model.Country = company.Country;
+             //Get job 
+                var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
+                var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
+                //Get job skills and add each skillId into selectedskills list
+                job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
+                //bind model 
+                model.Skills = _context.Skills.Select
+                    (x => new SelectListItem
+                    {
+                        Text = x.SkillName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+                model.Id = company.Id;
+                model.JobTitle = job.JobTitle;
+                model.JobDescription = job.JobDescription;
+                model.JobDeadline = job.JobDeadline;
+                model.JobType = job.JobType;
+                model.PostedDate = job.PostedDate;
+                model.Vacancy = job.Vacancy;
+                model.Salary = job.Salary;
+                model.YearsOfExp = job.YearsOfExp;
+                model.Education = job.Education;
+                model.SelectedSkills = skillsIds.ToArray();
+                model.CompanyName = job.Company.CompanyName;
+                model.CompanyEmail = job.Company.CompanyEmail;
+                model.Country = job.Company.Country;
 
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()
@@ -267,47 +269,56 @@ namespace TalentManagement.UI.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> EditJob(PostAJobViewModel model)
         {
             var dbjob = _context.Jobs.FirstOrDefault(n => n.Id == model.Id);
 
             if (ModelState.IsValid)
             {
+                var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
+                if (company == null)
+                {
+                    return NotFound();
+                }
 
-                dbjob.JobTitle = model.JobTitle;
-                dbjob.JobDescription = model.JobDescription;
-                dbjob.JobDeadline = model.JobDeadline;
-                dbjob.JobType = model.JobType;
-                dbjob.PostedDate = model.PostedDate;
-                dbjob.Vacancy = model.Vacancy;
-                dbjob.Salary = model.Salary;
-                dbjob.YearsOfExp = model.YearsOfExp;
-                dbjob.Education = model.Education;
-
-                Company company = new Company();
-                company.CompanyName = model.CompanyName;
-                company.CompanyEmail = model.CompanyEmail;
-                company.Country = model.Country;
+                _context.Companies.Remove(company);
                 _context.SaveChanges();
 
-                //remove exsting skills
-                var existingSkillsDb= _context.JobSkill.Where(n=>n.JobId==model.Id).ToList();
-                _context.JobSkill.RemoveRange(existingSkillsDb);
-                _context.SaveChanges();
-                Job job = new Job();
+                //then add the datas as new
+
+                Job job = new Job()
+                {
+                    JobTitle = model.JobTitle,
+                    JobDescription = model.JobDescription,
+                    JobDeadline = model.JobDeadline,
+                    JobType = model.JobType,
+                    PostedDate = model.PostedDate,
+                    Vacancy = model.Vacancy,
+                    Salary = model.Salary,
+                    YearsOfExp = model.YearsOfExp,
+                    Education = model.Education,
+                };
+                job.RecruterId = _userManager.GetUserId(User);
+                Company compan = new Company()
+                {
+                    CompanyName = model.CompanyName,
+                    CompanyEmail = model.CompanyEmail,
+                    Country = model.Country,
+                };
+
                 foreach (var item in model.SelectedSkills)
-                { 
-                    
+                {
                     job.Skills.Add(new JobSkill()
                     {
                         SkillId = item
                     });
-                    
                 }
-                company.Jobs.Add(job);
-                _context.Add(company);
+                compan.Jobs.Add(job);
+                _context.Add(compan);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("YourPosts");
             }
             model.EducationTypes = await Educations();
             model.Skills = await BindSkills();
@@ -329,13 +340,14 @@ namespace TalentManagement.UI.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Talent")]
         public ActionResult Apply(int _id)
         {
 
             string UserId = _userManager.GetUserId(User);
-            
+
             Job job = _context.Jobs.Where(x => x.Id == _id).FirstOrDefault();
-         
+
             var talent = _context.Talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
             if (talent == null)
             {
@@ -356,87 +368,42 @@ namespace TalentManagement.UI.Controllers
 
             return RedirectToAction("Detail", new { job.Id });
         }
-
+        [Authorize(Roles = "Talent")]
         public ActionResult AppliedJobs(int id)
         {
-           
-
             string UserId = _userManager.GetUserId(User);
             var pageOfResults = _context.Candidates.Where(x => x.UserId == UserId)
-                                    .Include(x=>x.Job.Company)
+                                    .Include(x => x.Job.Company)
                                     .Include(x => x.Job)
                                     .Include(x => x.Job.Skills)
                                     .Include(x => x.Job.Recruter)
                                     .ToList();
 
             var count = _context.Candidates.Where(x => x.UserId == UserId).Count();
-
-           
-
             return View(pageOfResults);
         }
-
+        [Authorize(Roles = "Company")]
         public ActionResult Candidates(int id)
         {
-           
-
-            
-
             string UserId = _userManager.GetUserId(User);
             ViewBag.Job = _context.Jobs.Where(x => x.Id == id && x.RecruterId == UserId).FirstOrDefault();
             if (ViewBag.Job == null)
                 return RedirectToAction("Home", "Main");
 
             var Candidates = _context.Candidates.Where(x => x.JobId == id)
-                                    
+
                                     .Include(x => x.User)
-                                    .Include(x=>x.User.Talent)
+                                    .Include(x => x.User.Talent)
                                     .ToList();
 
             var count = _context.Candidates.Where(x => x.JobId == id).Count();
 
             ViewBag.TotalCandidates = count;
 
-            
+
 
             return View(Candidates);
         }
-
-
-
-        //public ActionResult MyJobs(int id)
-        //{
-           
-
-        //    string UserId = _userManager.GetUserId(User);
-
-        //    var pageOfResults = _context.Talents.Where(x => x.ApplicantId == UserId)
-        //                        .Select(s => new CreateTalentViewModel
-        //                        {
-        //                            Id = s.Id,
-        //                            FirstName = s.FirstName,
-        //                            LastName = s.LastName,
-        //                            Email = s.Email,
-        //                            Gender = s.Gender,
-        //                            Country = s.Country,
-        //                            Language = s.Language,
-        //                            PhoneNo = s.PhoneNo,
-        //                            TalentExperiences = s.TalentExperiences,
-        //                            FileCV = s.FileCV,
-        //                           // Count = _context.Candidates.Where(x => x.JobId == s.Id).Count(),
-        //                           // IsAccepted = s.IsAccepted
-        //                        })
-                                
-        //                        .ToList();
-
-        //    var count = _context.Talents.Where(x => x.ApplicantId == UserId).Count();
-
-           
-
-        //    return View(pageOfResults);
-        //}
-
-
 
         public async Task<List<SelectListItem>> BindSkills()
         {

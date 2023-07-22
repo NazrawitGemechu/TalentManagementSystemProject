@@ -263,13 +263,13 @@
                                         <span asp-validation-for="FileCV" class="text-danger"></span>
                                     </div>
                                     <div class="form-floating mb-3 col-md-12">
-                                        @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown"})
+                                        @Html.ListBoxFor(model => model.SelectedSkills, new MultiSelectList(Model.Skills, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Skills_dropdown",disabled = "disabled"})
                                         <label class="ms-2 text-muted" asp-for="SelectedSkills"></label>
                                         <br />
                                         <span asp-validation-for="SelectedSkills" class="text-danger"></span>
                                     </div>
                                     <div class="form-floating mb-3 col-md-12">
-                                        @Html.ListBoxFor(model => model.SelectedEducation, new MultiSelectList(Model.EducationLevels, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Educations_dropdown"})
+                                        @Html.ListBoxFor(model => model.SelectedEducation, new MultiSelectList(Model.EducationLevels, "Value", "Text"), new { @class = "form-control input-sm", style = "width: 100%", multiple = "multiple", id = "Educations_dropdown",disabled = "disabled"})
                                         <label class="ms-2 text-muted" asp-for="SelectedEducation"></label>
                                         <br />
                                         <span asp-validation-for="SelectedEducation" class="text-danger"></span>

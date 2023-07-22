@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using TalentManagement.Persistance.Data;
 using TalentManagement.Domain.Entities;
 using TalentManagement.UI.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TalentManagement.UI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
 

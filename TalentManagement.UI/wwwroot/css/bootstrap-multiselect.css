@@ -1,7 +1,9 @@
 ﻿span.multiselect-native-select {
     position: relative
 }
-
+.full-width {
+    width: 100%;
+}
     span.multiselect-native-select select {
         border: 0 !important;
         clip: rect(0 0 0 0) !important;

@@ -106,7 +106,7 @@
     </div>
     <br />
 
-    <div class="col-12 text-right d-flex justify-content-end mb-2">
+    <div class="">
 
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
         {
@@ -114,7 +114,21 @@
         }
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
         {
-            <a asp-action="YourPosts" asp-controller="Job" class="btn btn-outline-dark">Back</a>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <br />
+                    <a class="w-100 btn btn-lg btn-outline-dark" asp-controller="Job" asp-action="YourPosts">Back</a>
+                    <br />
+                    <br />
+                </div>
+                <div class="form-group col-md-6">
+                    <br />
+                    <a class="w-100 btn btn-lg btn-success" asp-controller="Job" asp-action="EditJob" asp-route-id="@Model.Id">Update</a>
+                    <br />
+                    <br />
+                </div>
+            </div>
+            @*<a asp-action="Resume" asp-controller="Talent" class="btn btn-outline-dark">Back</a>*@
         }
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {

@@ -371,7 +371,7 @@
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Phone No: @Model.PhoneNo</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Country</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Language:@Model.Language</p>
-                    @* <p><i class="fa fa-angle-right text-primary me-2"></i><a asp-action="Download" asp-route-filename="@Model.CV">CV:@Model.CV</a></p>*@
+                    <p><i class="fa fa-angle-right text-primary me-2"></i><a asp-action="DownloadCV" asp-controller="Talent"asp-route-fileName="@Model.FilePath">Download CV</a></p>
 
 
 

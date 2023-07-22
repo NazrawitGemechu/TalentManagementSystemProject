@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TalentManagement.UI.Controllers
 {
-    [Authorize]
+   
     public class MainController : Controller
     {
         public IActionResult Index()
