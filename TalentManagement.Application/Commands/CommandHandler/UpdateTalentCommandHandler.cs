@@ -41,8 +41,6 @@ namespace TalentManagement.Application.Commands.CommandHandler
             var model = request.Model;
             List<TalentSkill> talentSkills = new List<TalentSkill>();
             List<TalentEducationLevel> talentEducationLevels = new List<TalentEducationLevel>();
-          //  model.Skills = await BindSkills();
-           // model.EducationLevels = await BindEducationLeves();
             var talent = await _context.Talents
                                        .Include(t => t.Skills)
                                        .Include(t => t.EducationLevels)
@@ -100,32 +98,6 @@ namespace TalentManagement.Application.Commands.CommandHandler
             }
             return new OkResult();
         }
-        //public async Task<List<SelectListItem>> BindSkills()
-        //{
-
-        //    var skillsFromDb = _mediator.Send(new GetAllSkillsQuery());
-
-        //    var selectList = new List<SelectListItem>();
-
-        //    foreach (var item in await skillsFromDb)
-        //    {
-
-        //        selectList.Add(new SelectListItem(item.SkillName, item.Id.ToString()));
-        //    }
-
-        //    return selectList;
-        //}
-        //public async Task<List<SelectListItem>> BindEducationLeves()
-        //{
-
-        //    var educationFromDb = _mediator.Send(new GetAllEducationLevelsQuery());
-        //    var selectListE = new List<SelectListItem>();
-        //    foreach (var item in await educationFromDb)
-        //    {
-        //        selectListE.Add(new SelectListItem(item.EducationLevelName, item.Id.ToString()));
-        //    }
-        //    return selectListE;
-        //}
         public string CVUpload(CreateTalentViewModel model)
         {
 

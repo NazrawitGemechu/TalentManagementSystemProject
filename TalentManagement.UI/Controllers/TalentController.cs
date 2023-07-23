@@ -175,11 +175,12 @@ namespace TalentManagement.UI.Controllers
             }
             return selectListE;
         }
-        public async Task<IActionResult> DownloadCV(string fileName)
+        public  IActionResult DownloadCV(string fileName)
         {
             string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "file", fileName);
             byte[] fileBytes =  System.IO.File.ReadAllBytes(filePath);
             return  File(fileBytes, "application/octet-stream", fileName);
+            
         }
     }
 }
