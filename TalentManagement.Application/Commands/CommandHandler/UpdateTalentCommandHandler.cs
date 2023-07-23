@@ -37,103 +37,95 @@ namespace TalentManagement.Application.Commands.CommandHandler
         }
         public async Task<IActionResult> Handle(UpdateTalentCommand request, CancellationToken cancellationToken)
         {
+
             var model = request.Model;
-            Talent talent = new Talent();
             List<TalentSkill> talentSkills = new List<TalentSkill>();
             List<TalentEducationLevel> talentEducationLevels = new List<TalentEducationLevel>();
-            model.Skills = await BindSkills();
-            model.EducationLevels = await BindEducationLeves();
-
-            //first find talent skill list and then remove all from db 
-            talent = _context.Talents.Include("Skills").FirstOrDefault(x => x.Id == model.Id);
-            talent.Skills.ToList().ForEach(result => talentSkills.Add(result));
-            _context.TalentSkill.RemoveRange(talentSkills);
-            _context.SaveChanges();
-            //second find talent education level list and remove all from db
-            talent = _context.Talents.Include("EducationLevels").FirstOrDefault(x => x.Id == model.Id);
-            talent.EducationLevels.ToList().ForEach(result => talentEducationLevels.Add(result));
-            _context.TalentEducationLevel.RemoveRange(talentEducationLevels);
-            _context.SaveChanges();
-            //third find talent experience list and remove all from db
-            List<TalentExperience> talentExp = _context.TalentExperiences.Where(d => d.TalentId == model.Id).ToList();
-            _context.TalentExperiences.RemoveRange(talentExp);
-            _context.SaveChanges();
-            //fourth update talent details
-            talent.FirstName = model.FirstName;
-            talent.LastName = model.LastName;
-            talent.Gender = model.Gender;
-            talent.Country = model.Country;
-            talent.Email = model.Email;
-            talent.Language = model.Language;
-            talent.PhoneNo = model.PhoneNo;
-            talent.TalentExperiences = model.TalentExperiences;
-            talent.ApplicantId = await _currentUserService.GetCurrentUserId();
-
-
-
-            if (model.FileCV != null)
+          //  model.Skills = await BindSkills();
+           // model.EducationLevels = await BindEducationLeves();
+            var talent = await _context.Talents
+                                       .Include(t => t.Skills)
+                                       .Include(t => t.EducationLevels)
+                                       .Include(t => t.TalentExperiences)
+                                       .FirstOrDefaultAsync(t => t.Id == model.Id);
+            if (talent != null)
             {
-                string uinqueFileName = CVUpload(model);
-                talent.FilePath = uinqueFileName;
+                // Update the talent details
+                talent.FirstName = model.FirstName;
+                talent.LastName = model.LastName;
+                talent.Gender = model.Gender;
+                talent.Country = model.Country;
+                talent.Email = model.Email;
+                talent.Language = model.Language;
+                talent.PhoneNo = model.PhoneNo;
+                talent.TalentExperiences = model.TalentExperiences;
+                talent.ApplicantId = await _currentUserService.GetCurrentUserId();
 
-            }
-            //talent skills
-            if (model.SelectedSkills.Length > 0)
-            {
-                talentSkills = new List<TalentSkill>();
-
-                foreach (var skillid in model.SelectedSkills)
+                // Update the talent skills
+                talent.Skills.Clear();
+                if (model.SelectedSkills.Length > 0)
                 {
-                    talentSkills.Add(new TalentSkill { SkillId = skillid, TalentId = model.Id });
-                }
-                talent.Skills = talentSkills;
-            }
-            _context.SaveChanges();
-            // talent education levels
-            if (model.SelectedEducation.Length > 0)
-            {
-                talentEducationLevels = new List<TalentEducationLevel>();
+                    talentSkills = new List<TalentSkill>();
 
-                foreach (var educationid in model.SelectedEducation)
-                {
-                    talentEducationLevels.Add(new TalentEducationLevel { EducationLevelId = educationid, TalentId = model.Id });
+                    foreach (var skillid in model.SelectedSkills)
+                    {
+                        talentSkills.Add(new TalentSkill { SkillId = skillid, TalentId = model.Id });
+                    }
+                    talent.Skills = talentSkills;
                 }
-                talent.EducationLevels = talentEducationLevels;
+                _context.SaveChanges();
+
+                // Update the talent education levels
+                talent.EducationLevels.Clear();
+                if (model.SelectedEducation.Length > 0)
+                {
+                    talentEducationLevels = new List<TalentEducationLevel>();
+
+                    foreach (var educationid in model.SelectedEducation)
+                    {
+                        talentEducationLevels.Add(new TalentEducationLevel { EducationLevelId = educationid, TalentId = model.Id });
+                    }
+                    talent.EducationLevels = talentEducationLevels;
+                }
+                _context.SaveChanges();
+                if (model.FileCV != null)
+                {
+                    string uinqueFileName = CVUpload(model);
+                    talent.FilePath = uinqueFileName;
+
+                }
+                _context.Attach(talent);
+                _context.Entry(talent).State = EntityState.Modified;
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
-            // _context.TalentExperiences.AddRange(talent.TalentExperiences);
-            _context.Attach(talent);
-            _context.Entry(talent).State = EntityState.Modified;
-            // _context.TalentExperiences.AddRange(talent.TalentExperiences);
-            _context.SaveChanges();
             return new OkResult();
         }
-        public async Task<List<SelectListItem>> BindSkills()
-        {
+        //public async Task<List<SelectListItem>> BindSkills()
+        //{
 
-            var skillsFromDb = _mediator.Send(new GetAllSkillsQuery());
+        //    var skillsFromDb = _mediator.Send(new GetAllSkillsQuery());
 
-            var selectList = new List<SelectListItem>();
+        //    var selectList = new List<SelectListItem>();
 
-            foreach (var item in await skillsFromDb)
-            {
+        //    foreach (var item in await skillsFromDb)
+        //    {
 
-                selectList.Add(new SelectListItem(item.SkillName, item.Id.ToString()));
-            }
+        //        selectList.Add(new SelectListItem(item.SkillName, item.Id.ToString()));
+        //    }
 
-            return selectList;
-        }
-        public async Task<List<SelectListItem>> BindEducationLeves()
-        {
+        //    return selectList;
+        //}
+        //public async Task<List<SelectListItem>> BindEducationLeves()
+        //{
 
-            var educationFromDb = _mediator.Send(new GetAllEducationLevelsQuery());
-            var selectListE = new List<SelectListItem>();
-            foreach (var item in await educationFromDb)
-            {
-                selectListE.Add(new SelectListItem(item.EducationLevelName, item.Id.ToString()));
-            }
-            return selectListE;
-        }
+        //    var educationFromDb = _mediator.Send(new GetAllEducationLevelsQuery());
+        //    var selectListE = new List<SelectListItem>();
+        //    foreach (var item in await educationFromDb)
+        //    {
+        //        selectListE.Add(new SelectListItem(item.EducationLevelName, item.Id.ToString()));
+        //    }
+        //    return selectListE;
+        //}
         public string CVUpload(CreateTalentViewModel model)
         {
 
