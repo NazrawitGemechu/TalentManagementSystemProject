@@ -25,3 +25,44 @@
 //        }
 //    }
 //}
+
+
+
+
+
+
+
+
+
+
+
+//using MediatR;
+//using TalentManagement.Application.Commands.TalentCommand;
+//using TalentManagement.Domain.Entities;
+//using TalentManagement.Persistance.Data;
+
+//public class CreateTalentHandler : IRequestHandler<CreateTalentCommand, Talent>
+//{
+//    private readonly ApplicationDbContext _context;
+
+//    public CreateTalentHandler(ApplicationDbContext context)
+//    {
+//        _context = context;
+//    }
+
+//    public async Task<Talent> Handle(CreateTalentCommand request, CancellationToken cancellationToken)
+//    {
+//        _context.Add(request.NewTalent);
+//        await _context.SaveChangesAsync();
+//        return request.NewTalent;
+//    }
+//}
+
+
+//using MediatR;
+//using TalentManagement.Domain.Entities;
+
+//public class CreateTalentCommand : IRequest<Talent>
+//{
+//    public Talent NewTalent { get; set; }
+//}

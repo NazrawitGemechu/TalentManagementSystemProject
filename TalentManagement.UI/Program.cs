@@ -5,8 +5,10 @@ using System.Reflection;
 using TalentManagement.Application.Queries.TalentQuery;
 using TalentManagement.Persistance.Configurations;
 using TalentManagement.Persistance.Data;
-using TalentManagement.Persistance.Data;
 using TalentManagement.Domain.Entities;
+using TalentManagement.Application;
+using Microsoft.AspNetCore.Hosting;
+using TalentManagement.Application.Commands.TalentCommand;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 //builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), builder => builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetAllTalentsQuery).GetTypeInfo().Assembly));
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(CreateTalentCommand).GetTypeInfo().Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(StartUp).GetTypeInfo().Assembly));
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultUI()
@@ -35,6 +39,9 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Main/Accessdenied");
 });
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

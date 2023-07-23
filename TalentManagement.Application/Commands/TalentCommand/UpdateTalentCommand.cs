@@ -6,14 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TalentManagement.Application.ViewModels;
-using TalentManagement.Domain.Entities;
-
 
 namespace TalentManagement.Application.Commands.TalentCommand
 {
-    public class CreateTalentCommand : IRequest<IActionResult>
+    public class UpdateTalentCommand :IRequest<IActionResult>
     {
         public CreateTalentViewModel Model { get; set; }
-       
     }
 }

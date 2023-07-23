@@ -63,21 +63,21 @@
 
                         else
                         {
-                            
-                              <form  asp-action ="Apply" class="js-apply-job" asp-route-_id="@Model.Id">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="submit_btn">
-                                                <button type="submit" class="btn btn-success" type="submit">Apply Now</button>
 
-                                            </div>
+                            <form asp-action="Apply" class="js-apply-job" asp-route-_id="@Model.Id">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="submit_btn">
+                                            <button type="submit" class="btn btn-success" type="submit">Apply Now</button>
+
                                         </div>
                                     </div>
+                                </div>
                             </form>
                         }
                     }
 
-                                   
+
                     <br />
                     @if (DateTime.Now >= Model.PostedDate && DateTime.Now <= Model.JobDeadline)
                     {

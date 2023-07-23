@@ -9,7 +9,7 @@ using TalentManagement.UI.Models;
 
 namespace TalentManagement.UI.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
