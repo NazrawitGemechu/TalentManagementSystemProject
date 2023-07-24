@@ -7,6 +7,9 @@ using Microsoft.DotNet.Scaffolding.Shared.Project;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
+using TalentManagement.Application.Commands.TalentCommand;
+using TalentManagement.Application.Queries.CompanyQuery;
+using TalentManagement.Application.Queries.JobQuery;
 using TalentManagement.Application.Queries.SkillQuery;
 using TalentManagement.Application.Queries.TalentQuery;
 using TalentManagement.Domain.Entities;
@@ -27,24 +30,35 @@ namespace TalentManagement.UI.Controllers
             _userManager = userManager;
         }
         [Authorize(Roles = "Admin,Talent")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var job = _context.Jobs.ToList();
-            var company = _context.Companies.ToList();
-            return View(job);
+            //var job = _context.Jobs.ToList();
+            //var company = _context.Companies.ToList();
+            //return View(job);
+            var jobQuery = new GetJobsQuery();
+            var companyQuery = new GetCompaniesQuery();
+
+            var jobResult = await _mediator.Send(jobQuery);
+            var companyResult = await _mediator.Send(companyQuery);
+
+            return View(jobResult);
         }
         //search
         public async Task<IActionResult> Filter(string searchString)
         {
 
-            var job = _context.Jobs.ToList();
-            var company = _context.Companies.ToList();
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                var filterResult = job.Where(n => n.JobTitle.Contains(searchString) || n.JobType.Contains(searchString)).ToList();
-                return View("Index", filterResult);
-            }
-            return View("Index", job);
+            //var job = _context.Jobs.ToList();
+            //var company = _context.Companies.ToList();
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+            //    var filterResult = job.Where(n => n.JobTitle.Contains(searchString) || n.JobType.Contains(searchString)).ToList();
+            //    return View("Index", filterResult);
+            //}
+            //return View("Index", job);
+            var query = new FilterQuery { SearchString = searchString };
+            var result = await _mediator.Send(query);
+
+            return View("Index", result);
         }
 
         [HttpGet]
@@ -341,32 +355,38 @@ namespace TalentManagement.UI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Talent")]
-        public ActionResult Apply(int _id)
+        public async Task<ActionResult> Apply(int _id)
         {
 
+            //string UserId = _userManager.GetUserId(User);
+
+            //Job job = _context.Jobs.Where(x => x.Id == _id).FirstOrDefault();
+
+            //var talent = _context.Talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
+            //if (talent == null)
+            //{
+            //    return View("UploadResume");
+            //}
+
+            //if (job == null)
+            //    return RedirectToAction("Home", "Main");
+
+            //UserJob applied = _context.Candidates.Where(x => x.JobId == job.Id && x.UserId == UserId).FirstOrDefault();
+
+            //if (applied == null)
+            //{
+            //    UserJob user = new UserJob { UserId = UserId, JobId = job.Id };
+            //    _context.Candidates.Add(user);
+            //    _context.SaveChanges();
+            //}
             string UserId = _userManager.GetUserId(User);
 
-            Job job = _context.Jobs.Where(x => x.Id == _id).FirstOrDefault();
+            var command = new ApplyForJobCommand { JobId = _id, UserId = UserId };
+            var result = await _mediator.Send(command);
 
-            var talent = _context.Talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
-            if (talent == null)
-            {
-                return View("UploadResume");
-            }
+          //  return result;
 
-            if (job == null)
-                return RedirectToAction("Home", "Main");
-
-            UserJob applied = _context.Candidates.Where(x => x.JobId == job.Id && x.UserId == UserId).FirstOrDefault();
-
-            if (applied == null)
-            {
-                UserJob user = new UserJob { UserId = UserId, JobId = job.Id };
-                _context.Candidates.Add(user);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction("Detail", new { job.Id });
+            return RedirectToAction("Detail");
         }
         [Authorize(Roles = "Talent")]
         public ActionResult AppliedJobs(int id)
