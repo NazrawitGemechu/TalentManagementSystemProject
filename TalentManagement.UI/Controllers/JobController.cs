@@ -7,6 +7,7 @@ using Microsoft.DotNet.Scaffolding.Shared.Project;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
+using TalentManagement.Application.Commands.JobCommand;
 using TalentManagement.Application.Commands.TalentCommand;
 using TalentManagement.Application.Queries.CompanyQuery;
 using TalentManagement.Application.Queries.JobQuery;
@@ -14,7 +15,7 @@ using TalentManagement.Application.Queries.SkillQuery;
 using TalentManagement.Application.Queries.TalentQuery;
 using TalentManagement.Domain.Entities;
 using TalentManagement.Persistance.Data;
-using TalentManagement.UI.Models.ViewModels;
+using TalentManagement.Application.ViewModels;
 
 namespace TalentManagement.UI.Controllers
 {
@@ -124,39 +125,44 @@ namespace TalentManagement.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Job job = new Job()
-                {
-                    JobTitle = model.JobTitle,
-                    JobDescription = model.JobDescription,
-                    JobDeadline = model.JobDeadline,
-                    JobType = model.JobType,
-                    PostedDate = model.PostedDate,
-                    Vacancy = model.Vacancy,
-                    Salary = model.Salary,
-                    YearsOfExp = model.YearsOfExp,
-                    Education = model.Education,
-                };
-                job.RecruterId = _userManager.GetUserId(User);
-                Company company = new Company()
-                {
-                    CompanyName = model.CompanyName,
-                    CompanyEmail = model.CompanyEmail,
-                    Country = model.Country,
+                //Job job = new Job()
+                //{
+                //    JobTitle = model.JobTitle,
+                //    JobDescription = model.JobDescription,
+                //    JobDeadline = model.JobDeadline,
+                //    JobType = model.JobType,
+                //    PostedDate = model.PostedDate,
+                //    Vacancy = model.Vacancy,
+                //    Salary = model.Salary,
+                //    YearsOfExp = model.YearsOfExp,
+                //    Education = model.Education,
+                //};
+                //job.RecruterId = _userManager.GetUserId(User);
+                //Company company = new Company()
+                //{
+                //    CompanyName = model.CompanyName,
+                //    CompanyEmail = model.CompanyEmail,
+                //    Country = model.Country,
 
 
-                };
+                //};
 
-                foreach (var item in model.SelectedSkills)
-                {
-                    job.Skills.Add(new JobSkill()
-                    {
-                        SkillId = item
-                    });
-                }
-                company.Jobs.Add(job);
-                _context.Add(company);
-                _context.SaveChanges();
-                return View("RegisterComplete");
+                //foreach (var item in model.SelectedSkills)
+                //{
+                //    job.Skills.Add(new JobSkill()
+                //    {
+                //        SkillId = item
+                //    });
+                //}
+                //company.Jobs.Add(job);
+                //_context.Add(company);
+                //_context.SaveChanges();
+                //return View("RegisterComplete");
+                var command = new CreateJobCommand { Model = model };
+                var result = await _mediator.Send(command);
+
+                return result;
+
             }
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()
