@@ -26,6 +26,20 @@ namespace TalentManagement.Application.Queries.QueryHandler
             PostAJobViewModel model = new PostAJobViewModel();
 
             List<int> skillsIds = new List<int>();
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            model.EducationTypes = await Educations();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "FullTime",
+                Text = "FullTime"
+            });
+
+            listItems.Add(new SelectListItem()
+            {
+                Value = "PartTime",
+                Text = "PartTime"
+            });
+            model.JobTypes = listItems;
 
             // Get job
             var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == request.JobId);
@@ -57,6 +71,47 @@ namespace TalentManagement.Application.Queries.QueryHandler
             model.Country = job.Company.Country;
 
             return model;
+        }
+        public async Task<List<SelectListItem>> Educations()
+        {
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Software Engineering",
+                Text = "Software Engineering"
+            });
+
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Data Science",
+                Text = "Data Science"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Computer Science",
+                Text = "Computer Science"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Database Adminstrator",
+                Text = "Database Adminstrator"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Web Developer",
+                Text = "Web Developer"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Network Security",
+                Text = "Network Security"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Information System",
+                Text = "Information System"
+            });
+            return listItems;
         }
     }
 }

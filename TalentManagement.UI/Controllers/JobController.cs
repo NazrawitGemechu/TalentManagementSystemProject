@@ -261,101 +261,104 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> EditJob(int Id)
         {
+            var query = new GetJobQuery { JobId = Id };
+            var model = await _mediator.Send(query);
+            //PostAJobViewModel model = new PostAJobViewModel();
+            //List<int> skillsIds = new List<int>();
+            // //Get job 
+            //    var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
+            //    var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
+            //    //Get job skills and add each skillId into selectedskills list
+            //    job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
+            //    //bind model 
+            //    model.Skills = _context.Skills.Select
+            //        (x => new SelectListItem
+            //        {
+            //            Text = x.SkillName,
+            //            Value = x.Id.ToString()
+            //        }).ToList();
+            //    model.Id = company.Id;
+            //    model.JobTitle = job.JobTitle;
+            //    model.JobDescription = job.JobDescription;
+            //    model.JobDeadline = job.JobDeadline;
+            //    model.JobType = job.JobType;
+            //    model.PostedDate = job.PostedDate;
+            //    model.Vacancy = job.Vacancy;
+            //    model.Salary = job.Salary;
+            //    model.YearsOfExp = job.YearsOfExp;
+            //    model.Education = job.Education;
+            //    model.SelectedSkills = skillsIds.ToArray();
+            //    model.CompanyName = job.Company.CompanyName;
+            //    model.CompanyEmail = job.Company.CompanyEmail;
+            //    model.Country = job.Company.Country;
 
-            PostAJobViewModel model = new PostAJobViewModel();
-            List<int> skillsIds = new List<int>();
-             //Get job 
-                var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
-                var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
-                //Get job skills and add each skillId into selectedskills list
-                job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
-                //bind model 
-                model.Skills = _context.Skills.Select
-                    (x => new SelectListItem
-                    {
-                        Text = x.SkillName,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.Id = company.Id;
-                model.JobTitle = job.JobTitle;
-                model.JobDescription = job.JobDescription;
-                model.JobDeadline = job.JobDeadline;
-                model.JobType = job.JobType;
-                model.PostedDate = job.PostedDate;
-                model.Vacancy = job.Vacancy;
-                model.Salary = job.Salary;
-                model.YearsOfExp = job.YearsOfExp;
-                model.Education = job.Education;
-                model.SelectedSkills = skillsIds.ToArray();
-                model.CompanyName = job.Company.CompanyName;
-                model.CompanyEmail = job.Company.CompanyEmail;
-                model.Country = job.Company.Country;
+            //List<SelectListItem> listItems = new List<SelectListItem>();
+            //listItems.Add(new SelectListItem()
+            //{
+            //    Value = "FullTime",
+            //    Text = "FullTime"
+            //});
 
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem()
-            {
-                Value = "FullTime",
-                Text = "FullTime"
-            });
-
-            listItems.Add(new SelectListItem()
-            {
-                Value = "PartTime",
-                Text = "PartTime"
-            });
-            model.JobTypes = listItems;
-            model.EducationTypes = await Educations();
+            //listItems.Add(new SelectListItem()
+            //{
+            //    Value = "PartTime",
+            //    Text = "PartTime"
+            //});
+            //model.JobTypes = listItems;
+            //model.EducationTypes = await Educations();
             return View(model);
         }
         [HttpPost]
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> EditJob(PostAJobViewModel model)
         {
-            var dbjob = _context.Jobs.FirstOrDefault(n => n.Id == model.Id);
+           // var dbjob = _context.Jobs.FirstOrDefault(n => n.Id == model.Id);
 
             if (ModelState.IsValid)
             {
-                var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
-                if (company == null)
-                {
-                    return NotFound();
-                }
+                //var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
+                //if (company == null)
+                //{
+                //    return NotFound();
+                //}
 
-                _context.Companies.Remove(company);
-                _context.SaveChanges();
+                //_context.Companies.Remove(company);
+                //_context.SaveChanges();
 
-                //then add the datas as new
+                ////then add the datas as new
 
-                Job job = new Job()
-                {
-                    JobTitle = model.JobTitle,
-                    JobDescription = model.JobDescription,
-                    JobDeadline = model.JobDeadline,
-                    JobType = model.JobType,
-                    PostedDate = model.PostedDate,
-                    Vacancy = model.Vacancy,
-                    Salary = model.Salary,
-                    YearsOfExp = model.YearsOfExp,
-                    Education = model.Education,
-                };
-                job.RecruterId = _userManager.GetUserId(User);
-                Company compan = new Company()
-                {
-                    CompanyName = model.CompanyName,
-                    CompanyEmail = model.CompanyEmail,
-                    Country = model.Country,
-                };
+                //Job job = new Job()
+                //{
+                //    JobTitle = model.JobTitle,
+                //    JobDescription = model.JobDescription,
+                //    JobDeadline = model.JobDeadline,
+                //    JobType = model.JobType,
+                //    PostedDate = model.PostedDate,
+                //    Vacancy = model.Vacancy,
+                //    Salary = model.Salary,
+                //    YearsOfExp = model.YearsOfExp,
+                //    Education = model.Education,
+                //};
+                //job.RecruterId = _userManager.GetUserId(User);
+                //Company compan = new Company()
+                //{
+                //    CompanyName = model.CompanyName,
+                //    CompanyEmail = model.CompanyEmail,
+                //    Country = model.Country,
+                //};
 
-                foreach (var item in model.SelectedSkills)
-                {
-                    job.Skills.Add(new JobSkill()
-                    {
-                        SkillId = item
-                    });
-                }
-                compan.Jobs.Add(job);
-                _context.Add(compan);
-                _context.SaveChanges();
+                //foreach (var item in model.SelectedSkills)
+                //{
+                //    job.Skills.Add(new JobSkill()
+                //    {
+                //        SkillId = item
+                //    });
+                //}
+                //compan.Jobs.Add(job);
+                //_context.Add(compan);
+                //_context.SaveChanges();
+                var command = new UpdateJobCommand { Model = model };
+                var result = await _mediator.Send(command);
 
                 return RedirectToAction("YourPosts");
             }

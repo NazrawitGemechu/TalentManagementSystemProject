@@ -78,6 +78,7 @@ namespace TalentManagement.Application.Commands.CommandHandler
             _context.Add(talent);
             await _context.SaveChangesAsync();
             return new OkResult();
+
         }
         public async Task<List<SelectListItem>> BindSkills()
         {
