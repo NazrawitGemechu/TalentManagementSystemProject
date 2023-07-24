@@ -186,66 +186,75 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteJob(int Id)
         {
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem()
-            {
-                Value = "FullTime",
-                Text = "FullTime"
-            });
+            //List<SelectListItem> listItems = new List<SelectListItem>();
+            //listItems.Add(new SelectListItem()
+            //{
+            //    Value = "FullTime",
+            //    Text = "FullTime"
+            //});
 
-            listItems.Add(new SelectListItem()
-            {
-                Value = "PartTime",
-                Text = "PartTime"
-            });
+            //listItems.Add(new SelectListItem()
+            //{
+            //    Value = "PartTime",
+            //    Text = "PartTime"
+            //});
 
-            PostAJobViewModel model = new PostAJobViewModel();
-            model.JobTypes = listItems;
-            model.EducationTypes = await Educations();
-            List<int> skillsIds = new List<int>();
+            //PostAJobViewModel model = new PostAJobViewModel();
+            //model.JobTypes = listItems;
+            //model.EducationTypes = await Educations();
+            //List<int> skillsIds = new List<int>();
 
-            //Get job 
-            var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
-            var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
-            //Get job skills and add each skillId into selectedskills list
-            job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
-            //bind model 
-            model.Skills = _context.Skills.Select
-                (x => new SelectListItem
-                {
-                    Text = x.SkillName,
-                    Value = x.Id.ToString()
-                }).ToList();
-            model.Id = company.Id;
-            model.JobTitle = job.JobTitle;
-            model.JobDescription = job.JobDescription;
-            model.JobDeadline = job.JobDeadline;
-            model.JobType = job.JobType;
-            model.PostedDate = job.PostedDate;
-            model.Vacancy = job.Vacancy;
-            model.Salary = job.Salary;
-            model.YearsOfExp = job.YearsOfExp;
-            model.Education = job.Education;
-            model.SelectedSkills = skillsIds.ToArray();
-            model.CompanyName = job.Company.CompanyName;
-            model.CompanyEmail = job.Company.CompanyEmail;
-            model.Country = job.Company.Country;
-
+            ////Get job 
+            //var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
+            //var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
+            ////Get job skills and add each skillId into selectedskills list
+            //job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
+            ////bind model 
+            //model.Skills = _context.Skills.Select
+            //    (x => new SelectListItem
+            //    {
+            //        Text = x.SkillName,
+            //        Value = x.Id.ToString()
+            //    }).ToList();
+            //model.Id = company.Id;
+            //model.JobTitle = job.JobTitle;
+            //model.JobDescription = job.JobDescription;
+            //model.JobDeadline = job.JobDeadline;
+            //model.JobType = job.JobType;
+            //model.PostedDate = job.PostedDate;
+            //model.Vacancy = job.Vacancy;
+            //model.Salary = job.Salary;
+            //model.YearsOfExp = job.YearsOfExp;
+            //model.Education = job.Education;
+            //model.SelectedSkills = skillsIds.ToArray();
+            //model.CompanyName = job.Company.CompanyName;
+            //model.CompanyEmail = job.Company.CompanyEmail;
+            //model.Country = job.Company.Country;
+            var query = new GetJobQuery { JobId = Id };
+            var model = await _mediator.Send(query);
             return View(model);
         }
         [HttpPost]
         [Authorize(Roles = "Company")]
-        public IActionResult DeleteJob(PostAJobViewModel model)
+        public async Task<IActionResult> DeleteJob(PostAJobViewModel model)
         {
-            var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
-            if (company == null)
+            //var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
+            //if (company == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //_context.Companies.Remove(company);
+            //_context.SaveChanges();
+            var result = await _mediator.Send(new DeleteJobCommand { JobId = model.Id });
+
+            if (!result)
             {
                 return NotFound();
             }
 
-            _context.Companies.Remove(company);
-            _context.SaveChanges();
             return RedirectToAction("YourPosts");
+
         }
 
         [HttpGet]
