@@ -83,11 +83,17 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> YourPosts()
         {
-            var company = _context.Companies.ToList();
-            var model = await _context.Jobs
-                                .Where(a => a.RecruterId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
-                                .ToListAsync();
-            return View(model);
+            //var company = _context.Companies.ToList();
+            //var model = await _context.Jobs
+            //                    .Where(a => a.RecruterId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            //                    .ToListAsync();
+            //return View(model);
+            var recruiterId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var jobs = await _mediator.Send(new YourPostsQuery { RecruiterId = recruiterId });
+            var companies = await _mediator.Send(new GetCompaniesQuery());
+  
+            return View(jobs);
         }
 
         [HttpGet]
