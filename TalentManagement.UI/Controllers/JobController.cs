@@ -65,14 +65,18 @@ namespace TalentManagement.UI.Controllers
 
         public async Task<IActionResult> Detail(int Id)
         {
-            var job = _context.Jobs.FirstOrDefault(u => u.Id == Id);
-            var company = _context.Companies.FirstOrDefault(u => u.Id == Id);
-            var jobDetail = _context.Jobs.Include(u => u.Company)
-                .Include(s => s.Skills).ThenInclude(a => a.Skill)
-                .Include(t => t.Recruter)
-                .FirstOrDefault(n => n.Id == Id);
+            //var job = _context.Jobs.FirstOrDefault(u => u.Id == Id);
+            //var company = _context.Companies.FirstOrDefault(u => u.Id == Id);
+            //var jobDetail = _context.Jobs.Include(u => u.Company)
+            //    .Include(s => s.Skills).ThenInclude(a => a.Skill)
+            //    .Include(t => t.Recruter)
+            //    .FirstOrDefault(n => n.Id == Id);
             string UserId = _userManager.GetUserId(User);
             ViewBag.IsApplied = _context.Candidates.Where(z => z.JobId == Id && z.UserId == UserId).FirstOrDefault();
+
+            //return View(jobDetail);
+            var query = new GetJobDetailQuery { Id = Id};
+            var jobDetail = await _mediator.Send(query);
 
             return View(jobDetail);
         }
