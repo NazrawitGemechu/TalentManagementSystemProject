@@ -28,8 +28,9 @@ namespace TalentManagement.Application.Queries.QueryHandler
           .Include(s => s.Skills).ThenInclude(a => a.Skill)
           .Include(t => t.Recruter)
           .FirstOrDefaultAsync(n => n.Id == request.Id);
-            // string UserId = await _currentUserService.GetCurrentUserId();
-            return jobDetail;
+           
+             return jobDetail;
+           
 
 
         }

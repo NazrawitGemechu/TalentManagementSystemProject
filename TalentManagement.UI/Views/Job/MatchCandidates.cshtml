@@ -1,24 +1,14 @@
 ﻿@model IEnumerable<UserJob>;
 @{
-    ViewData["Title"] = "Candidates";
+    ViewData["Title"] = "MatchedCandidates";
 }
 <div class="container-xxl py-5">
     <div class="container">
-        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">All Candidates</h1>
-        <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5 py-4" asp-controller="Job" asp-action="FilterCandidate">
-            <input name="searchString" type="text" class="form-control" placeholder="Search for a talent...">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
-
-        </form>
-        <form>
-            <a class="btn btn-outline-dark float-end" asp-controller="Job" asp-action="MatchCandidates" asp-route-id="@ViewBag.Job.Id">Suggested</a>
-            @* <a href="/Job/Candidates/@item.Id" class="boxed-btn4">Candidates</a>*@
-        </form>
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Suggested Candidates based on your post</h1>
         <div id="tab-1" class="tab-pane fade show p-0 active">
             <h3>@ViewBag.Job.JobTitle</h3>
             <p class="wow fadeInRight text-end" data-wow-duration="1s" data-wow-delay=".4s">@ViewBag.TotalCandidates Candidates</p>
             <h3></h3>
-           
             @foreach (var user in Model)
             {
                 <div class="job-item p-4 mb-4">

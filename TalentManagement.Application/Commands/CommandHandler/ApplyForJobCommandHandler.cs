@@ -49,6 +49,7 @@ namespace TalentManagement.Application.Commands.CommandHandler
             }
 
             return new RedirectToActionResult("Detail", "Job", null);
+           
         }
     }
 }

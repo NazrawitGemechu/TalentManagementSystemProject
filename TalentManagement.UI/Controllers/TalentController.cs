@@ -23,12 +23,10 @@ namespace TalentManagement.UI.Controllers
     public class TalentController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TalentController(IMediator mediator, IWebHostEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
+        public TalentController(IMediator mediator,  UserManager<ApplicationUser> userManager)
         {
-            _mediator = mediator;
-            _hostingEnvironment = hostingEnvironment;
+            _mediator = mediator;          
             _userManager = userManager;
         }
         [Authorize(Roles = "Talent,Admin")]
@@ -61,7 +59,6 @@ namespace TalentManagement.UI.Controllers
         {
             var query = new GetTalentsByApplicantIdQuery { ApplicantId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value };
             var model = await _mediator.Send(query);
-
             return View(model);
         }
 
@@ -90,13 +87,11 @@ namespace TalentManagement.UI.Controllers
         {
             model.Skills = await BindSkills();
             model.EducationLevels = await BindEducationLeves();
-
             if (ModelState.IsValid)
             {
                 var command = new CreateTalentCommand { Model = model };
                 var result = await _mediator.Send(command);
-                // return result;
-                return View("RegisterComplete");
+                return RedirectToAction("Index","Job");
             }
             return View(model);
         }
@@ -118,7 +113,6 @@ namespace TalentManagement.UI.Controllers
             List<TalentEducationLevel> talentEducationLevels = new List<TalentEducationLevel>();
             model.Skills = await BindSkills();
             model.EducationLevels = await BindEducationLeves();
-
             if (ModelState.IsValid)
             {
                 var command = new UpdateTalentCommand { Model = model };
@@ -135,7 +129,6 @@ namespace TalentManagement.UI.Controllers
         {
             var query = new GetTalentQuery { TalentId = Id };
             var model = await _mediator.Send(query);
-
             return View(model);
         }
         [HttpPost]
@@ -152,17 +145,13 @@ namespace TalentManagement.UI.Controllers
         }
         public async Task<List<SelectListItem>> BindSkills()
         {
-
             var skillsFromDb = _mediator.Send(new GetAllSkillsQuery());
-
             var selectList = new List<SelectListItem>();
 
             foreach (var item in await skillsFromDb)
             {
-
                 selectList.Add(new SelectListItem(item.SkillName, item.Id.ToString()));
             }
-
             return selectList;
         }
         public async Task<List<SelectListItem>> BindEducationLeves()
@@ -175,12 +164,11 @@ namespace TalentManagement.UI.Controllers
             }
             return selectListE;
         }
-        public  IActionResult DownloadCV(string fileName)
+        public async Task<IActionResult> DownloadCV(string fileName)
         {
-            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, "file", fileName);
-            byte[] fileBytes =  System.IO.File.ReadAllBytes(filePath);
-            return  File(fileBytes, "application/octet-stream", fileName);
-            
+            var query = new DownloadCVQuery { FileName = fileName };
+            var result = await _mediator.Send(query);
+            return result;
         }
     }
 }

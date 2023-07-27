@@ -87,13 +87,23 @@
                     {
                         <p class="text-danger"><i class="fa fa-angle-right text-primary me-2"></i>Status:CLOSED</p>
                     }
-
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Posted Date:@Model.PostedDate</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: @Model.Vacancy Position</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: @Model.JobType</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary:@Model.Salary</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Company.Country</p>
-                    <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Deadline:@Model.JobDeadline</p>
+                    @if (DateTime.Now > Model.JobDeadline)
+                    {
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Posted Date:@Model.PostedDate</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: @Model.Vacancy Position</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: @Model.JobType</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Salary:@Model.Salary</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Company.Country</p>
+                    }
+                     @if (DateTime.Now >= Model.PostedDate && DateTime.Now <= Model.JobDeadline)
+                    {
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Posted Date:@Model.PostedDate</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Vacancy: @Model.Vacancy Position</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: @Model.JobType</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Salary:@Model.Salary</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Location:@Model.Company.Country</p>
+                        <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Deadline:@Model.JobDeadline</p>
+                    }
                 </div>
                 <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Company Detail</h4>

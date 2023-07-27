@@ -18,9 +18,9 @@
                             <div class="text-start ps-4">
                                 <h5 class="mb-3">
 
-                                    @Html.DisplayFor(modelItem => item.JobTitle)
-                                    @Html.DisplayFor(modelItem => item.JobType)
-                                    
+                                    <a class="text-dark"asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.JobTitle)</a>
+
+
 
                                 </h5>
                                 <p class="my-2">
@@ -32,8 +32,9 @@
                                     {
                                     <p class="text-danger"><b>CLOSED</b></p>
                                     }
+                                    @Html.DisplayFor(modelItem => item.JobType)
                                 </p>
-                               
+
                                 <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Html.DisplayFor(modelItem => item.Company.Country)</span>
 
                             </div>
@@ -41,14 +42,14 @@
                         <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                             <div class="d-flex mb-3">
 
-                                <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
-                                <a class="btn btn-outline-danger" asp-controller="Job" asp-action="DeleteJob" asp-route-id="@item.Id">Delete</a>
+                                @*<a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>*@
+                                @*<a class="btn btn-outline-danger" asp-controller="Job" asp-action="DeleteJob" asp-route-id="@item.Id">Delete</a>*@
                                 @* <a class="btn btn-danger" asp-controller="Job" asp-action="DeleteJob" asp-route-id="@item.Id">Delete</a>*@
                             </div>
-                           @* <a class="btn btn-outline-dark" asp-controller="Job" asp-action="EditJob" asp-route-id="@item.Id">Update</a>*@
+                            @* <a class="btn btn-outline-dark" asp-controller="Job" asp-action="EditJob" asp-route-id="@item.Id">Update</a>*@
                             <form>
                                 <a class="btn btn-outline-dark" asp-controller="Job" asp-action="Candidates" asp-route-id="@item.Id">Candidates</a>
-                               @* <a href="/Job/Candidates/@item.Id" class="boxed-btn4">Candidates</a>*@
+                                @* <a href="/Job/Candidates/@item.Id" class="boxed-btn4">Candidates</a>*@
                             </form>
                         </div>
 

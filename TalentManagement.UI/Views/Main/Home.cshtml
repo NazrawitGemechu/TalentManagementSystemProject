@@ -28,7 +28,7 @@
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
                             {
 
-                                <a asp-controller="Job" asp-action="PostJob" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                                <a asp-controller="Job" asp-action="YourPosts" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
                             }
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                             {
@@ -60,7 +60,7 @@
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
                             {
                                 
-                                <a asp-controller="Job" asp-action="PostJob" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
+                                <a asp-controller="Job" asp-action="YourPosts" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Find A Talent</a>
                             }
                             else if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                             {

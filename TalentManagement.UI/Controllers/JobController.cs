@@ -16,6 +16,9 @@ using TalentManagement.Application.Queries.TalentQuery;
 using TalentManagement.Domain.Entities;
 using TalentManagement.Persistance.Data;
 using TalentManagement.Application.ViewModels;
+using Azure.Core;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
+using System.Linq;
 
 namespace TalentManagement.UI.Controllers
 {
@@ -33,67 +36,49 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Admin,Talent")]
         public async Task<IActionResult> Index()
         {
-            //var job = _context.Jobs.ToList();
-            //var company = _context.Companies.ToList();
-            //return View(job);
             var jobQuery = new GetJobsQuery();
             var companyQuery = new GetCompaniesQuery();
-
             var jobResult = await _mediator.Send(jobQuery);
             var companyResult = await _mediator.Send(companyQuery);
-
             return View(jobResult);
         }
         //search
         public async Task<IActionResult> Filter(string searchString)
         {
-
-            //var job = _context.Jobs.ToList();
-            //var company = _context.Companies.ToList();
-            //if (!string.IsNullOrEmpty(searchString))
-            //{
-            //    var filterResult = job.Where(n => n.JobTitle.Contains(searchString) || n.JobType.Contains(searchString)).ToList();
-            //    return View("Index", filterResult);
-            //}
-            //return View("Index", job);
             var query = new FilterQuery { SearchString = searchString };
             var result = await _mediator.Send(query);
-
             return View("Index", result);
+        }
+        public async Task<IActionResult> FilterCandidate(string searchString)
+        {
+           
+            var candidates = _context.Candidates.Include(u=>u.User).ThenInclude(t=>t.Talent).ThenInclude(s=>s.Skills).ToList();
+            var company = _context.Companies.ToList();
+            var talents = _context.Talents.ToList();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filterResult = candidates.Where(n =>n.User.Talent.FirstName.Contains(searchString) || n.User.Talent.Email.Contains(searchString) ).ToList();
+                return View("Candidates", filterResult);
+            }
+
+            return View("Candidates", candidates);
         }
 
         [HttpGet]
-
         public async Task<IActionResult> Detail(int Id)
-        {
-            //var job = _context.Jobs.FirstOrDefault(u => u.Id == Id);
-            //var company = _context.Companies.FirstOrDefault(u => u.Id == Id);
-            //var jobDetail = _context.Jobs.Include(u => u.Company)
-            //    .Include(s => s.Skills).ThenInclude(a => a.Skill)
-            //    .Include(t => t.Recruter)
-            //    .FirstOrDefault(n => n.Id == Id);
+        {           
             string UserId = _userManager.GetUserId(User);
             ViewBag.IsApplied = _context.Candidates.Where(z => z.JobId == Id && z.UserId == UserId).FirstOrDefault();
-
-            //return View(jobDetail);
             var query = new GetJobDetailQuery { Id = Id};
             var jobDetail = await _mediator.Send(query);
-
-            return View(jobDetail);
+              return View(jobDetail);          
         }
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> YourPosts()
-        {
-            //var company = _context.Companies.ToList();
-            //var model = await _context.Jobs
-            //                    .Where(a => a.RecruterId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value)
-            //                    .ToListAsync();
-            //return View(model);
+        { 
             var recruiterId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             var jobs = await _mediator.Send(new YourPostsQuery { RecruiterId = recruiterId });
-            var companies = await _mediator.Send(new GetCompaniesQuery());
-  
+            var companies = await _mediator.Send(new GetCompaniesQuery());  
             return View(jobs);
         }
 
@@ -124,45 +109,10 @@ namespace TalentManagement.UI.Controllers
         public async Task<IActionResult> PostJob(PostAJobViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                //Job job = new Job()
-                //{
-                //    JobTitle = model.JobTitle,
-                //    JobDescription = model.JobDescription,
-                //    JobDeadline = model.JobDeadline,
-                //    JobType = model.JobType,
-                //    PostedDate = model.PostedDate,
-                //    Vacancy = model.Vacancy,
-                //    Salary = model.Salary,
-                //    YearsOfExp = model.YearsOfExp,
-                //    Education = model.Education,
-                //};
-                //job.RecruterId = _userManager.GetUserId(User);
-                //Company company = new Company()
-                //{
-                //    CompanyName = model.CompanyName,
-                //    CompanyEmail = model.CompanyEmail,
-                //    Country = model.Country,
-
-
-                //};
-
-                //foreach (var item in model.SelectedSkills)
-                //{
-                //    job.Skills.Add(new JobSkill()
-                //    {
-                //        SkillId = item
-                //    });
-                //}
-                //company.Jobs.Add(job);
-                //_context.Add(company);
-                //_context.SaveChanges();
-                //return View("RegisterComplete");
+            {              
                 var command = new CreateJobCommand { Model = model };
                 var result = await _mediator.Send(command);
-
-                return result;
-
+                return View("RegisterComplete");
             }
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()
@@ -186,50 +136,6 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteJob(int Id)
         {
-            //List<SelectListItem> listItems = new List<SelectListItem>();
-            //listItems.Add(new SelectListItem()
-            //{
-            //    Value = "FullTime",
-            //    Text = "FullTime"
-            //});
-
-            //listItems.Add(new SelectListItem()
-            //{
-            //    Value = "PartTime",
-            //    Text = "PartTime"
-            //});
-
-            //PostAJobViewModel model = new PostAJobViewModel();
-            //model.JobTypes = listItems;
-            //model.EducationTypes = await Educations();
-            //List<int> skillsIds = new List<int>();
-
-            ////Get job 
-            //var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == Id);
-            //var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == Id);
-            ////Get job skills and add each skillId into selectedskills list
-            //job.Skills.ToList().ForEach(result => skillsIds.Add(result.SkillId));
-            ////bind model 
-            //model.Skills = _context.Skills.Select
-            //    (x => new SelectListItem
-            //    {
-            //        Text = x.SkillName,
-            //        Value = x.Id.ToString()
-            //    }).ToList();
-            //model.Id = company.Id;
-            //model.JobTitle = job.JobTitle;
-            //model.JobDescription = job.JobDescription;
-            //model.JobDeadline = job.JobDeadline;
-            //model.JobType = job.JobType;
-            //model.PostedDate = job.PostedDate;
-            //model.Vacancy = job.Vacancy;
-            //model.Salary = job.Salary;
-            //model.YearsOfExp = job.YearsOfExp;
-            //model.Education = job.Education;
-            //model.SelectedSkills = skillsIds.ToArray();
-            //model.CompanyName = job.Company.CompanyName;
-            //model.CompanyEmail = job.Company.CompanyEmail;
-            //model.Country = job.Company.Country;
             var query = new GetJobQuery { JobId = Id };
             var model = await _mediator.Send(query);
             return View(model);
@@ -237,26 +143,14 @@ namespace TalentManagement.UI.Controllers
         [HttpPost]
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteJob(PostAJobViewModel model)
-        {
-            //var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
-            //if (company == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //_context.Companies.Remove(company);
-            //_context.SaveChanges();
+        {         
             var result = await _mediator.Send(new DeleteJobCommand { JobId = model.Id });
-
             if (!result)
             {
                 return NotFound();
             }
-
             return RedirectToAction("YourPosts");
-
         }
-
         [HttpGet]
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> EditJob(int Id)
@@ -379,93 +273,68 @@ namespace TalentManagement.UI.Controllers
             model.JobTypes = listItems;
             return View(model);
         }
-
-
         [HttpPost]
         [Authorize(Roles = "Talent")]
         public async Task<ActionResult> Apply(int _id)
         {
-
-            //string UserId = _userManager.GetUserId(User);
-
-            //Job job = _context.Jobs.Where(x => x.Id == _id).FirstOrDefault();
-
-            //var talent = _context.Talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
-            //if (talent == null)
-            //{
-            //    return View("UploadResume");
-            //}
-
-            //if (job == null)
-            //    return RedirectToAction("Home", "Main");
-
-            //UserJob applied = _context.Candidates.Where(x => x.JobId == job.Id && x.UserId == UserId).FirstOrDefault();
-
-            //if (applied == null)
-            //{
-            //    UserJob user = new UserJob { UserId = UserId, JobId = job.Id };
-            //    _context.Candidates.Add(user);
-            //    _context.SaveChanges();
-            //}
             string UserId = _userManager.GetUserId(User);
 
             var command = new ApplyForJobCommand { JobId = _id, UserId = UserId };
             var result = await _mediator.Send(command);
-
-          //  return result;
-
-            return RedirectToAction("Detail");
+           return RedirectToAction("AppliedJobs");
         }
         [Authorize(Roles = "Talent")]
-        public ActionResult AppliedJobs(int id)
+        public async Task<ActionResult> AppliedJobs(int id)
         {
-            string UserId = _userManager.GetUserId(User);
-            var pageOfResults = _context.Candidates.Where(x => x.UserId == UserId)
-                                    .Include(x => x.Job.Company)
-                                    .Include(x => x.Job)
-                                    .Include(x => x.Job.Skills)
-                                    .Include(x => x.Job.Recruter)
-                                    .ToList();
+                string UserId = _userManager.GetUserId(User);
+                var pageOfResults = _context.Candidates.Where(x => x.UserId == UserId)
+                                        .Include(x => x.Job.Company)
+                                        .Include(x => x.Job)
+                                        .Include(x => x.Job.Skills)
+                                        .Include(x => x.Job.Recruter)
+                                        .ToList();
 
-            var count = _context.Candidates.Where(x => x.UserId == UserId).Count();
+                var count = _context.Candidates.Where(x => x.UserId == UserId).Count();                      
             return View(pageOfResults);
-        }
+        }       
         [Authorize(Roles = "Company")]
-        public ActionResult Candidates(int id)
-        {
-            string UserId = _userManager.GetUserId(User);
-            ViewBag.Job = _context.Jobs.Where(x => x.Id == id && x.RecruterId == UserId).FirstOrDefault();
+        public async Task<ActionResult> Candidates(int id)
+        {           
+            string userId = _userManager.GetUserId(User);
+            ViewBag.Job = _context.Jobs.Where(x => x.Id == id && x.RecruterId == userId).FirstOrDefault();
             if (ViewBag.Job == null)
-                return RedirectToAction("Home", "Main");
-
-            var Candidates = _context.Candidates.Where(x => x.JobId == id)
-
-                                    .Include(x => x.User)
-                                    .Include(x => x.User.Talent)
-                                    .ToList();
-
-            var count = _context.Candidates.Where(x => x.JobId == id).Count();
-
-            ViewBag.TotalCandidates = count;
-
-
-
-            return View(Candidates);
-        }
-
-        public async Task<List<SelectListItem>> BindSkills()
-        {
-
-            var skillsFromDb = _mediator.Send(new GetAllSkillsQuery());
-
-            var selectList = new List<SelectListItem>();
-
-            foreach (var item in await skillsFromDb)
             {
-
-                selectList.Add(new SelectListItem(item.SkillName, item.Id.ToString()));
+                return RedirectToAction("Home", "Main");
+            }
+            var query = new GetCandidatesQuery { JobId = id, UserId = userId };
+            var candidates = await _mediator.Send(query);
+            var count = candidates.Count();
+            ViewBag.TotalCandidates = count;
+            return View(candidates);                     
+        }        
+        public async Task<ActionResult> MatchCandidates(int id)
+        {
+            string userId = _userManager.GetUserId(User);
+            ViewBag.Job = _context.Jobs.Where(x => x.Id == id && x.RecruterId == userId).FirstOrDefault();
+            if (ViewBag.Job == null)
+            {
+                return RedirectToAction("Home", "Main");
             }
 
+            var query = new MatchCandidatesQuery { JobId = id, UserId = userId };
+            var candidates = await _mediator.Send(query);
+            var count = candidates.Count();
+            ViewBag.TotalCandidates = count;
+            return View(candidates);
+        }
+        public async Task<List<SelectListItem>> BindSkills()
+        {
+            var skillsFromDb = _mediator.Send(new GetAllSkillsQuery());
+            var selectList = new List<SelectListItem>();
+            foreach (var item in await skillsFromDb)
+            {
+                selectList.Add(new SelectListItem(item.SkillName, item.Id.ToString()));
+            }
             return selectList;
         }
         public async Task<List<SelectListItem>> Educations()
@@ -476,7 +345,6 @@ namespace TalentManagement.UI.Controllers
                 Value = "Software Engineering",
                 Text = "Software Engineering"
             });
-
             listItems.Add(new SelectListItem()
             {
                 Value = "Data Science",
