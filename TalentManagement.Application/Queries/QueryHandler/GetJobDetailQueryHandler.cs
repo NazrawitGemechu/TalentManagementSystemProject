@@ -24,11 +24,13 @@ namespace TalentManagement.Application.Queries.QueryHandler
 
         public async Task<Job> Handle(GetJobDetailQuery request, CancellationToken cancellationToken)
         {
+            //recives  query and id 
+            //then retrives the job details form the job table and related tables
             var jobDetail = await _context.Jobs.Include(u => u.Company)
           .Include(s => s.Skills).ThenInclude(a => a.Skill)
           .Include(t => t.Recruter)
           .FirstOrDefaultAsync(n => n.Id == request.Id);
-           
+           //returns the result back to the controller
              return jobDetail;
            
 

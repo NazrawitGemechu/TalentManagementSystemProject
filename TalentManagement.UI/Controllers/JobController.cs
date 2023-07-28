@@ -36,49 +36,76 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Admin,Talent")]
         public async Task<IActionResult> Index()
         {
+            //assigns the get jobs query to vat jobQuery
             var jobQuery = new GetJobsQuery();
+            //assigns the get companiew query to vat companyQuery
             var companyQuery = new GetCompaniesQuery();
+            //sends the job query stored in the variable throuth mediater to the query handler
             var jobResult = await _mediator.Send(jobQuery);
+            //sends the company query stored in the variable throuth mediater to the query handler
             var companyResult = await _mediator.Send(companyQuery);
+            //returns the job result that it recived form the handler
             return View(jobResult);
         }
-        //search
+        //search for a job
         public async Task<IActionResult> Filter(string searchString)
         {
+            //stores  the searchString recived from the the user on the query variable
             var query = new FilterQuery { SearchString = searchString };
+            //sends the variable to the query handler using mediator and stores the returned result on the var result
             var result = await _mediator.Send(query);
+            //reders the view to the user
             return View("Index", result);
         }
-        public async Task<IActionResult> FilterCandidate(string searchString)
+        public async Task<IActionResult> FilterCandidate(string searchString,int id)
         {
-           
-            var candidates = _context.Candidates.Include(u=>u.User).ThenInclude(t=>t.Talent).ThenInclude(s=>s.Skills).ToList();
+
+
+            //   var candidates = _context.Candidates.Include(u=>u.User).ThenInclude(t=>t.Talent).ThenInclude(s=>s.Skills).ToList();
+
+            var candidates = await _context.Candidates
+                .Where(x => x.JobId == id)
+                .Include(x => x.User)
+                .Include(x => x.User.Talent)
+                .ToListAsync();
+
             var company = _context.Companies.ToList();
             var talents = _context.Talents.ToList();
             if (!string.IsNullOrEmpty(searchString))
             {
                 var filterResult = candidates.Where(n =>n.User.Talent.FirstName.Contains(searchString) || n.User.Talent.Email.Contains(searchString) ).ToList();
-                return View("Candidates", filterResult);
+               
+                return View("SearchResult", filterResult);
             }
 
             return View("Candidates", candidates);
         }
 
         [HttpGet]
+        //get details of a job
         public async Task<IActionResult> Detail(int Id)
-        {           
+        {   
+            //gets the user id of the current user
             string UserId = _userManager.GetUserId(User);
+            //stores the job id and user id of who applied to a job
             ViewBag.IsApplied = _context.Candidates.Where(z => z.JobId == Id && z.UserId == UserId).FirstOrDefault();
+          //gets the id from the view and sends it along to the query handler
             var query = new GetJobDetailQuery { Id = Id};
             var jobDetail = await _mediator.Send(query);
+            //returns the result retrived form the query handler
               return View(jobDetail);          
         }
         [Authorize(Roles = "Company")]
+        //the jobs a copmany posted
         public async Task<IActionResult> YourPosts()
         { 
+            //gets the current signed in companies id
             var recruiterId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //sends the aquired recruter id to yourpostsquery
             var jobs = await _mediator.Send(new YourPostsQuery { RecruiterId = recruiterId });
+            //sends get companies query 
             var companies = await _mediator.Send(new GetCompaniesQuery());  
+            //returns the result recived from the handler
             return View(jobs);
         }
 
@@ -87,6 +114,7 @@ namespace TalentManagement.UI.Controllers
         public async Task<IActionResult> PostJob()
         {
             PostAJobViewModel vm = new PostAJobViewModel();
+            //adds skills and education types  to the dropdown
             vm.Skills = await BindSkills();
             vm.EducationTypes = await Educations();
             List<SelectListItem> listItems = new List<SelectListItem>();
@@ -101,7 +129,9 @@ namespace TalentManagement.UI.Controllers
                 Value = "PartTime",
                 Text = "PartTime"
             });
+            //adds job types to the drop down
             vm.JobTypes = listItems;
+            //returns the form to the users to fill
             return View(vm);
         }
         [HttpPost]
@@ -109,11 +139,15 @@ namespace TalentManagement.UI.Controllers
         public async Task<IActionResult> PostJob(PostAJobViewModel model)
         {
             if (ModelState.IsValid)
-            {              
+            {      
+                //creates a command along with the model and stores it to command variable
                 var command = new CreateJobCommand { Model = model };
+                //sends the stored command through mediator to handler and stores the result in var result
                 var result = await _mediator.Send(command);
+             
                 return View("RegisterComplete");
             }
+            //if the model state is not valid it retrives all the datas for the dropdown again and renders the view
             List<SelectListItem> listItems = new List<SelectListItem>();
             listItems.Add(new SelectListItem()
             {
@@ -136,14 +170,18 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteJob(int Id)
         {
+            //sends a new get job query with the specified id
             var query = new GetJobQuery { JobId = Id };
+            //sends the stored query to the handler and stroes the result in the model
             var model = await _mediator.Send(query);
+            //returns the model which is filled with the details of the filled form
             return View(model);
         }
         [HttpPost]
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteJob(PostAJobViewModel model)
-        {         
+        {   
+            //sends delete job command along with the model id and stores the result in var result
             var result = await _mediator.Send(new DeleteJobCommand { JobId = model.Id });
             if (!result)
             {

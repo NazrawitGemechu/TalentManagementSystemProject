@@ -21,7 +21,9 @@ namespace TalentManagement.Application.Queries.QueryHandler
         }
         public async Task<List<Job>> Handle(GetJobsQuery request, CancellationToken cancellationToken)
         {
+            //from the job controller it recives the get jobs guery then retrives it from the database
             var jobs = await _context.Jobs.ToListAsync(cancellationToken);
+            //returns the result stored the variable back to the controller
             return jobs;
         }
     }

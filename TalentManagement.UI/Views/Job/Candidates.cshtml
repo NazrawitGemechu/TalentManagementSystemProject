@@ -5,7 +5,7 @@
 <div class="container-xxl py-5">
     <div class="container">
         <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">All Candidates</h1>
-        <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5 py-4" asp-controller="Job" asp-action="FilterCandidate">
+        <form class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5 py-4" asp-controller="Job" asp-action="FilterCandidate" asp-route-id="@ViewBag.Job.Id">
             <input name="searchString" type="text" class="form-control" placeholder="Search for a talent...">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
 
@@ -15,6 +15,7 @@
             @* <a href="/Job/Candidates/@item.Id" class="boxed-btn4">Candidates</a>*@
         </form>
         <div id="tab-1" class="tab-pane fade show p-0 active">
+           
             <h3>@ViewBag.Job.JobTitle</h3>
             <p class="wow fadeInRight text-end" data-wow-duration="1s" data-wow-delay=".4s">@ViewBag.TotalCandidates Candidates</p>
             <h3></h3>

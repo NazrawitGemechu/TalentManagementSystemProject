@@ -29,6 +29,7 @@ namespace TalentManagement.Application.Commands.CommandHandler
 
         public async Task<IActionResult> Handle(CreateJobCommand request, CancellationToken cancellationToken)
         {
+            //assign the model it recives from get job command to var model
             var model = request.Model;
             model.Skills = await BindSkills();
             model.EducationTypes = await Educations();
