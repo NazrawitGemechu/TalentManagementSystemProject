@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TalentManagement.Domain.Entities.Job>
+@{
+    ViewData["Title"] = "Pending Posts";
+}
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Rejected Job Posts</h1>
+        <div id="tab-1" class="tab-pane fade show p-0 active">
+            @Html.AntiForgeryToken()
+            @foreach (var item in Model)
+            {
+                <div class="job-item p-4 mb-4">
+                    <div class="row g-4">
+
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">
+
+                                    <a asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id" class="text-white"> <h4>@item.JobTitle.Substring(0, (item.JobTitle.Length > 40 ? 40 : item.JobTitle.Length))</h4> </a>
+
+                                </h5>
+                                <p class="my-2">
+                                    <i class="fa fa-calendar" style="margin-right:7px"></i> @item.PostedDate.ToString("dd/MM/yyyy ")
+                                    @Html.DisplayFor(modelItem => item.JobType)
+                                    @if (DateTime.Now >= item.PostedDate && DateTime.Now <= item.JobDeadline)
+                                    {
+                                    <p class="text-success"><b>OPEN</b></p>
+                                    }
+                                    else if (DateTime.Now > item.JobDeadline)
+                                    {
+                                    <p class="text-danger"><b>CLOSED</b></p>
+                                    }
+                                </p>
+
+                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@item.Company.Country</span>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+
+
+                                <a class="btn btn-outline-success" asp-controller="Admin" asp-action="AcceptJob" asp-route-jobId="@item.Id">Accept</a>
+
+                            </div>
+                           
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+
+
+    </div>
+</div>
+
+

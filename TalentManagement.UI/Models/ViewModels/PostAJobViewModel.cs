@@ -48,7 +48,7 @@ namespace TalentManagement.UI.Models.ViewModels
         [Required(ErrorMessage = "Deadline is Required")]
         [Display(Name = "Job Application Deadline")]
         public DateTime JobDeadline { get; set; }
-
+        public bool? IsAccepted { get; set; }
         public List<SelectListItem> Skills { get; set; } = new List<SelectListItem>();
         [Display(Name ="Required Skills:")]
         public int[] SelectedSkills { get; set; }

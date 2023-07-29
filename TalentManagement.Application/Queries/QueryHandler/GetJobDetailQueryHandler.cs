@@ -29,7 +29,7 @@ namespace TalentManagement.Application.Queries.QueryHandler
             var jobDetail = await _context.Jobs.Include(u => u.Company)
           .Include(s => s.Skills).ThenInclude(a => a.Skill)
           .Include(t => t.Recruter)
-          .FirstOrDefaultAsync(n => n.Id == request.Id);
+          .FirstOrDefaultAsync(n => n.Id == request.Id && n.IsAccepted != false);
            //returns the result back to the controller
              return jobDetail;
            

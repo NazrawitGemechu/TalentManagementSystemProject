@@ -13,7 +13,7 @@ using TalentManagement.Persistance.Data;
 
 namespace TalentManagement.Application.Commands.CommandHandler
 {
-    public class UpdateJobCommandHandler : IRequestHandler<UpdateJobCommand, IActionResult>
+    public class UpdateJobCommandHandler : IRequestHandler<UpdateJobCommand, Unit>
     {
         private readonly ApplicationDbContext _context;
        
@@ -25,56 +25,50 @@ namespace TalentManagement.Application.Commands.CommandHandler
             _currentUserService = currentUserService;
         }
 
-        public async Task<IActionResult> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
         {
+
             var model = request.Model;
 
-            var dbjob = _context.Jobs.FirstOrDefault(n => n.Id == model.Id);
-            var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
+            // Get job 
+            var job = _context.Jobs.Include("Skills").FirstOrDefault(x => x.Id == model.Id);
+            var company = _context.Companies.Include("Jobs").FirstOrDefault(x => x.Id == model.Id);
 
-            if (company == null)
+            // Update job properties
+            job.JobTitle = model.JobTitle;
+            job.JobDescription = model.JobDescription;
+            job.JobDeadline = model.JobDeadline;
+            job.JobType = model.JobType;
+            job.PostedDate = model.PostedDate;
+            job.Vacancy = model.Vacancy;
+            job.Salary = model.Salary;
+            job.YearsOfExp = model.YearsOfExp;
+            job.Education = model.Education;
+          
+
+            // Update job skills
+            var selectedSkills = new List<JobSkill>();
+            if (model.SelectedSkills != null)
             {
-                return new NotFoundResult();
-            }
-
-            _context.Companies.Remove(company);
-            await _context.SaveChangesAsync();
-
-            //then add the data as new
-            Job job = new Job()
-            {
-                JobTitle = model.JobTitle,
-                JobDescription = model.JobDescription,
-                JobDeadline = model.JobDeadline,
-                JobType = model.JobType,
-                PostedDate = model.PostedDate,
-                Vacancy = model.Vacancy,
-                Salary = model.Salary,
-                YearsOfExp = model.YearsOfExp,
-                Education = model.Education,
-                RecruterId = await _currentUserService.GetCurrentUserId()
-            };
-
-            Company compan = new Company()
-            {
-                CompanyName = model.CompanyName,
-                CompanyEmail = model.CompanyEmail,
-                Country = model.Country
-            };
-
-            foreach (var item in model.SelectedSkills)
-            {
-                job.Skills.Add(new JobSkill()
+                foreach (var skillId in model.SelectedSkills)
                 {
-                    SkillId = item
-                });
+                    selectedSkills.Add(new JobSkill { JobId = job.Id, SkillId = skillId });
+                }
             }
+            job.Skills = selectedSkills;
 
-            compan.Jobs.Add(job);
-            _context.Add(compan);
+            // Update company properties
+            company.CompanyName = model.CompanyName;
+            company.CompanyEmail = model.CompanyEmail;
+            company.Country = model.Country;
+
+            // Save changes to database
+            _context.Update(job);
+            _context.Update(company);
             await _context.SaveChangesAsync();
 
-            return new RedirectToActionResult("YourPosts", null, null);
-        }
+            return Unit.Value;
+          
+        } 
     }
 }

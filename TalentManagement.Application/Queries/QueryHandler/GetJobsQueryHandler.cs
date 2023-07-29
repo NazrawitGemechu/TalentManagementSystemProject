@@ -22,7 +22,10 @@ namespace TalentManagement.Application.Queries.QueryHandler
         public async Task<List<Job>> Handle(GetJobsQuery request, CancellationToken cancellationToken)
         {
             //from the job controller it recives the get jobs guery then retrives it from the database
-            var jobs = await _context.Jobs.ToListAsync(cancellationToken);
+            // var jobs = await _context.Jobs.ToListAsync(cancellationToken);
+            var jobs=_context.Jobs.Where(x => x.IsAccepted == true).OrderByDescending(z => z.PostedDate).
+                 Include(y => y.Recruter).
+                 ToList();
             //returns the result stored the variable back to the controller
             return jobs;
         }

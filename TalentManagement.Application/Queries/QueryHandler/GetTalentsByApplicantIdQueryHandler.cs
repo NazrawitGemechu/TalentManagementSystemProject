@@ -21,7 +21,7 @@ namespace TalentManagement.Application.Queries.QueryHandler
         }
         public async Task<List<Talent>> Handle(GetTalentsByApplicantIdQuery request, CancellationToken cancellationToken)
         {
-            var talents = await _context.Talents
+            var talents = await _context.Talents.Where(x => x.IsAccepted == true)
                                  .Where(a => a.ApplicantId == request.ApplicantId)
                                  .ToListAsync();
 

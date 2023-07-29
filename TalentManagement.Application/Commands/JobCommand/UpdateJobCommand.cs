@@ -9,7 +9,7 @@ using TalentManagement.Application.ViewModels;
 
 namespace TalentManagement.Application.Commands.JobCommand
 {
-    public class UpdateJobCommand : IRequest<IActionResult>
+    public class UpdateJobCommand : IRequest<Unit>
     {
         public PostAJobViewModel Model { get; set; }
     }

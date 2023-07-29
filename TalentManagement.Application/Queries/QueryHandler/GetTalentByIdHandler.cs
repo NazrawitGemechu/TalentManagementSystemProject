@@ -24,7 +24,7 @@ namespace TalentManagement.Application.Queries.QueryHandler
         public async Task<Talent> Handle(GetTalentByIdQuery request, CancellationToken cancellationToken)
         {
             var results = await _mediator.Send(new GetAllTalentsQuery());
-            var output= results.FirstOrDefault(x=>x.Id==request.Id);
+            var output= results.Where(x => x.IsAccepted == true).FirstOrDefault(x=>x.Id==request.Id);
            //var output = results.Include
             return output;
         }

@@ -18,7 +18,7 @@
                             <div class="text-start ps-4">
                                 <h5 class="mb-3">
 
-                                    <a class="text-dark"asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.JobTitle)</a>
+                                    <a class="text-dark" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.JobTitle)</a>
 
 
 
@@ -42,15 +42,27 @@
                         <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                             <div class="d-flex mb-3">
 
+
                                 @*<a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>*@
                                 @*<a class="btn btn-outline-danger" asp-controller="Job" asp-action="DeleteJob" asp-route-id="@item.Id">Delete</a>*@
                                 @* <a class="btn btn-danger" asp-controller="Job" asp-action="DeleteJob" asp-route-id="@item.Id">Delete</a>*@
                             </div>
+                            @if (item.IsAccepted == true)
+                            {
                             @* <a class="btn btn-outline-dark" asp-controller="Job" asp-action="EditJob" asp-route-id="@item.Id">Update</a>*@
                             <form>
                                 <a class="btn btn-outline-dark" asp-controller="Job" asp-action="Candidates" asp-route-id="@item.Id">Candidates</a>
                                 @* <a href="/Job/Candidates/@item.Id" class="boxed-btn4">Candidates</a>*@
                             </form>
+                            }
+                            @if (item.IsAccepted == false)
+                            {
+                                <a href="#" class="boxed-btn1 text-danger">Rejected</a>
+                            }
+                            else if (item.IsAccepted != true)
+                            {
+                                <a href="#" class="boxed-btn1" style="margin-left:20px;">Pending</a>
+                            }
                         </div>
 
                     </div>

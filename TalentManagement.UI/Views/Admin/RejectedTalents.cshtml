@@ -1,13 +1,13 @@
-﻿@{
-    ViewData["Title"] = "Applied Jobs";
-
+﻿@model IEnumerable<TalentManagement.Domain.Entities.Talent>
+@{
+    ViewData["Title"] = "Pending Posts";
 }
 
 <div class="container-xxl py-5">
     <div class="container">
-        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">You Applied To</h1>
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Rejected Talents</h1>
         <div id="tab-1" class="tab-pane fade show p-0 active">
-
+            @Html.AntiForgeryToken()
             @foreach (var item in Model)
             {
                 <div class="job-item p-4 mb-4">
@@ -17,48 +17,39 @@
 
                             <div class="text-start ps-4">
                                 <h5 class="mb-3">
-                                    @item.Job.JobTitle.Substring(0, (item.Job.JobTitle.Length > 20 ? 20 : item.Job.JobTitle.Length))
+
+                                    <a asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id" class="text-white"> <h4>@item.FirstName.Substring(0, (item.FirstName.Length > 40 ? 40 : item.FirstName.Length)) @item.LastName</h4> </a>
 
                                 </h5>
                                 <p class="my-2">
-                                    @item.Job.JobType  &nbsp; &nbsp; &nbsp;      @item.Job.Company.CompanyEmail
-
-                                </p>
-                                <p>
-                                    <a href="/Job/Detail/@item.Job.Id" class="genric-btn success">Applied</a>
+                                    
+                                 @item.Email
+                                   
                                 </p>
 
+                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@item.Country</span>
 
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                             <div class="d-flex mb-3">
 
-                                <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Job.Id">Details</a>
 
+                                <a class="btn btn-outline-success" asp-controller="Admin" asp-action="AcceptTalent" asp-route-talentId="@item.Id">Accept</a>
 
                             </div>
-
-
+                           
 
                         </div>
 
                     </div>
                 </div>
             }
+
         </div>
+
+
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 

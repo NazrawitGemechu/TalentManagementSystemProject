@@ -27,7 +27,7 @@ namespace TalentManagement.Application.Queries.QueryHandler
             .Include(u => u.TalentExperiences)
             .Include(s => s.Skills).ThenInclude(a => a.Skill)
             .Include(s => s.EducationLevels).ThenInclude(a => a.EducationLevel)
-            .FirstOrDefaultAsync(n => n.Id == request.Id);
+            .FirstOrDefaultAsync(n => n.Id == request.Id && n.IsAccepted != false);
             return talentDetail;
         }
     }

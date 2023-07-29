@@ -50,9 +50,7 @@ namespace TalentManagement.Application.ViewModels
         [Display(Name = "Upload CV")]
         [ValidateFile]
         public IFormFile FileCV { get; set; }
-       // public int JobId { get; set; }
-       // [Display(Name ="CV")]
-       // public IFormFile CV { get; set; }
+        public bool? IsAccepted { get; set; }
 
         public virtual List<TalentExperience> TalentExperiences { get; set; } = new List<TalentExperience>();
         

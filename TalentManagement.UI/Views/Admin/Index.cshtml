@@ -1,0 +1,124 @@
+﻿@model TalentManagement.UI.Models.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="row" style="margin: 20px 0px 20px 0px;">
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Job" class="text-white" asp-action="Index">Total Posts</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalPosts +</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="PendingPosts">Pending Posts</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalPending +</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="User" class="text-white" asp-action="Index">Registered Users</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalUsers +</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="RejectedPosts">Rejected Posts</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalRejected +</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Roles" class="text-white" asp-action="Index">Roles</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.Roles </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Talent" class="text-white" asp-action="Index">Total Talents</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalTalents+ </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="PendingTalents">Pending Talents</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.PendingTalents+ </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="RejectedTalents">Rejected Talents</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.RejectedTalents+ </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin: 60px 0px;">
+    <div class="job_listing_area col-lg-12" style="padding: 0px;">
+        <h3>Recent Posts</h3>
+        <div class="job_lists m-0">
+            <div class="row">
+                @foreach (var item in Model.RecentPosts)
+                {
+                    <div class="job-item p-4 mb-4">
+                        <div class="row g-4">
+
+                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+
+                                <div class="text-start ps-4">
+                                    <h5 class="mb-3">
+                                        @item.JobTitle.Substring(0, (item.JobTitle.Length > 20 ? 20 : item.JobTitle.Length))
+
+                                    </h5>
+                                    <p class="my-2">
+                                        @item.JobType  &nbsp; &nbsp; &nbsp;
+                                        @item.PostedDate.ToString("dd/MM/yyyy")
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                <div class="d-flex mb-3">
+
+                                    <a class="btn btn-primary" asp-controller="Job" asp-action="Detail" asp-route-id="@item.Id">Details</a>
+
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".card").fadeIn(600);
+            $(".job_lists").fadeIn(600);
+        })
+    </script>
+
+}
+

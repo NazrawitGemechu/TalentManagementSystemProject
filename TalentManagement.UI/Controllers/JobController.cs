@@ -244,73 +244,27 @@ namespace TalentManagement.UI.Controllers
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> EditJob(PostAJobViewModel model)
         {
-           // var dbjob = _context.Jobs.FirstOrDefault(n => n.Id == model.Id);
-
             if (ModelState.IsValid)
             {
-                //var company = _context.Companies.Include(c => c.Jobs).ThenInclude(j => j.Skills).FirstOrDefault(c => c.Id == model.Id);
-                //if (company == null)
-                //{
-                //    return NotFound();
-                //}
-
-                //_context.Companies.Remove(company);
-                //_context.SaveChanges();
-
-                ////then add the datas as new
-
-                //Job job = new Job()
-                //{
-                //    JobTitle = model.JobTitle,
-                //    JobDescription = model.JobDescription,
-                //    JobDeadline = model.JobDeadline,
-                //    JobType = model.JobType,
-                //    PostedDate = model.PostedDate,
-                //    Vacancy = model.Vacancy,
-                //    Salary = model.Salary,
-                //    YearsOfExp = model.YearsOfExp,
-                //    Education = model.Education,
-                //};
-                //job.RecruterId = _userManager.GetUserId(User);
-                //Company compan = new Company()
-                //{
-                //    CompanyName = model.CompanyName,
-                //    CompanyEmail = model.CompanyEmail,
-                //    Country = model.Country,
-                //};
-
-                //foreach (var item in model.SelectedSkills)
-                //{
-                //    job.Skills.Add(new JobSkill()
-                //    {
-                //        SkillId = item
-                //    });
-                //}
-                //compan.Jobs.Add(job);
-                //_context.Add(compan);
-                //_context.SaveChanges();
-                var command = new UpdateJobCommand { Model = model };
-                var result = await _mediator.Send(command);
-
+                await _mediator.Send(new UpdateJobCommand { Model = model });
                 return RedirectToAction("YourPosts");
             }
+            //If model state is not valid, return the same view with the same model
+            model.Skills = _context.Skills.Select
+                        (x => new SelectListItem
+                        {
+                            Text = x.SkillName,
+                            Value = x.Id.ToString()
+                        }).ToList();
+            model.JobTypes = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "FullTime", Text = "FullTime" },
+                    new SelectListItem { Value = "PartTime", Text = "PartTime" }
+                };
             model.EducationTypes = await Educations();
-            model.Skills = await BindSkills();
-            List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem()
-            {
-                Value = "FullTime",
-                Text = "FullTime"
-            });
-
-            listItems.Add(new SelectListItem()
-            {
-                Value = "PartTime",
-                Text = "PartTime"
-            });
-            model.JobTypes = listItems;
             return View(model);
         }
+       
         [HttpPost]
         [Authorize(Roles = "Talent")]
         public async Task<ActionResult> Apply(int _id)

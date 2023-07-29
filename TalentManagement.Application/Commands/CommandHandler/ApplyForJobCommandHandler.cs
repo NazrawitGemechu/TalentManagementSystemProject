@@ -27,7 +27,7 @@ namespace TalentManagement.Application.Commands.CommandHandler
         {
             string UserId = request.UserId;
 
-            Job job = await _context.Jobs.FirstOrDefaultAsync(x => x.Id == request.JobId);
+            Job job = await _context.Jobs.FirstOrDefaultAsync(x => x.Id == request.JobId && x.IsAccepted == true);
 
             var talent = await _context.Talents.FirstOrDefaultAsync(x => x.ApplicantId == UserId);
 

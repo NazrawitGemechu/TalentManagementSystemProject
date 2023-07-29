@@ -22,6 +22,7 @@ namespace TalentManagement.Domain.Entities
         //public bool JobStatus { get; set; }
         public DateTime PostedDate { get; set; }
         public DateTime JobDeadline { get; set; }
+        public bool? IsAccepted { get; set; }
 
         public virtual List<JobSkill> Skills { get; set; } = new List<JobSkill>();
       //  public virtual List<Talent> AppliedTalents { get; set; } = new List<Talent>();

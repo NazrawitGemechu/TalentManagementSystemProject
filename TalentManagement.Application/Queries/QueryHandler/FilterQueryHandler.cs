@@ -30,7 +30,7 @@ namespace TalentManagement.Application.Queries.QueryHandler
             if (!string.IsNullOrEmpty(request.SearchString))
             { 
                 //if the searchstring is not empty it retrives the job based on job title and job type
-                var filterResult = jobs.Where(n => n.JobTitle.Contains(request.SearchString) || n.JobType.Contains(request.SearchString)).ToList();
+                var filterResult = jobs.Where(x => x.IsAccepted == true).Where(n => n.JobTitle.Contains(request.SearchString) || n.JobType.Contains(request.SearchString)).ToList();
                 //returns the result back to the controller
                 return filterResult;
             }
