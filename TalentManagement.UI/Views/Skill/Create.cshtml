@@ -4,36 +4,49 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="row">
-                <h1>Create</h1>
-
-                <h4>Skill</h4>
-                <hr />
+<form asp-action="Create">
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="row">
-                    <div class="col-md-4">
-                        <form asp-action="Create">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="SkillName" class="control-label"></label>
-                                <input asp-for="SkillName" class="form-control" />
-                                <span asp-validation-for="SkillName" class="text-danger"></span>
+                    <div class="border p-3 bg-white">
+                        <div class="form-group row">
+                            <h2 class="d-flex justify-content-center pl-3">Add New Skill</h2>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-8">
+
+                                <div class="form group row py-2">
+                                    <div class="col-4">
+                                        <label >Skill Name</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input asp-for="SkillName" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="SkillName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form group row py-2">
+                                    <div class="col-8 offset-4 row">
+                                        <div class="col">
+
+
+                                            <input type="submit" class="btn btn-outline-success  w-100" value="Create" />
+
+                                        </div>
+                                        <div class="col">
+                                            <a asp-action="Index" class="btn btn-outline-dark w-100">Back</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index" class="btn btn-outline-dark">Back</a>
-</div>
+</form>
 
 @section Scripts {
     @{

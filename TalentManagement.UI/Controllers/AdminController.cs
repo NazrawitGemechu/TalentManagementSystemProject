@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TalentManagement.Application.Commands.AdminCommand;
+using TalentManagement.Application.Queries.AdminQuery;
 using TalentManagement.Application.Queries.CompanyQuery;
 using TalentManagement.Domain.Entities;
 using TalentManagement.Persistance.Data;
@@ -20,46 +22,27 @@ namespace TalentManagement.UI.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            AdminDashboardViewModel dashboard = new AdminDashboardViewModel
-            {
-                TotalPosts = _context.Jobs.Where(x => x.IsAccepted == true).Count(),
-                TotalPending = _context.Jobs.Where(x => x.IsAccepted == null).Count(),
-                TotalRejected = _context.Jobs.Where(x => x.IsAccepted == false).Count(),
-                TotalUsers = _context.ApplicationUser.Count(),
-                Roles=_context.Roles.Count(),
-                RejectedTalents=_context.Talents.Where(x => x.IsAccepted == false).Count(),
-                PendingTalents = _context.Talents.Where(x => x.IsAccepted == null).Count(),
-                TotalTalents = _context.Talents.Where(x => x.IsAccepted == true).Count(),
-                RecentPosts = _context.Jobs.Where(x => x.IsAccepted == true).OrderByDescending(o => o.PostedDate)
-                  .Include(x => x.Skills)
-                .Include(x => x.Recruter)
-
-            };
+            
+            var dashboard = await _mediator.Send(new AdminDashboardQuery());
             return View(dashboard);
         }
 
         // GET: Admin/PendingPosts
         public async Task<IActionResult> PendingPosts()
         {
-            //assigns the get companiew query to vat companyQuery
-            var companyQuery = new GetCompaniesQuery();
-           
-            //sends the company query stored in the variable throuth mediater to the query handler
-            var companyResult = await _mediator.Send(companyQuery);
-            var jobs = _context.Jobs.Where(x => x.IsAccepted == null)
-                .Include(x => x.Recruter)
-                .ToList();
-
+            
+            var postsQuery = new PendingPostsQuery();
+            var jobs = await _mediator.Send(postsQuery);
             return View(jobs);
         }
         // GET: Admin/PendingTalents
         public async Task<IActionResult> PendingTalents()
         {
-            var talents = _context.Talents.Where(x => x.IsAccepted == null)
-                .Include(x => x.Applicant)
-                .ToList();
+           
+            var talentsQuery = new PendingTalentsQuery();
+            var talents = await _mediator.Send(talentsQuery);
 
             return View(talents);
         }
@@ -70,80 +53,57 @@ namespace TalentManagement.UI.Controllers
 
             //sends the company query stored in the variable throuth mediater to the query handler
             var companyResult = await _mediator.Send(companyQuery);
-            var jobs = _context.Jobs.Where(x => x.IsAccepted == false)
-                .Include(x => x.Recruter)
-                .ToList();
+           
+            var rejectedPostsQuery = new RejectedPostsQuery();
+            var jobs = await _mediator.Send(rejectedPostsQuery);
 
             return View(jobs);
         }
         public async Task<IActionResult> RejectedTalents()
         {
-           
-            var talents = _context.Talents.Where(x => x.IsAccepted == false)
-                .Include(x => x.Applicant)
-                .ToList();
 
+           
+            var rejectedTalentsQuery = new RejectedTalentsQuery();
+            var talents = await _mediator.Send(rejectedTalentsQuery);
             return View(talents);
         }
-        public IActionResult AcceptJob(int jobId)
+        public async Task<IActionResult> AcceptJob(int jobId)
         {
-            var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-            if (job != null)
-            {
-                // Update IsAccepted value to true
-                job.IsAccepted = true;
+           
+            var acceptJobCommand = new AcceptJobCommand { JobId = jobId };
 
-                _context.SaveChanges(); // Save changes to persist the updated value
-
-                return RedirectToAction("Index", "Admin"); // Redirect to admin panel or any other desired page
-            }
-
-            return NotFound(); // Job not found
+            
+                await _mediator.Send(acceptJobCommand);
+                return RedirectToAction("Index", "Admin"); 
+            
+           
         }
-        public IActionResult AcceptTalent(int talentId)
+        public async Task<IActionResult> AcceptTalent(int talentId)
         {
-            var talent = _context.Talents.FirstOrDefault(j => j.Id ==talentId);
-            if (talent != null)
-            {
-                // Update IsAccepted value to true
-                talent.IsAccepted = true;
+            
 
-                _context.SaveChanges(); // Save changes to persist the updated value
-
-                return RedirectToAction("Index", "Admin"); // Redirect to admin panel or any other desired page
-            }
-
-            return NotFound(); // Job not found
+            var acceptTalentCommand = new AcceptTalentCommand { TalentId = talentId };
+            await _mediator.Send(acceptTalentCommand);
+            return RedirectToAction("Index", "Admin");
         }
-        public IActionResult RejectJob(int jobId)
+               
+        
+        public async Task<IActionResult> RejectJob(int jobId)
         {
-            var job = _context.Jobs.FirstOrDefault(j => j.Id == jobId);
-            if (job != null)
-            {
-                // Update IsAccepted value to true
-                job.IsAccepted = false;
+           
+            var rejectJobCommand = new RejectJobCommand { JobId = jobId };
 
-                _context.SaveChanges(); // Save changes to persist the updated value
-
-                return RedirectToAction("Index", "Admin"); // Redirect to admin panel or any other desired page
-            }
-
-            return NotFound(); // Job not found
+            
+                await _mediator.Send(rejectJobCommand);
+                return RedirectToAction("Index", "Admin"); 
+          
         }
-        public IActionResult RejectTalent(int talentId)
+        public async Task<IActionResult> RejectTalent(int talentId)
         {
-            var talent = _context.Talents.FirstOrDefault(j => j.Id == talentId);
-            if (talent != null)
-            {
-                // Update IsAccepted value to true
-                talent.IsAccepted = false;
+            await _mediator.Send(new RejectTalentCommand { TalentId = talentId });
 
-                _context.SaveChanges(); // Save changes to persist the updated value
+            return RedirectToAction("Index", "Admin");
 
-                return RedirectToAction("Index", "Admin"); // Redirect to admin panel or any other desired page
-            }
-
-            return NotFound(); // Job not found
         }
     }
 }

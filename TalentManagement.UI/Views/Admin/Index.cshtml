@@ -1,4 +1,4 @@
-﻿@model TalentManagement.UI.Models.ViewModels.AdminDashboardViewModel
+﻿@model TalentManagement.Application.ViewModels.AdminDashboardViewModel
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -65,6 +65,22 @@
             <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="RejectedTalents">Rejected Talents</a></div>
             <div class="card-body" style="text-align: center;">
                 <span style="font-size: 50px;">@Model.RejectedTalents+ </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Skill" class="text-white text-center" asp-action="Index">Total Skills</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalSkills +</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="EducationLevel" class="text-white" asp-action="Index">Total Education Levels</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalEducationLevels +</span>
             </div>
         </div>
     </div>
