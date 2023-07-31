@@ -23,7 +23,7 @@ namespace TalentManagement.Application.Queries.QueryHandler
 
         public async Task<List<Talent>> Handle(GetAllTalentsQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Talents.Where(x => x.IsAccepted == true).ToListAsync();
+            return await _context.Talents.ToListAsync();
         }
     }
 }

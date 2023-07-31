@@ -6,6 +6,7 @@
 <div class="container-xxl py-5">
     <div class="container">
         <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Resume</h1>
+
         <div id="tab-1" class="tab-pane fade show p-0 active">
 
             @foreach (var item in Model)
@@ -34,7 +35,7 @@
                                 {
                                 <a class="btn btn-primary" asp-controller="Talent" asp-action="Detail" asp-route-id="@item.Id">Details</a>
                                 }
-                                }
+                                
                                 @if (item.IsAccepted == false)
                                 {
                                     <a href="#" class="boxed-btn1 text-danger">Rejected</a>

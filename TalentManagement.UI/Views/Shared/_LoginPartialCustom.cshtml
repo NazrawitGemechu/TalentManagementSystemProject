@@ -49,13 +49,13 @@ else if (SignInManager.IsSignedIn(User)&&User.IsInRole("Admin")){
 
         <div class="dropdown-menu rounded-0 m-0 " aria-labelledby="profile-btn">
             <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
-            <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
+           @* <a asp-controller="Talent" asp-action="Index" class="dropdown-item">Talents</a>
             <a asp-controller="Job" asp-action="Index" class="dropdown-item">Jobs</a>
             <a asp-controller="Skill" asp-action="Index" class="dropdown-item">Skills</a>
             <a asp-controller="EducationLevel" asp-action="Index" class="dropdown-item">Education Levels</a>
             <a asp-controller="User" asp-action="Index" class="dropdown-item">Users</a>
-            <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>
-            <a asp-controller="Admin" asp-action="Index" class="dropdown-item">Admin</a>
+            <a asp-controller="Roles" asp-action="Index" class="dropdown-item">Roles</a>*@
+            <a asp-controller="Admin" asp-action="Index" class="dropdown-item">Manage</a>
             <form id="logoutForm" method="post"  asp-controller="Account" asp-action="LogOff">
                 <button type="submit" class="dropdown-item text-danger">Logout</button>
             </form>

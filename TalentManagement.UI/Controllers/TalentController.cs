@@ -75,7 +75,7 @@ namespace TalentManagement.UI.Controllers
             string UserId = _userManager.GetUserId(User);
             var talents = await _mediator.Send(new GetAllTalentsQuery());
             var talent = talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
-            if (talent != null)
+            if (talent != null || talent.IsAccepted == true || talent.IsAccepted == false || talent.IsAccepted != true)
             {
                 return View("AlreadyUploaded");
             }
@@ -91,7 +91,7 @@ namespace TalentManagement.UI.Controllers
             {
                 var command = new CreateTalentCommand { Model = model };
                 var result = await _mediator.Send(command);
-                return RedirectToAction("Index","Job");
+                return View("RegisterComplete");
             }
             return View(model);
         }

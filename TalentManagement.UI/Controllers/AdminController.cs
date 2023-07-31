@@ -32,7 +32,12 @@ namespace TalentManagement.UI.Controllers
         // GET: Admin/PendingPosts
         public async Task<IActionResult> PendingPosts()
         {
-            
+            //assigns the get companiew query to vat companyQuery
+            var companyQuery = new GetCompaniesQuery();
+
+            //sends the company query stored in the variable throuth mediater to the query handler
+            var companyResult = await _mediator.Send(companyQuery);
+
             var postsQuery = new PendingPostsQuery();
             var jobs = await _mediator.Send(postsQuery);
             return View(jobs);

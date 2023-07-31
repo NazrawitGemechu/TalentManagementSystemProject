@@ -21,26 +21,10 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="card text-white bg-primary mb-3">
-            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="User" class="text-white" asp-action="Index">Registered Users</a></div>
-            <div class="card-body" style="text-align: center;">
-                <span style="font-size: 50px;">@Model.TotalUsers +</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card text-white bg-dark mb-3">
+        <div class="card text-white bg-danger mb-3">
             <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="RejectedPosts">Rejected Posts</a></div>
             <div class="card-body" style="text-align: center;">
                 <span style="font-size: 50px;">@Model.TotalRejected +</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card text-white bg-dark mb-3">
-            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Roles" class="text-white" asp-action="Index">Roles</a></div>
-            <div class="card-body" style="text-align: center;">
-                <span style="font-size: 50px;">@Model.Roles </span>
             </div>
         </div>
     </div>
@@ -61,13 +45,33 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="card text-white bg-dark mb-3">
+        <div class="card text-white bg-danger mb-3">
             <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Admin" class="text-white" asp-action="RejectedTalents">Rejected Talents</a></div>
             <div class="card-body" style="text-align: center;">
                 <span style="font-size: 50px;">@Model.RejectedTalents+ </span>
             </div>
         </div>
     </div>
+    <div class="col-lg-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="User" class="text-white" asp-action="Index">Registered Users</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.TotalUsers +</span>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="col-lg-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Roles" class="text-white" asp-action="Index">Roles</a></div>
+            <div class="card-body" style="text-align: center;">
+                <span style="font-size: 50px;">@Model.Roles </span>
+            </div>
+        </div>
+    </div>
+   
+    
     <div class="col-lg-4">
         <div class="card text-white bg-primary mb-3">
             <div class="card-header" style="border-bottom: 1px solid rgb(255 255 255)"><a asp-controller="Skill" class="text-white text-center" asp-action="Index">Total Skills</a></div>

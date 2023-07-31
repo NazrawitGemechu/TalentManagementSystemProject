@@ -120,7 +120,7 @@
 
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Talent"))
         {
-            <a asp-action="Index" asp-controller="Job" class="btn btn-outline-dark">Back</a>
+            <a asp-action="Index" asp-controller="Job" class="btn btn-outline-dark  flex justify-content-end">Back</a>
         }
         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Company"))
         {

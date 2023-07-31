@@ -29,13 +29,16 @@ namespace TalentManagement.Application.Commands.CommandHandler
 
             Job job = await _context.Jobs.FirstOrDefaultAsync(x => x.Id == request.JobId && x.IsAccepted == true);
 
-            var talent = await _context.Talents.FirstOrDefaultAsync(x => x.ApplicantId == UserId);
+            var talent = await _context.Talents.FirstOrDefaultAsync(x => x.ApplicantId == UserId );
 
             if (talent == null)
             {
                 return new ViewResult { ViewName = "UploadResume" };
             }
-
+           if(talent!=null && talent.IsAccepted!=true)
+            {
+                return new ViewResult { ViewName = "Pending" };
+            }
             if (job == null)
                 return new RedirectToActionResult("Home", "Main", null);
 
