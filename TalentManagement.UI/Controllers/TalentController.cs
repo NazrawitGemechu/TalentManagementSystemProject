@@ -75,10 +75,10 @@ namespace TalentManagement.UI.Controllers
             string UserId = _userManager.GetUserId(User);
             var talents = await _mediator.Send(new GetAllTalentsQuery());
             var talent = talents.Where(x => x.ApplicantId == UserId).FirstOrDefault();
-            if (talent != null || talent.IsAccepted == true || talent.IsAccepted == false || talent.IsAccepted != true)
-            {
-                return View("AlreadyUploaded");
-            }
+            //if (talent != null || talent.IsAccepted == true || talent.IsAccepted == false || talent.IsAccepted != true)
+            //{
+            //    return View("AlreadyUploaded");
+            //}
             return View(vm);
         }
         [Authorize(Roles = "Talent")]

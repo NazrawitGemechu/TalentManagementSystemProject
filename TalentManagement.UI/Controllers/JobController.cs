@@ -273,8 +273,8 @@ namespace TalentManagement.UI.Controllers
 
             var command = new ApplyForJobCommand { JobId = _id, UserId = UserId };
             var result = await _mediator.Send(command);
-            // return RedirectToAction("AppliedJobs");
-            return result;
+             return RedirectToAction("AppliedJobs");
+           // return result;
         }
         [Authorize(Roles = "Talent")]
         public async Task<ActionResult> AppliedJobs(int id)
